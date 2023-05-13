@@ -13,9 +13,7 @@ import java.io.IOException;
 public class App extends Application {
     @Override
     
-    public void start(Stage stage) throws IOException {
-            // Set the icon to your custom icon
-        
+    public void start(Stage stage) throws IOException {        
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("interface/Preference.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 600, 450);
         stage.setTitle("Planify");
@@ -29,3 +27,4 @@ public class App extends Application {
         launch();
     }
 }
+
