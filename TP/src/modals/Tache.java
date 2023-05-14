@@ -1,16 +1,15 @@
 package modals;
-import java.time.*;
 import java.util.*;
 
 public abstract class Tache {
     protected String nom;
     protected float duree;
-    protected String date_limite;
+    protected Date date_limite;
     protected Priorite priorite;
     protected Categorie categorie;
     protected Etat etat;
 
-    public Tache(String nom, float duree, String date_limite, Priorite priorite, Categorie categorie, Etat etat) {
+    protected Tache(String nom, float duree, Date date_limite, Priorite priorite, Categorie categorie, Etat etat) {
         this.nom = nom;
         this.duree = duree;
         this.date_limite = date_limite;
@@ -37,11 +36,11 @@ public abstract class Tache {
         this.duree = duree;
     }
 
-    public String getDate_limite() {
+    public Date getDate_limite() {
         return date_limite;
     }
 
-    public void setDate_limite(String date_limite) {
+    public void setDate_limite(Date date_limite) {
         this.date_limite = date_limite;
     }
 
