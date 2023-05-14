@@ -1,11 +1,13 @@
 package modals;
 import javax.management.monitor.CounterMonitor;
 
+import javafx.scene.paint.Color;
+
 public class Categorie {
     private String nom;
-    private String couleur;
+    private Color couleur;
 
-    public Categorie(String nom, String couleur) {
+    public Categorie(String nom, Color couleur) {
         this.nom = nom;
         this.couleur = couleur;
     }
@@ -18,11 +20,11 @@ public class Categorie {
         this.nom = nom;
     }
 
-    public String getCouleur() {
+    public Color getCouleur() {
         return couleur;
     }
 
-    public void setCouleur(String couleur) {
+    public void setCouleur(Color couleur) {
         this.couleur = couleur;
     }
 }
