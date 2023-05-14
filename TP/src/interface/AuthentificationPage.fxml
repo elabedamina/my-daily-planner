@@ -13,47 +13,6 @@
 
 <StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlleurs.ControlleurAuthentification">
    <children>
-      <BorderPane fx:id="createaccount" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
-         <right>
-            <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
-                     <font>
-                        <Font name="Segoe Script Bold" size="37.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#434242" layoutX="234.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Créer un compte" translateX="114.0" translateY="-23.0">
-                     <font>
-                        <Font name="Times New Roman Bold" size="24.0" />
-                     </font>
-                  </Text>
-                  <TextField fx:id="getPseudo" layoutX="178.0" layoutY="188.0" prefHeight="27.0" prefWidth="173.0" promptText="Entrez votre pseudo" translateX="175.0" translateY="40.0">
-                     <font>
-                        <Font name="Arial" size="12.0" />
-                     </font>
-                  </TextField>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="44.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true" translateX="26.0" translateY="35.0">
-                     <image>
-                        <Image url="@Calendrier%20logo%203.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="75.0" fitWidth="79.0" layoutX="173.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" translateX="221.0" translateY="55.0">
-                     <image>
-                        <Image url="@Icône%20profil%20.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="nextButton" layoutX="201.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleNewInscription" text="suivant" />
-               </children>
-            </Pane>
-         </right>
-         <center>
-            <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez un pseudo" translateX="244.0" translateY="-35.0" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="Gabriola" size="26.0" />
-               </font>
-            </Text>
-         </center>
-      </BorderPane>
       <BorderPane fx:id="preference" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <right>
             <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
@@ -73,9 +32,14 @@
                         <Font name="Calibri Bold Italic" size="12.0" />
                      </font>
                   </Text>
+                  <TextField fx:id="getPseudo" layoutX="29.0" layoutY="205.0" prefHeight="58.0" prefWidth="173.0" promptText="Entrez votre pseudo">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </TextField>
                   <ChoiceBox fx:id="minDuree" layoutX="14.0" layoutY="310.0" prefWidth="150.0" />
                   <ChoiceBox fx:id="minTache" layoutX="174.0" layoutY="310.0" prefWidth="150.0" />
-                  <Button fx:id="Commencer" layoutX="164.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleSavePreferences" text="Button" />
+                  <Button fx:id="Commencer" layoutX="164.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleSavePreferences" text="confirmer" />
                </children>
             </Pane>
          </right>
@@ -125,6 +89,7 @@
                   </ImageView>
                   <Button fx:id="connexionBtn" layoutX="70.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleConnexion" text="cnx" />
                   <Button fx:id="inscriptionBtn" layoutX="175.0" layoutY="324.0" mnemonicParsing="false" onAction="#handleInscription" text="ins" />
+                  <Button fx:id="goTo" layoutX="149.0" layoutY="362.0" mnemonicParsing="false" onAction="#switchToScene" text="go to plan" />
                </children>
             </Pane>
          </right>

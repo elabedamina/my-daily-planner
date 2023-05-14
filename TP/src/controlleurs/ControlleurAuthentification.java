@@ -4,30 +4,26 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import modals.Calendrier;
+import javafx.stage.Stage;
 import modals.Planning;
 import modals.Utilisateur;
-import controlleurs.Alerts;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.scene.Node;
 
 public class ControlleurAuthentification implements Initializable {
 
@@ -35,13 +31,13 @@ public class ControlleurAuthentification implements Initializable {
     private Button connexionBtn;
 
     @FXML
-    private BorderPane createaccount;
-
-    @FXML
     private BorderPane firstpage;
 
     @FXML
     private TextField getPseudo;
+
+    @FXML
+    private Button goTo;
 
     @FXML
     private Button inscriptionBtn;
@@ -63,78 +59,81 @@ public class ControlleurAuthentification implements Initializable {
 
     @FXML
     private TextField pseudoField;
-    private String myLabel;
-
-    private Utilisateur myCurrenUtilisateur= new Utilisateur("test", new Planning(null, null, null), -1, -1);
+    private Utilisateur myCurrenUtilisateur= new Utilisateur("test", -1, -1);
     private String fileName = "users.dat";
 
     @FXML
     void handleConnexion(ActionEvent event) {
         String pseudo = pseudoField.getText();
-      if (!pseudo.isEmpty()){
-        File file = new File("pseudos.txt");
-        if(!file.exists()){
+        if (!pseudo.isEmpty()){
+            ArrayList<Utilisateur> userList;
             try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
+                FileInputStream fileIn = new FileInputStream(fileName);
+                ObjectInputStream in = new ObjectInputStream(fileIn);
+                userList = (ArrayList<Utilisateur>) in.readObject();
+                in.close();
+                fileIn.close();
+            } catch (IOException | ClassNotFoundException e) {
+                userList = new ArrayList<>();
             }
-        }
-        // tester si le pseudo figure dans le fichier
-        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                if (line.equals(pseudo)) {
-                    // implement the home page and call it
-                    System.out.println("oui");
-                    return;
-                }
+
+            if( SignedUp(userList,pseudo) == null ){
+                Alerts.unauthentifiedPseudo();
+            }else{
+                myCurrenUtilisateur = SignedUp(userList, pseudo);
+                pseudoField.setText("");
+                goTo.setVisible(true);
+                System.out.println("sucess");
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    //si le psuedo est introuvable
-        Alerts.unauthentifiedPseudo();
-    }else{//le pseudo est vide
-        Alerts.emptyPseudoField();
-    }}
-
-    @FXML
-    void handleInscription(ActionEvent event) {
-        createaccount.setVisible(true);
-        firstpage.setVisible(false);
-        preference.setVisible(false);
-    }
-
-    @FXML
-    void handleNewInscription(ActionEvent event) {
-        String pseudo = getPseudo.getText();
-        if (!pseudo.isEmpty()) { 
-            myCurrenUtilisateur.setPseudo(pseudo);
-            createaccount.setVisible(false);
-            firstpage.setVisible(false);
-            preference.setVisible(true);
-            populateChoiceBoxes();
         }else{//le pseudo est vide
             Alerts.emptyPseudoField();
         }
     }
+
     @FXML
-void handleSavePreferences(ActionEvent event) {
-    String selectedMinTache = minTache.getSelectionModel().getSelectedItem();
-    String selectedDureeMin = minDuree.getSelectionModel().getSelectedItem();
-
-    if (selectedMinTache != null && selectedDureeMin != null) {
-        myCurrenUtilisateur.setTacheMin(Integer.parseInt(selectedMinTache));
-        myCurrenUtilisateur.setDureeMin(Integer.parseInt(selectedDureeMin));
-        addUserToFile(myCurrenUtilisateur, fileName);
-    } else {
-        Alerts.emptyFields();
+    void handleInscription(ActionEvent event) {
+        firstpage.setVisible(false);
+        preference.setVisible(true);
+        populateChoiceBoxes();
     }
-}
 
-   
+    @FXML
+    void handleSavePreferences(ActionEvent event) throws IOException {
+        String pseudo = getPseudo.getText();
+        if (!pseudo.isEmpty()) { 
+            myCurrenUtilisateur.setPseudo(pseudo);
+            String selectedMinTache = minTache.getSelectionModel().getSelectedItem();
+            String selectedDureeMin = minDuree.getSelectionModel().getSelectedItem();
+            if (selectedMinTache != null && selectedDureeMin != null) {
+                myCurrenUtilisateur.setTacheMin(Integer.parseInt(selectedMinTache));
+                myCurrenUtilisateur.setDureeMin(Integer.parseInt(selectedDureeMin));
+                addUserToFile(myCurrenUtilisateur, fileName);
+                getPseudo.setText("");
+                Alerts.successfulAuth();
+                firstpage.setVisible(true);
+                preference.setVisible(false);
+                
+            } else {
+                Alerts.emptyFields();
+            }
+        }else{//le pseudo est vide
+            Alerts.emptyPseudoField();
+        }
+        
+    }
+    private Stage stage;
+    private Scene scene;
+    
+    public void switchToScene(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("Planning.fxml"));
+        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
     public void populateChoiceBoxes() {
+        
         String[] minTaches = {"2", "3", "4", "5"};
         ObservableList<String> minTachesList = FXCollections.observableArrayList(minTaches);
         minTache.setItems(minTachesList);
@@ -143,11 +142,12 @@ void handleSavePreferences(ActionEvent event) {
         minDuree.setItems(minDureeList);
     }
 
+   
+
 
     public static void addUserToFile(Utilisateur newUser, String fileName) {
         // Create an ArrayList to store all the User objects
         ArrayList<Utilisateur> userList;
-    
         try {
             // Load the existing User objects from the file, if it exists
             FileInputStream fileIn = new FileInputStream(fileName);
@@ -159,20 +159,18 @@ void handleSavePreferences(ActionEvent event) {
             // If the file doesn't exist or cannot be loaded, create a new ArrayList
             userList = new ArrayList<>();
         }
-    
         // Add the new User object to the ArrayList
-        if(!alreadySignedUp(userList,newUser)) {
+        if(SignedUp(userList,newUser.getPseudo()) == null) {
             userList.add(newUser);
+            // Write the entire ArrayList of User objects to the file
             try {
-                // Write the entire ArrayList of User objects to the file
                 FileOutputStream fileOut = new FileOutputStream(fileName);
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
                 out.writeObject(userList);
                 out.close();
-                fileOut.close();
-        
+                fileOut.close();       
                 System.out.println("User objects saved to " + fileName);
-        
+                        
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -181,22 +179,21 @@ void handleSavePreferences(ActionEvent event) {
         }
     }
 
-    private static boolean alreadySignedUp(ArrayList<Utilisateur> userList, Utilisateur newUser){
-        boolean userExists = false;
+    private static Utilisateur SignedUp(ArrayList<Utilisateur> userList, String pseudo){   
         for (Utilisateur user : userList) {
-            if (user.getPseudo().equals(newUser.getPseudo())) {
-                userExists = true;
-                break;
+            if (user.getPseudo().equals(pseudo)) {
+                return user;
             }
         }
-        return userExists;
+        return null;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        createaccount.setVisible(false);
         firstpage.setVisible(true);
         preference.setVisible(false);
+        goTo.setVisible(false);
+        
     }
 
 }
