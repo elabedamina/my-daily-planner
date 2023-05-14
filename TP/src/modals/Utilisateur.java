@@ -1,6 +1,7 @@
 package modals;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Utilisateur implements Serializable {
 
@@ -10,15 +11,15 @@ public class Utilisateur implements Serializable {
                 + ", tacheMin=" + tacheMin + "]";
     }
 
-    public Utilisateur(String pseudo, Planning planning, int dureeMin, int tacheMin) {
+    public Utilisateur(String pseudo, int dureeMin, int tacheMin) {
         this.pseudo = pseudo;
-        this.planning = planning;
+        this.planning = new ArrayList<Planning>();
         this.dureeMin = dureeMin;
         this.tacheMin = tacheMin;
     }
 
     private String pseudo;
-    private Planning planning;
+    private ArrayList<Planning> planning;
     private int dureeMin; // durée minimale d'un créneau
     private int tacheMin; // nombre minimal de tâche/jour pour être récompensé
 
@@ -31,11 +32,11 @@ public class Utilisateur implements Serializable {
         this.pseudo = pseudo;
     }
 
-    public Planning getPlanning() {
+    public ArrayList<Planning> getPlanning() {
         return planning;
     }
 
-    public void setPlanning(Planning planning) {
+    public void setPlanning(ArrayList<Planning> planning) {
         this.planning = planning;
     }
 
@@ -54,9 +55,6 @@ public class Utilisateur implements Serializable {
     public void setTacheMin(int tacheMin) {
         this.tacheMin = tacheMin;
     }
-
-    
-
-    
+ 
 
 }
