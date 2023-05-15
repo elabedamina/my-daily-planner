@@ -12,11 +12,26 @@ public class Decomposable extends Tache{
         this.tab_taches = tab_taches;
     }
 
-    public void evaluerEtat() {
-    } // redéfinition de la méthode abstraite
 
     @Override
     public String toString() {
         return "Decomposable [tab_taches=" + Arrays.toString(tab_taches) + "]";
+    }
+
+
+    @Override
+    public void evaluerEtat() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'evaluerEtat'");
+    }
+
+
+    public Tache[] getTab_taches() {
+        return tab_taches;
+    }
+
+
+    public void setTab_taches(Tache[] tab_taches) {
+        this.tab_taches = tab_taches;
     }
 }

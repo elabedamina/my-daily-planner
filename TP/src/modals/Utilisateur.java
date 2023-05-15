@@ -30,11 +30,6 @@ public class Utilisateur implements Serializable {
         }
         return true; // Period is available
     }
-
-    /*public int indexPlanning(Planning planning){
-
-    }*/
-    
     
     public String getPseudo() {
         return pseudo;

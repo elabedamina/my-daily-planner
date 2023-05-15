@@ -1,7 +1,6 @@
 package modals;
 
 import java.io.Serializable;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -100,20 +99,5 @@ public class Planning implements Serializable  /* implements Planification */ {
     public void setTachesPlanned(ArrayList<Tache> tachesPlanned) {
         this.tachesPlanned = tachesPlanned;
     }
-
-    /*
-     * public void planifierManuel (Tache tache){}
-     * public void planifierAuto (Tache tache){}
-     * public void supprimerTache (Tache tache){}
-     * public Calendrier majCalendrier (){} //retourne le calendrier après la
-     * replanification (mise à jour)
-     * public boolean valider (){} //retourne vrai si l'utilisateur souhaite garder
-     * la modification
-     * public boolean modifier (){} //retourne vrai si l'utilisateur souhaite
-     * modifier le planing proposé
-     * public void ajouterTache (Tache tache){} //ajouter dans la liste des tâches
-     * non planifiées (la même métthode pour reporterTache)
-     * public void replanifierTache (Tache tache){}
-     */
 
 }
