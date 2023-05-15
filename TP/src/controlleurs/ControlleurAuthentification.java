@@ -13,7 +13,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import modals.Planning;
 import modals.Utilisateur;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -59,7 +58,7 @@ public class ControlleurAuthentification implements Initializable {
 
     @FXML
     private TextField pseudoField;
-    private Utilisateur myCurrenUtilisateur= new Utilisateur("test", -1, -1);
+    private Utilisateur myCurrenUtilisateur= new Utilisateur("test", null, -1);
     private String fileName = "users.dat";
 
     @FXML
@@ -106,7 +105,7 @@ public class ControlleurAuthentification implements Initializable {
             String selectedDureeMin = minDuree.getSelectionModel().getSelectedItem();
             if (selectedMinTache != null && selectedDureeMin != null) {
                 myCurrenUtilisateur.setTacheMin(Integer.parseInt(selectedMinTache));
-                myCurrenUtilisateur.setDureeMin(Integer.parseInt(selectedDureeMin));
+                myCurrenUtilisateur.setDureeMin(Long.parseLong(selectedDureeMin));
                 addUserToFile(myCurrenUtilisateur, fileName);
                 getPseudo.setText("");
                 Alerts.successfulAuth();
@@ -125,7 +124,10 @@ public class ControlleurAuthentification implements Initializable {
     private Scene scene;
     
     public void switchToScene(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Planning.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Planning.fxml"));
+        Parent root = loader.load();
+        ControlleurPlanning controlleurPlanning = loader.getController();
+        controlleurPlanning.setUser(myCurrenUtilisateur);
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);

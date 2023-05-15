@@ -1,4 +1,4 @@
 package modals;
 public enum Etat {
-    notREALIZED, COMPLITED, inPROGRESS, CANCELLED, DELAYED
+    notREALIZED, COMPLETED, inPROGRESS, CANCELLED, DELAYED
 }

@@ -11,19 +11,31 @@ public class Utilisateur implements Serializable {
                 + ", tacheMin=" + tacheMin + "]";
     }
 
-    public Utilisateur(String pseudo, int dureeMin, int tacheMin) {
+    public Utilisateur(String pseudo, Long dureeMin, int tacheMin) {
         this.pseudo = pseudo;
-        this.planning = new ArrayList<Planning>();
         this.dureeMin = dureeMin;
         this.tacheMin = tacheMin;
     }
 
     private String pseudo;
-    private ArrayList<Planning> planning;
-    private int dureeMin; // durée minimale d'un créneau
+    private ArrayList<Planning> planning= new ArrayList<>();
+    private Long dureeMin; // durée minimale d'un créneau
     private int tacheMin; // nombre minimal de tâche/jour pour être récompensé
 
+    public boolean isPeriodAvailable(PeriodMe period) {
+        for (Planning _planning : planning) {
+            if (_planning.getPeriod().overlaps(period)) {
+                return false; // Period is not available
+            }
+        }
+        return true; // Period is available
+    }
 
+    /*public int indexPlanning(Planning planning){
+
+    }*/
+    
+    
     public String getPseudo() {
         return pseudo;
     }
@@ -36,15 +48,15 @@ public class Utilisateur implements Serializable {
         return planning;
     }
 
-    public void setPlanning(ArrayList<Planning> planning) {
-        this.planning = planning;
+    public void setPlanning(Planning planning) {
+        this.planning.add(planning);
     }
 
-    public float getDureeMin() {
+    public Long getDureeMin() {
         return dureeMin;
     }
 
-    public void setDureeMin(int dureeMin) {
+    public void setDureeMin(Long dureeMin) {
         this.dureeMin = dureeMin;
     }
 
@@ -55,6 +67,6 @@ public class Utilisateur implements Serializable {
     public void setTacheMin(int tacheMin) {
         this.tacheMin = tacheMin;
     }
- 
+    
 
 }

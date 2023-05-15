@@ -42,4 +42,18 @@ public class Alerts {
         alert.setContentText("Votre inscription a été faite avec succès.\nConnectez-vous pour accéder à votre compte.");
         alert.showAndWait();
     }
+    public static void errorDate() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Date erronée !");
+        alert.setContentText("La date de fin de période doit être strictement\nsupérieur à la date de fin de période");
+        alert.showAndWait();
+    }
+    public static void errorPeriod() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Période déjà prise !");
+        alert.setContentText("Changez les dates. Un autre planning est déjà plannifié dans cette période! ");
+        alert.showAndWait();
+    }
 }

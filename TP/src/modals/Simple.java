@@ -3,6 +3,11 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 public class Simple extends Tache {
+    @Override
+    public String toString() {
+        return "Simple [periodicite=" + periodicite + "]";
+    }
+
     private int periodicite;
 
     public Simple(String nom, float duree, Date date_limite, Priorite priorite, Categorie categorie, Etat etat,
@@ -15,7 +20,7 @@ public class Simple extends Tache {
        // SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         //Date date = new Date();
         //String date_courrante = formatter.format(date);
-        if ((etat != Etat.COMPLITED) && (etat != Etat.CANCELLED) && (etat != Etat.DELAYED)) {
+        if ((etat != Etat.COMPLETED) && (etat != Etat.CANCELLED) && (etat != Etat.DELAYED)) {
            // if (date_courrante.compareTo(date_limite) > 0) {
         //     etat = Etat.notREALIZED;
            // } else

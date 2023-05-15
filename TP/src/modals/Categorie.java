@@ -1,9 +1,10 @@
 package modals;
-import javax.management.monitor.CounterMonitor;
+
+import java.io.Serializable;
 
 import javafx.scene.paint.Color;
 
-public class Categorie {
+public class Categorie implements Serializable{
     private String nom;
     private Color couleur;
 
@@ -27,4 +28,10 @@ public class Categorie {
     public void setCouleur(Color couleur) {
         this.couleur = couleur;
     }
+
+    @Override
+    public String toString() {
+        return "Categorie [nom=" + nom + ", couleur=" + couleur + "]";
+    }
+
 }

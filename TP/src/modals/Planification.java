@@ -6,7 +6,7 @@ public interface Planification {
 
     public void supprimerTache(Tache tache);
 
-    public Calendrier majCalendrier(); // retourne le calendrier après la replanification (mise à jour)
+    //public Calendrier majCalendrier(); // retourne le calendrier après la replanification (mise à jour)
 
     public boolean valider(); // retourne vrai si l'utilisateur souhaite garder la modification
 
