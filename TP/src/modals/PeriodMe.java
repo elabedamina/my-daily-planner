@@ -26,10 +26,10 @@ public class PeriodMe implements Serializable {
         }
     }
 
-    public void setAllAvailableDays(Long dureeMin){ //initialiser les jours de la période
+    public void setAllAvailableDays(){ //initialiser les jours de la période
         LocalDate currentDate=startDate;
         while (!currentDate.isAfter(endDate)) {
-            mapAvailableSlot.put(currentDate, new Creneau(null,null,dureeMin,false));
+            mapAvailableSlot.put(currentDate, new Creneau());
             currentDate = currentDate.plusDays(1);
         }
     }
@@ -38,7 +38,7 @@ public class PeriodMe implements Serializable {
         //chaque jour a un creneau differnet
         for (Map.Entry<LocalDate, Creneau> entry : mapAvailableSlot.entrySet()) {
             if(entry.getKey().equals(date)){
-                 entry.setValue( new Creneau(start,end, dureeMin, bloque));
+                entry.setValue( new Creneau(start,end, dureeMin, bloque));
             }
         }
     }
@@ -63,12 +63,6 @@ public class PeriodMe implements Serializable {
         this.endDate = endDate;
     }
 
-    @Override
-    public String toString() {
-        return "PeriodMe [startDate=" + startDate + ", endDate=" + endDate + "]";
-    }
-
-
     public Map<LocalDate, Creneau> getMapAvailableSlot() {
         return mapAvailableSlot;
     }
@@ -78,6 +72,17 @@ public class PeriodMe implements Serializable {
         this.mapAvailableSlot = mapAvailableSlot;
     }
 
-    
+    @Override
+    public String toString() {
+        return "PeriodMe [La date de début : " + startDate + "\nLa date de fin : " + endDate + "Les créneaux de la période : " + printMap()+ "]";
+    }
+
+    public String printMap(){
+        String myText = "";
+        for (Map.Entry<LocalDate, Creneau> entry : mapAvailableSlot.entrySet()) {
+           myText= myText+"La date : "+ entry.getKey()+"Le créneau : "+ entry.getValue();
+        }
+        return myText;
+    }
 
 }

@@ -28,6 +28,9 @@ public class Creneau implements Serializable{
         this.occupe = false; // initialement le créneau qui vient d'être créé est libre
     }
 
+    public Creneau(){}
+    
+
     public LocalTime getHeureDebut() {
         return heureDebut;
     }

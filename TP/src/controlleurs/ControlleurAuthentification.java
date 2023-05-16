@@ -81,6 +81,8 @@ public class ControlleurAuthentification implements Initializable {
             }else{
                 myCurrenUtilisateur = SignedUp(userList, pseudo);
                 pseudoField.setText("");
+                inscriptionBtn.setVisible(false);
+                connexionBtn.setVisible(false);
                 goTo.setVisible(true);
                 System.out.println("sucess");
             }

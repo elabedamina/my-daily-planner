@@ -9,10 +9,10 @@ public class Planning implements Serializable  /* implements Planification */ {
     
     @Override
     public String toString() {
-        return "Planning [nb_taches_comp=" + nb_taches_comp + ", nb_projets_comp=" + nb_projets_comp + ", period="
-                + period + ", badge=" + badge + ", projets=" + projets + ", tachesNotPlanned=" + tachesNotPlanned
-                + ", tachesPlanned=" + tachesPlanned + "]";
+        return "Planning : \nLe nombre de tâches complétées : " + nb_taches_comp + "\nLe nombre de projets complétés : " + nb_projets_comp + "\nLes badges gagnés : " + badge;
     }
+
+    
 
     private int nb_taches_comp;         // nombre total de tâches complétées
     private int nb_projets_comp;        // nombre total de projets complétés
