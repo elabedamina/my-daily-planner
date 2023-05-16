@@ -1,6 +1,5 @@
 package controlleurs;
 
-import java.beans.EventHandler;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -11,14 +10,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -26,7 +20,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
@@ -125,8 +118,7 @@ public class ControlleurPlanning  implements Initializable {
     private Utilisateur myCurrenUtilisateur;
     private String fileName = "users.dat";
     private PeriodMe period;
-    private String myHour1;
-    private String myHour;
+    
     private boolean isBloque;
 
     @FXML
@@ -282,6 +274,8 @@ public class ControlleurPlanning  implements Initializable {
     @FXML
     void handleCreneau(ActionEvent event){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");      
+        String myHour1;
+        String myHour;
         myHour1 = heureFin.getText();
         myHour = heureDebut.getText();
         EndHeure = LocalTime.parse(myHour1,dateFormatter);

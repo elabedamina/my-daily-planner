@@ -21,7 +21,6 @@ public class Decomposable extends Tache{
 
     @Override
     public void evaluerEtat() {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'evaluerEtat'");
     }
 

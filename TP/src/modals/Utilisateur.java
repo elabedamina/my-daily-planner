@@ -30,6 +30,7 @@ public class Utilisateur implements Serializable {
         }
         return true; // Period is available
     }
+
     
     public String getPseudo() {
         return pseudo;

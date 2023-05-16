@@ -99,7 +99,7 @@ public class ControlleurAuthentification implements Initializable {
     }
 
     @FXML
-    void handleSavePreferences(ActionEvent event) throws IOException {
+    void handleSavePreferences(ActionEvent event) {
         String pseudo = getPseudo.getText();
         if (!pseudo.isEmpty()) { 
             myCurrenUtilisateur.setPseudo(pseudo);
