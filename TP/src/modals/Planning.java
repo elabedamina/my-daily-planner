@@ -1,35 +1,35 @@
 package modals;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Planning implements Serializable  /* implements Planification */ {
-    private Calendrier calendrier;
+    
+    @Override
+    public String toString() {
+        return "Planning : \nLe nombre de tâches complétées : " + nb_taches_comp + "\nLe nombre de projets complétés : " + nb_projets_comp + "\nLes badges gagnés : " + badge;
+    }
+
+    
+
     private int nb_taches_comp;         // nombre total de tâches complétées
     private int nb_projets_comp;        // nombre total de projets complétés
-    private Date debut_periode;       // la date du début de la période ou l'utilisateur souhaite planifier ses tâches
-    private Date fin_periode;         // la date de la fin de la période ou l'utilisateur souhaite planifier ses tâches
+    private PeriodMe period;
     private Map<String, Integer> badge = new HashMap<>();
+    private ArrayList<Projet> projets = new ArrayList<>(); // la liste qui contient tous les projets à planifier    
+    private ArrayList<Tache> tachesNotPlanned = new ArrayList<>(); // contains all the tasks li dkhlhom user w mazel maplanifahomch
+    
+    private ArrayList<Tache> tachesPlanned = new ArrayList<>(); // to change into map fiha tache + creneau
 
-    public Planning(Calendrier calendrier, Date debut_periode, Date fin_periode) {
-        this.calendrier = calendrier;
+    public Planning( PeriodMe period) {
+        this.period = period;
         this.nb_taches_comp = 0;
         this.nb_projets_comp = 0;
-        this.debut_periode = debut_periode;
-        this.fin_periode = fin_periode;
         badge.put("GOOD", 0);
         badge.put("VeryGOOD", 0);
         badge.put("EXCELLENT", 0);
-    }
-
-    public Calendrier getCalendrier() {
-        return calendrier;
-    }
-
-    public void setCalendrier(Calendrier calendrier) {
-        this.calendrier = calendrier;
     }
 
     public int getNb_taches_comp() {
@@ -46,22 +46,6 @@ public class Planning implements Serializable  /* implements Planification */ {
 
     public void setNb_projets_comp(int nb_projets_comp) {
         this.nb_projets_comp = nb_projets_comp;
-    }
-
-    public Date getDebut_periode() {
-        return debut_periode;
-    }
-
-    public void setDebut_periode(Date debut_periode) {
-        this.debut_periode = debut_periode;
-    }
-
-    public Date getFin_periode() {
-        return fin_periode;
-    }
-
-    public void setFin_periode(Date fin_periode) {
-        this.fin_periode = fin_periode;
     }
 
     public Map<String, Integer> getBadge() {
@@ -83,19 +67,37 @@ public class Planning implements Serializable  /* implements Planification */ {
     public int getEXCELLENT(){
         return badge.get("EXCELLENT");
     }
-    /*
-     * public void planifierManuel (Tache tache){}
-     * public void planifierAuto (Tache tache){}
-     * public void supprimerTache (Tache tache){}
-     * public Calendrier majCalendrier (){} //retourne le calendrier après la
-     * replanification (mise à jour)
-     * public boolean valider (){} //retourne vrai si l'utilisateur souhaite garder
-     * la modification
-     * public boolean modifier (){} //retourne vrai si l'utilisateur souhaite
-     * modifier le planing proposé
-     * public void ajouterTache (Tache tache){} //ajouter dans la liste des tâches
-     * non planifiées (la même métthode pour reporterTache)
-     * public void replanifierTache (Tache tache){}
-     */
+    
+    public ArrayList<Projet> getProjets() {
+        return projets;
+    }
+
+    public void setProjets(ArrayList<Projet> projets) {
+        this.projets = projets;
+    }
+
+    public PeriodMe getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(PeriodMe period) {
+        this.period = period;
+    }
+
+    public ArrayList<Tache> getTachesNotPlanned() {
+        return tachesNotPlanned;
+    }
+
+    public void setTachesNotPlanned(ArrayList<Tache> tachesNotPlanned) {
+        this.tachesNotPlanned = tachesNotPlanned;
+    }
+
+    public ArrayList<Tache> getTachesPlanned() {
+        return tachesPlanned;
+    }
+
+    public void setTachesPlanned(ArrayList<Tache> tachesPlanned) {
+        this.tachesPlanned = tachesPlanned;
+    }
 
 }

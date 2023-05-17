@@ -1,13 +1,15 @@
 package modals;
+import java.io.Serializable;
 import java.util.*;
 
-public abstract class Tache {
+public abstract class Tache implements Serializable{
     protected String nom;
     protected float duree;
     protected Date date_limite;
     protected Priorite priorite;
     protected Categorie categorie;
     protected Etat etat;
+    //add date l la tache
 
     protected Tache(String nom, float duree, Date date_limite, Priorite priorite, Categorie categorie, Etat etat) {
         this.nom = nom;
@@ -20,51 +22,10 @@ public abstract class Tache {
 
     public abstract void evaluerEtat();
 
-    public String getNom() {
-        return nom;
+    @Override
+    public String toString() {
+        return "Tache [nom=" + nom + ", duree=" + duree + ", date_limite=" + date_limite + ", priorite=" + priorite
+                + ", categorie=" + categorie + ", etat=" + etat + "]";
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public float getDuree() {
-        return duree;
-    }
-
-    public void setDuree(float duree) {
-        this.duree = duree;
-    }
-
-    public Date getDate_limite() {
-        return date_limite;
-    }
-
-    public void setDate_limite(Date date_limite) {
-        this.date_limite = date_limite;
-    }
-
-    public Priorite getPriorite() {
-        return priorite;
-    }
-
-    public void setPriorite(Priorite priorite) {
-        this.priorite = priorite;
-    }
-
-    public Categorie getCategorie() {
-        return categorie;
-    }
-
-    public void setCategorie(Categorie categorie) {
-        this.categorie = categorie;
-    }
-
-    public Etat getEtat() {
-        return etat;
-    }
-
-    public void setEtat(Etat etat) {
-        this.etat = etat;
-    }
 }
