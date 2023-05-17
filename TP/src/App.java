@@ -10,12 +10,12 @@ import javafx.stage.Stage;
 public class App extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws IOException  {
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("interface/AuthentificationPage.fxml"));
         Scene scene = new Scene(root, 600, 450);
         primaryStage.setTitle("Planify");
-        Image icon = new Image(getClass().getResourceAsStream("/interface/Calendrier logo 3.png"));
-        primaryStage.getIcons().add(icon); 
+        Image icon = new Image(getClass().getResourceAsStream("/interface/Calendrier logo (7).png"));
+        primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
