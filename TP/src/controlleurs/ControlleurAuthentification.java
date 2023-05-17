@@ -64,7 +64,7 @@ public class ControlleurAuthentification implements Initializable {
     @FXML
     void handleConnexion(ActionEvent event) {
         String pseudo = pseudoField.getText();
-        if (!pseudo.isEmpty()){
+        if (!pseudo.isEmpty()) {
             ArrayList<Utilisateur> userList;
             try {
                 FileInputStream fileIn = new FileInputStream(fileName);
@@ -76,17 +76,18 @@ public class ControlleurAuthentification implements Initializable {
                 userList = new ArrayList<>();
             }
 
-            if( SignedUp(userList,pseudo) == null ){
+            if (SignedUp(userList, pseudo) == null) {
                 Alerts.unauthentifiedPseudo();
-            }else{
+            } else {
                 myCurrenUtilisateur = SignedUp(userList, pseudo);
                 pseudoField.setText("");
                 inscriptionBtn.setVisible(false);
                 connexionBtn.setVisible(false);
                 goTo.setVisible(true);
+                inscriptionBtn.setVisible(false);
                 System.out.println("sucess");
             }
-        }else{//le pseudo est vide
+        } else {// le pseudo est vide
             Alerts.emptyPseudoField();
         }
     }
@@ -101,7 +102,7 @@ public class ControlleurAuthentification implements Initializable {
     @FXML
     void handleSavePreferences(ActionEvent event) {
         String pseudo = getPseudo.getText();
-        if (!pseudo.isEmpty()) { 
+        if (!pseudo.isEmpty()) {
             myCurrenUtilisateur.setPseudo(pseudo);
             String selectedMinTache = minTache.getSelectionModel().getSelectedItem();
             String selectedDureeMin = minDuree.getSelectionModel().getSelectedItem();
@@ -113,18 +114,19 @@ public class ControlleurAuthentification implements Initializable {
                 Alerts.successfulAuth();
                 firstpage.setVisible(true);
                 preference.setVisible(false);
-                
+
             } else {
                 Alerts.emptyFields();
             }
-        }else{//le pseudo est vide
+        } else {// le pseudo est vide
             Alerts.emptyPseudoField();
         }
-        
+
     }
+
     private Stage stage;
     private Scene scene;
-    
+
     public void switchToScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Planning.fxml"));
         Parent root = loader.load();
@@ -137,17 +139,14 @@ public class ControlleurAuthentification implements Initializable {
     }
 
     public void populateChoiceBoxes() {
-        
-        String[] minTaches = {"2", "3", "4", "5"};
+
+        String[] minTaches = { "2", "3", "4", "5" };
         ObservableList<String> minTachesList = FXCollections.observableArrayList(minTaches);
         minTache.setItems(minTachesList);
-        String[] minDurees = {"30", "45", "60"};
+        String[] minDurees = { "30", "45", "60" };
         ObservableList<String> minDureeList = FXCollections.observableArrayList(minDurees);
         minDuree.setItems(minDureeList);
     }
-
-   
-
 
     public static void addUserToFile(Utilisateur newUser, String fileName) {
         // Create an ArrayList to store all the User objects
@@ -164,7 +163,7 @@ public class ControlleurAuthentification implements Initializable {
             userList = new ArrayList<>();
         }
         // Add the new User object to the ArrayList
-        if(SignedUp(userList,newUser.getPseudo()) == null) {
+        if (SignedUp(userList, newUser.getPseudo()) == null) {
             userList.add(newUser);
             // Write the entire ArrayList of User objects to the file
             try {
@@ -172,18 +171,18 @@ public class ControlleurAuthentification implements Initializable {
                 ObjectOutputStream out = new ObjectOutputStream(fileOut);
                 out.writeObject(userList);
                 out.close();
-                fileOut.close();       
+                fileOut.close();
                 System.out.println("User objects saved to " + fileName);
-                        
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             Alerts.usedPseudo();
         }
     }
 
-    private static Utilisateur SignedUp(ArrayList<Utilisateur> userList, String pseudo){   
+    private static Utilisateur SignedUp(ArrayList<Utilisateur> userList, String pseudo) {
         for (Utilisateur user : userList) {
             if (user.getPseudo().equals(pseudo)) {
                 return user;
@@ -197,7 +196,7 @@ public class ControlleurAuthentification implements Initializable {
         firstpage.setVisible(true);
         preference.setVisible(false);
         goTo.setVisible(false);
-        
+
     }
 
 }

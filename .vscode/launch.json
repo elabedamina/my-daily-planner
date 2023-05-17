@@ -4,6 +4,16 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+    
+        
+
+        {
+            "type": "java",
+            "name": "App",
+            "request": "launch",
+            "mainClass": "App",
+            "projectName": "my-daily-planner_4b2e92ec"
+        },
         {
             "type": "java",
             "name": "App",
