@@ -11,16 +11,12 @@ public class Planning implements Serializable  /* implements Planification */ {
     public String toString() {
         return "Planning : \nLe nombre de tâches complétées : " + nb_taches_comp + "\nLe nombre de projets complétés : " + nb_projets_comp + "\nLes badges gagnés : " + badge;
     }
-
     
-
     private int nb_taches_comp;         // nombre total de tâches complétées
     private int nb_projets_comp;        // nombre total de projets complétés
     private PeriodMe period;
     private Map<String, Integer> badge = new HashMap<>();
     private ArrayList<Projet> projets = new ArrayList<>(); // la liste qui contient tous les projets à planifier    
-    private ArrayList<Tache> tachesNotPlanned = new ArrayList<>(); // contains all the tasks li dkhlhom user w mazel maplanifahomch
-    
     private ArrayList<Tache> tachesPlanned = new ArrayList<>(); // to change into map fiha tache + creneau
 
     public Planning( PeriodMe period) {
@@ -67,14 +63,6 @@ public class Planning implements Serializable  /* implements Planification */ {
     public int getEXCELLENT(){
         return badge.get("EXCELLENT");
     }
-    
-    public ArrayList<Projet> getProjets() {
-        return projets;
-    }
-
-    public void setProjets(ArrayList<Projet> projets) {
-        this.projets = projets;
-    }
 
     public PeriodMe getPeriod() {
         return period;
@@ -82,14 +70,6 @@ public class Planning implements Serializable  /* implements Planification */ {
 
     public void setPeriod(PeriodMe period) {
         this.period = period;
-    }
-
-    public ArrayList<Tache> getTachesNotPlanned() {
-        return tachesNotPlanned;
-    }
-
-    public void setTachesNotPlanned(ArrayList<Tache> tachesNotPlanned) {
-        this.tachesNotPlanned = tachesNotPlanned;
     }
 
     public ArrayList<Tache> getTachesPlanned() {

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlleurs.ControlleurPlanning">
+   <children>
+      <BorderPane fx:id="planningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
+                     <font>
+                        <Font name="Segoe Script Bold" size="37.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#434242" layoutX="261.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planning" translateX="114.0" translateY="-23.0">
+                     <font>
+                        <Font name="Times New Roman Bold" size="24.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="createBtn" layoutX="20.0" layoutY="63.0" mnemonicParsing="false" onAction="#handleCreation" prefHeight="66.0" prefWidth="207.0" text="Créer un nouveau planning" />
+                  <Button fx:id="viewHistoryButton" layoutX="19.0" layoutY="153.0" mnemonicParsing="false" onAction="#handleHistory" prefHeight="72.0" prefWidth="209.0" text="Consulter mes plannings" />
+                  <Button fx:id="currentPlanningBtn" layoutX="22.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleCurrentPlanning" prefHeight="78.0" prefWidth="212.0" text="mes plannings courants" />
+               </children>
+            </Pane>
+         </right>
+      </BorderPane>
+      <BorderPane fx:id="historyPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
+                     <font>
+                        <Font name="Segoe Script Bold" size="37.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="goBack1" layoutX="137.0" layoutY="322.0" mnemonicParsing="false" onAction="#handleGoingBack" text="go back" />
+                  <ListView fx:id="listPlanning1" layoutX="50.0" layoutY="18.0" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </Pane>
+         </right>
+         <center>
+            <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" translateX="244.0" translateY="-157.0" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Gabriola" size="43.0" />
+               </font>
+            </Text>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="CurrentPlanningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <center>
+            <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" translateX="244.0" translateY="-157.0" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Gabriola" size="43.0" />
+               </font>
+            </Text>
+         </center>
+         <left>
+            <Pane prefHeight="374.0" prefWidth="287.0" style="-fx-background-color: F89DAE;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
+                     <font>
+                        <Font name="Segoe Script Bold" size="37.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="goBack1" layoutX="137.0" layoutY="322.0" mnemonicParsing="false" onAction="#handleGoingBack" text="go back" />
+                  <ListView fx:id="listCurrentPlanning" layoutX="37.0" layoutY="91.0" prefHeight="221.0" prefWidth="214.0" />
+                  <Text layoutX="57.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voici tous vos plannings" wrappingWidth="186.8033676147461" />
+               </children>
+            </Pane>
+         </left>
+      </BorderPane>
+      <BorderPane fx:id="newPlanningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+         <right>
+            <Pane prefHeight="400.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="confirmDate" layoutX="90.0" layoutY="105.0" mnemonicParsing="false" onAction="#handlePeriod" prefHeight="25.0" prefWidth="179.0" text="Confirmer la période" />
+                  <DatePicker fx:id="startDatePicker" layoutX="88.0" layoutY="26.0" onAction="#handleStartDate" prefHeight="29.0" prefWidth="183.0" />
+                  <DatePicker fx:id="endDatePicker" layoutX="89.0" layoutY="61.0" onAction="#handleEndDate" prefHeight="29.0" prefWidth="181.0" />
+                  <Text fx:id="textExp" layoutX="12.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous désirez choisir un seul créneau disponible pour toute la période cliquez sur oui, sinon sur non" wrappingWidth="266.80338859558105" />
+                  <Button fx:id="ouiBtn" layoutX="189.0" layoutY="189.0" mnemonicParsing="false" onAction="#handleOui" text="oui" />
+                  <Button fx:id="nonBtn" layoutX="69.0" layoutY="189.0" mnemonicParsing="false" onAction="#handleNon" text="non" />
+                  <TextField fx:id="heureDebut" layoutX="73.0" layoutY="318.0" prefHeight="25.0" prefWidth="66.0" promptText="HH:MM" />
+                  <TextField fx:id="heureFin" layoutX="205.0" layoutY="318.0" prefHeight="25.0" prefWidth="74.0" promptText="HH:MM" />
+                  <Label fx:id="labelHeureDebut" layoutX="3.0" layoutY="322.0" prefHeight="17.0" prefWidth="75.0" text="heure début" />
+                  <Label fx:id="labelHeureFin" layoutX="145.0" layoutY="322.0" prefHeight="17.0" prefWidth="49.0" text="heure fin" />
+                  <Label layoutX="11.0" layoutY="36.0" text="Date début" />
+                  <Label layoutX="14.0" layoutY="71.0" text="Date fin" />
+                  <DatePicker fx:id="dateCreneau" layoutX="102.0" layoutY="245.0" onAction="#handleDateCreneau" />
+                  <Text fx:id="textCreneau" layoutX="14.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez une date de votre période" wrappingWidth="83.47003555297852" />
+                  <Text fx:id="text" layoutX="87.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez un créneau" />
+                  <Button fx:id="confirmCreneau" layoutX="177.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleCreneau" prefHeight="25.0" prefWidth="97.0" text="Confirmer " />
+                  <Button fx:id="nextBtn" layoutX="83.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleNext" text="next" />
+                  <Button fx:id="goBack2" layoutX="5.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleGoingBack" text="go back" />
+               </children>
+            </Pane>
+         </right>
+      </BorderPane>
+   </children>
+</StackPane>
