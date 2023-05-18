@@ -15,7 +15,7 @@
    <children>
       <BorderPane fx:id="preference" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
          <right>
-            <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
+            <Pane prefHeight="400.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-317.0" translateY="-3.0" BorderPane.alignment="CENTER">
                <children>
                   <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
                      <font>
@@ -27,33 +27,42 @@
                         <Image url="@Calendrier%20logo%203.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#434242" layoutX="227.0" layoutY="174.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nous sommes ravis de vous acceuillir sur Planify! Ici vous allez mieux organiser vos tâches et vos projets. Pour que votre expérience soit selon votre goût, veuillez remplir vos préférences." textAlignment="CENTER" translateX="70.0" translateY="-41.0" wrappingWidth="300.0">
-                     <font>
-                        <Font name="Calibri Bold Italic" size="12.0" />
-                     </font>
-                  </Text>
-                  <TextField fx:id="getPseudo" layoutX="29.0" layoutY="205.0" prefHeight="58.0" prefWidth="173.0" promptText="Entrez votre pseudo">
+               </children>
+            </Pane>
+         </right>
+         <left>
+            <Pane prefHeight="400.0" prefWidth="313.0" translateX="285.0" BorderPane.alignment="CENTER">
+               <children>
+                  <TextField fx:id="getPseudo" layoutX="60.0" layoutY="185.0" prefHeight="30.0" prefWidth="173.0" promptText="Entrez votre pseudo">
                      <font>
                         <Font name="Arial" size="12.0" />
                      </font>
                   </TextField>
-                  <ChoiceBox fx:id="minDuree" layoutX="14.0" layoutY="310.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="minTache" layoutX="174.0" layoutY="310.0" prefWidth="150.0" />
-                  <Button fx:id="Commencer" layoutX="164.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleSavePreferences" text="confirmer" />
+                  <ChoiceBox fx:id="minDuree" layoutX="225.0" layoutY="240.0" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: D3D3D3;" />
+                  <ChoiceBox fx:id="minTache" layoutX="225.0" layoutY="280.0" prefHeight="25.0" prefWidth="65.0" style="-fx-background-color: D3D3D3;" />
+                  <Button fx:id="Commencer" layoutX="112.0" layoutY="338.0" mnemonicParsing="false" onAction="#handleSavePreferences" prefHeight="9.0" prefWidth="78.0" style="-fx-background-color: F89DAE;" text="Confirmer" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Text fill="#ff0460" layoutX="77.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue ! ">
+                     <font>
+                        <Font name="Gabriola" size="43.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#434242" layoutX="7.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nous sommes ravis de vous acceuillir sur Planify! Ici vous allez mieux organiser vos tâches et vos projets. Pour que votre expérience soit selon votre goût, veuillez choisir votre pseudo et remplir vos préférences." textAlignment="CENTER" wrappingWidth="300.0">
+                     <font>
+                        <Font name="Calibri Bold Italic" size="12.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#434242" layoutX="24.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée minimale d'un créneau" />
+                  <Text fill="#434242" layoutX="14.0" layoutY="297.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre minimale de tâches/jour" textAlignment="CENTER" wrappingWidth="195.029296875" />
                </children>
             </Pane>
-         </right>
-         <center>
-            <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenue ! " translateX="244.0" translateY="-157.0" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="Gabriola" size="43.0" />
-               </font>
-            </Text>
-         </center>
+         </left>
       </BorderPane>
       <BorderPane fx:id="firstpage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <right>
-            <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
+            <Pane prefHeight="447.0" prefWidth="287.0" scaleY="1.1" style="-fx-background-color: F89DAE;" translateX="-314.0" BorderPane.alignment="CENTER">
                <children>
                   <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
                      <font>
@@ -71,7 +80,7 @@
          <left>
             <Pane prefHeight="378.0" prefWidth="313.0" translateX="286.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="goTo" layoutX="218.0" layoutY="322.0" mnemonicParsing="false" onAction="#switchToScene" style="-fx-background-color: F89DAE;" text="Planifier" textFill="WHITE">
+                  <Button fx:id="goTo" layoutX="104.0" layoutY="269.0" mnemonicParsing="false" onAction="#switchToScene" prefHeight="28.0" prefWidth="93.0" style="-fx-background-color: F89DAE;" text="Planifier" textFill="WHITE" visible="false">
                      <font>
                         <Font name="Calibri Bold" size="15.0" />
                      </font></Button>
@@ -94,10 +103,15 @@
                      <font>
                         <Font name="Calibri Bold" size="13.0" />
                      </font></Button>
-                  <Button fx:id="connexionBtn" layoutX="107.0" layoutY="245.0" mnemonicParsing="false" onAction="#handleConnexion" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: F89DAE;" text="Connexion" textFill="WHITE">
+                  <Button fx:id="connexionBtn" layoutX="114.0" layoutY="244.0" mnemonicParsing="false" onAction="#handleConnexion" prefHeight="25.0" prefWidth="73.0" style="-fx-background-color: F89DAE;" text="Connexion" textFill="WHITE">
                      <font>
                         <Font name="Calibri Bold" size="12.0" />
                      </font></Button>
+                  <Text fx:id="reussite" fill="#19ab47" layoutX="71.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Connexion réussie!" visible="false">
+                     <font>
+                        <Font name="Calibri Italic" size="21.0" />
+                     </font>
+                  </Text>
                </children>
             </Pane>
          </left>

@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Utilisateur;
 import java.io.FileInputStream;
@@ -57,8 +58,11 @@ public class ControlleurAuthentification implements Initializable {
     private BorderPane preference;
 
     @FXML
+    private Text reussite;
+
+    @FXML
     private TextField pseudoField;
-    private Utilisateur myCurrenUtilisateur= new Utilisateur("test", null, -1);
+    private Utilisateur myCurrenUtilisateur = new Utilisateur("test", null, -1);
     private String fileName = "users.dat";
 
     @FXML
@@ -80,11 +84,12 @@ public class ControlleurAuthentification implements Initializable {
                 Alerts.unauthentifiedPseudo();
             } else {
                 myCurrenUtilisateur = SignedUp(userList, pseudo);
-                pseudoField.setText("");
+                // pseudoField.setText("");
                 inscriptionBtn.setVisible(false);
+                pseudoField.setVisible(false);
                 connexionBtn.setVisible(false);
+                reussite.setVisible(true);
                 goTo.setVisible(true);
-                inscriptionBtn.setVisible(false);
                 System.out.println("sucess");
             }
         } else {// le pseudo est vide
@@ -132,7 +137,7 @@ public class ControlleurAuthentification implements Initializable {
         Parent root = loader.load();
         ControlleurPlanning controlleurPlanning = loader.getController();
         controlleurPlanning.setUser(myCurrenUtilisateur);
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
