@@ -23,13 +23,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import modals.PeriodMe;
 import modals.Planning;
 import modals.Utilisateur;
 
-public class ControlleurPlanning  implements Initializable {
+public class ControlleurPlanning implements Initializable {
 
     @FXML
     private BorderPane CurrentPlanningPage;
@@ -74,6 +75,15 @@ public class ControlleurPlanning  implements Initializable {
     private Label labelHeureFin;
 
     @FXML
+    private Label datedebut;
+
+    @FXML
+    private Label datefin;
+
+    @FXML
+    private Label datecreneau;
+
+    @FXML
     private ListView<Planning> listCurrentPlanning;
 
     @FXML
@@ -107,8 +117,13 @@ public class ControlleurPlanning  implements Initializable {
     private Text textExp;
 
     @FXML
-    private Button viewHistoryButton;
+    private ImageView horloge;
 
+    @FXML
+    private ImageView planning;
+
+    @FXML
+    private Button viewHistoryButton;
 
     private LocalDate startDate;
     private LocalDate endDate;
@@ -118,7 +133,7 @@ public class ControlleurPlanning  implements Initializable {
     private Utilisateur myCurrenUtilisateur;
     private String fileName = "users.dat";
     private PeriodMe period;
-    
+
     private boolean isBloque;
 
     @FXML
@@ -157,48 +172,48 @@ public class ControlleurPlanning  implements Initializable {
         handleItemClicks();
     }
 
-    private void populateListPlanning(){//l'historique
+    private void populateListPlanning() {// l'historique
         ArrayList<Planning> myPlannings = myCurrenUtilisateur.getPlanning();
         LocalDate currentDate = LocalDate.now();
-        for(Planning planning : myPlannings){
-            if(planning.getPeriod().getEndDate().isBefore(currentDate) && planning.getPeriod().getStartDate().isBefore(currentDate)){
+        for (Planning planning : myPlannings) {
+            if (planning.getPeriod().getEndDate().isBefore(currentDate)
+                    && planning.getPeriod().getStartDate().isBefore(currentDate)) {
                 listPlanning1.getItems().add(planning);
             }
         }
     }
-    
-    private void populateCurrentListPlanning(){//les plannings qui sont en cours
+
+    private void populateCurrentListPlanning() {// les plannings qui sont en cours
         ArrayList<Planning> myPlannings = myCurrenUtilisateur.getPlanning();
         LocalDate currentDate = LocalDate.now();
         int nbPlanning = 0;
-        for(Planning planning : myPlannings){
-            if(planning.getPeriod().getEndDate().isBefore(currentDate) && planning.getPeriod().getStartDate().isBefore(currentDate)){
-                nbPlanning = nbPlanning+ 1;
-            }
-            else{
+        for (Planning planning : myPlannings) {
+            if (planning.getPeriod().getEndDate().isBefore(currentDate)
+                    && planning.getPeriod().getStartDate().isBefore(currentDate)) {
+                nbPlanning = nbPlanning + 1;
+            } else {
                 listCurrentPlanning.getItems().add(planning);
             }
         }
-    }   
+    }
 
-    private void handleItemClicks(){//afficher les infos d'un planning expiré
-            listPlanning1.setOnMouseClicked( event->{
+    private void handleItemClicks() {// afficher les infos d'un planning expiré
+        listPlanning1.setOnMouseClicked(event -> {
             Planning clickedPlanning = listCurrentPlanning.getSelectionModel().getSelectedItem();
-            Dialog d= new Alert(AlertType.INFORMATION,clickedPlanning.toString());
+            Dialog d = new Alert(AlertType.INFORMATION, clickedPlanning.toString());
             d.setTitle("Votre Planning");
             d.setHeaderText("Les informations de votre planning");
             d.show();
         });
     }
-    
+
     @FXML
-    void hideFields(){
+    void hideFields() {
         textExp.setVisible(false);
         nonBtn.setVisible(false);
         ouiBtn.setVisible(false);
         nextBtn.setVisible(false);
         dateCreneau.setVisible(false);
-        textCreneau.setVisible(false);
         text.setVisible(false);
         labelHeureDebut.setVisible(false);
         labelHeureFin.setVisible(false);
@@ -214,85 +229,93 @@ public class ControlleurPlanning  implements Initializable {
 
     @FXML
     void handlePeriod(ActionEvent event) {
-        if(startDate == null || endDate == null ){
+        if (startDate == null || endDate == null) {
             Alerts.emptyFields();
-        }
-        else{
-            if (endDate.isBefore(startDate) || endDate.isEqual(startDate)) {                
+        } else {
+            if (endDate.isBefore(startDate) || endDate.isEqual(startDate)) {
                 Alerts.errorDate();
-            }
-            else{
+            } else {
                 LocalDate currentDate = LocalDate.now();
-                if(startDate.isBefore(currentDate)){
+                if (startDate.isBefore(currentDate)) {
                     Alerts.errorDateCurrent();
-                }
-                else{
+                } else {
                     period = new PeriodMe(startDate, endDate);
-                    if(myCurrenUtilisateur.isPeriodAvailable(period)){
+                    if (myCurrenUtilisateur.isPeriodAvailable(period)) {
                         textExp.setVisible(true);
                         nonBtn.setVisible(true);
                         ouiBtn.setVisible(true);
+                        horloge.setVisible(true);
                         confirmDate.setVisible(false);
-                        /*enter the available slot*/
-                    }
-                    else{
+                        planning.setVisible(false);
+                        textCreneau.setVisible(false);
+                        startDatePicker.setVisible(false);
+                        endDatePicker.setVisible(false);
+                        datedebut.setVisible(false);
+                        datefin.setVisible(false);
+
+                        /* enter the available slot */
+                    } else {
                         Alerts.errorPeriod();
                     }
                 }
-                
+
             }
-        }      
+        }
     }
-    
+
     @FXML
     void handleNon(ActionEvent event) {
         nextBtn.setVisible(true);
         ouiBtn.setDisable(true);
         dateCreneau.setVisible(true);
-        textCreneau.setVisible(true);
+        textCreneau.setVisible(false); // à vérifier
         text.setVisible(true);
         labelHeureDebut.setVisible(true);
         labelHeureFin.setVisible(true);
+        datecreneau.setVisible(true);
         heureDebut.setVisible(true);
         heureFin.setVisible(true);
         confirmCreneau.setVisible(false);
+        nonBtn.setVisible(false);
+        ouiBtn.setVisible(false);
+        textExp.setVisible(false);
         period.setAllAvailableDays();
     }
 
     @FXML
     void handleOui(ActionEvent event) {
-        nonBtn.setDisable(true);
+        // nonBtn.setDisable(true);
         text.setVisible(true);
         labelHeureDebut.setVisible(true);
         labelHeureFin.setVisible(true);
         heureDebut.setVisible(true);
         heureFin.setVisible(true);
         confirmCreneau.setVisible(true);
+        textExp.setVisible(false);
+        nonBtn.setVisible(false);
+        ouiBtn.setVisible(false);
     }
- 
 
     @FXML
-    void handleCreneau(ActionEvent event){
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");      
+    void handleCreneau(ActionEvent event) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String myHour1;
         String myHour;
         myHour1 = heureFin.getText();
         myHour = heureDebut.getText();
-        EndHeure = LocalTime.parse(myHour1,dateFormatter);
-        startHeure = LocalTime.parse(myHour,dateFormatter);
+        EndHeure = LocalTime.parse(myHour1, dateFormatter);
+        startHeure = LocalTime.parse(myHour, dateFormatter);
         Long duration = Duration.between(startHeure, EndHeure).toMinutes();
-        if(myCurrenUtilisateur.getDureeMin()>duration){
+        if (myCurrenUtilisateur.getDureeMin() > duration) {
             Alerts.errorDuration();
-        }
-        else{
+        } else {
             period.setAllAvailableSlots(startHeure, EndHeure, myCurrenUtilisateur.getDureeMin());
             Planning myCurrentPlanning = new Planning(period);
             myCurrenUtilisateur.setPlanning(myCurrentPlanning);
             updateUserFile(myCurrenUtilisateur, fileName, myCurrentPlanning);
-            /*nlew7o l paga jaya */
+            /* nlew7o l paga jaya */
         }
     }
-
 
     @FXML
     void handleStartDate(ActionEvent event) {
@@ -305,30 +328,29 @@ public class ControlleurPlanning  implements Initializable {
     }
 
     @FXML
-    void handleNext(ActionEvent event){
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");      
+    void handleNext(ActionEvent event) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
         String myHour2 = heureFin.getText();
         String myHour3 = heureDebut.getText();
-        EndHeure = LocalTime.parse(myHour2,dateFormatter);
-        startHeure = LocalTime.parse(myHour3,dateFormatter);
+        EndHeure = LocalTime.parse(myHour2, dateFormatter);
+        startHeure = LocalTime.parse(myHour3, dateFormatter);
         Long duration = Duration.between(startHeure, EndHeure).toMinutes();
-        if(myCurrenUtilisateur.getDureeMin()>duration){
+        if (myCurrenUtilisateur.getDureeMin() > duration) {
             Alerts.errorDuration();
-        }
-        else{
+        } else {
             period.setSpecificAvailableSlot(myDate, startHeure, EndHeure, myCurrenUtilisateur.getDureeMin(), isBloque);
-            //period.printMap();
-            
+            // period.printMap();
+
         }
         dateCreneau.setValue(null);
         Planning myCurrentPlanning = new Planning(period);
         myCurrenUtilisateur.setPlanning(myCurrentPlanning);
         updateUserFile(myCurrenUtilisateur, fileName, myCurrentPlanning);
-        /*nlew7o l paga jaya */
+        /* nlew7o l paga jaya */
     }
 
-    public void setUser( Utilisateur user ){
-        myCurrenUtilisateur=user;
+    public void setUser(Utilisateur user) {
+        myCurrenUtilisateur = user;
     }
 
     public static void updateUserFile(Utilisateur userToUpdate, String fileName, Planning planning) {
@@ -351,7 +373,7 @@ public class ControlleurPlanning  implements Initializable {
         }
         if (index != -1) {
             userList.get(index).setPlanning(planning);
-            System.out.println("this is it "+ userList.get(index));
+            System.out.println("this is it " + userList.get(index));
             try {
                 FileOutputStream fileOut = new FileOutputStream(fileName);
                 ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
@@ -374,4 +396,3 @@ public class ControlleurPlanning  implements Initializable {
     }
 
 }
-
