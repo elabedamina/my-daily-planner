@@ -18,7 +18,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -29,6 +28,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Creneau;
 import modals.PeriodMe;
+import modals.Planify;
 import modals.Planning;
 import modals.Utilisateur;
 
@@ -83,7 +83,7 @@ public class ControlleurPlanning implements Initializable {
     private Label datefin;
 
     @FXML
-    private Label datecreneau;
+    private Label datecreneau1;
 
     @FXML
     private ListView<Planning> listCurrentPlanning;
@@ -141,7 +141,7 @@ public class ControlleurPlanning implements Initializable {
     private LocalTime startHeure;
     private LocalTime EndHeure;
     private Utilisateur myCurrenUtilisateur;
-    private String fileName = "users.dat";
+    private Planify planify = Planify.getInstance();
     private PeriodMe period;
     private ArrayList<Creneau> mySlots=new ArrayList<>();
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -164,7 +164,7 @@ public class ControlleurPlanning implements Initializable {
         confirmCreneau2.setVisible(false);
         startDatePicker.setValue(null);
         endDatePicker.setValue(null);
-        datecreneau.setVisible(false);
+        datecreneau1.setVisible(false);
         ouiBtn.setDisable(false);
         nonBtn.setDisable(false);
     }
@@ -226,7 +226,7 @@ public class ControlleurPlanning implements Initializable {
     private void handleItemClicks() {// to change : ylewahni l paga wyn nchuf les taches ta3 planning w les projets
             listCurrentPlanning.setOnMouseClicked(event -> {
             Planning clickedPlanning = listCurrentPlanning.getSelectionModel().getSelectedItem();
-            Dialog d = new Alert(AlertType.INFORMATION, clickedPlanning.toString());
+            Alert d = new Alert(AlertType.INFORMATION, clickedPlanning.toString());
             d.setTitle("Votre Planning");
             d.setHeaderText("Les informations de votre planning");
             d.show();
@@ -310,7 +310,7 @@ public class ControlleurPlanning implements Initializable {
         text.setVisible(true);
         labelHeureDebut.setVisible(true);
         labelHeureFin.setVisible(true);
-        datecreneau.setVisible(true);
+        datecreneau1.setVisible(true);
         heureDebut.setVisible(true);
         heureFin.setVisible(true);
         confirmCreneau.setVisible(false);
@@ -343,10 +343,9 @@ public class ControlleurPlanning implements Initializable {
         period.setSpecificAvailableSlot(mySlots);
         Planning myCurrentPlanning = new Planning(period);
         myCurrenUtilisateur.setPlanning(myCurrentPlanning);
-        myCurrenUtilisateur.updateUserFile(fileName, myCurrentPlanning);
+        planify.updateUser(myCurrenUtilisateur);
         Alerts.planningAdded();
         handleGoingBack(event);
-        /* nlew7o l paga jaya */
     }
 
     @FXML
@@ -386,10 +385,9 @@ public class ControlleurPlanning implements Initializable {
             period.setAllAvailableSlots(mySlots);
             Planning myCurrentPlanning = new Planning(period);
             myCurrenUtilisateur.setPlanning(myCurrentPlanning);
-            myCurrenUtilisateur.updateUserFile(fileName, myCurrentPlanning);
+            planify.updateUser(myCurrenUtilisateur);
             Alerts.planningAdded();
             handleGoingBack(event);
-            /* nlew7o l paga jaya */
         }
         heureDebut.clear();
         heureFin.clear();

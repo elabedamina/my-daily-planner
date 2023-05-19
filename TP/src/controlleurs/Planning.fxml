@@ -249,7 +249,7 @@
                         <Image url="@../interface/Horloge.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="datecreneau" layoutX="78.0" layoutY="215.0" text="Date du créneau" textFill="#434242" visible="false" />
+                  <Label fx:id="datecreneau1" layoutX="78.0" layoutY="215.0" text="Date du créneau" textFill="#434242" visible="false" />
                   <Button fx:id="nextCreneauBtn" layoutX="216.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleNextCreneau" text="next creneau" visible="false" />
                   <Button fx:id="confirmCreneau2" layoutX="301.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleCreneau2" prefHeight="25.0" prefWidth="207.0" style="-fx-background-color: F89DAE;" text="Confirmer la création du planning " textFill="WHITE">
                      <font>

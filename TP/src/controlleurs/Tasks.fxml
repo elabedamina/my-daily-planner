@@ -19,7 +19,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlleurs.ControlleurTask">
    <children>
-      <BorderPane fx:id="TaskMainPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane fx:id="TaskMainPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
          <center>
             <Pane prefHeight="400.0" prefWidth="358.0" BorderPane.alignment="CENTER">
                <children>
@@ -64,7 +64,7 @@
             </Pane>
          </left>
       </BorderPane>
-      <BorderPane fx:id="AddPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+      <BorderPane fx:id="AddPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <right>
             <Pane prefHeight="400.0" prefWidth="100.0" scaleX="1.06" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-533.0" translateY="-11.0" BorderPane.alignment="CENTER">
                <children>
@@ -107,25 +107,15 @@
                   <Text fx:id="deadlineText" layoutX="269.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La date limite :" wrappingWidth="84.80340576171875" />
                   <DatePicker fx:id="deadlineDatePicker" layoutX="356.0" layoutY="155.0" onAction="#handleDeadline" prefHeight="25.0" prefWidth="155.0" promptText="Deadline" />
                   <Text fx:id="priorityText" layoutX="55.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Priorité :" wrappingWidth="72.80340576171875" />
-                  <MenuButton fx:id="PriorityBox" layoutX="136.0" layoutY="215.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                  </MenuButton>
                   <Text fx:id="categoryText" layoutX="284.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Catégorie :" wrappingWidth="66.13671875" />
-                  <MenuButton fx:id="categoryBox" layoutX="375.0" layoutY="215.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0">
-                    <items>
-                      <MenuItem mnemonicParsing="false" text="Action 1" />
-                      <MenuItem mnemonicParsing="false" text="Action 2" />
-                    </items>
-                  </MenuButton>
                   <Text fx:id="qstText" layoutX="68.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous souhaitez la planifier ?" wrappingWidth="175.47003173828125" />
                   <Button fx:id="ouiBtn" layoutX="258.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleOui" text="oui" />
                   <Button fx:id="nonBtn" layoutX="312.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleNon" text="non" />
                   <Text fx:id="typeText" layoutX="70.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de votre tâche :" wrappingWidth="130.80332946777344" />
                   <ChoiceBox fx:id="typeBox" layoutX="209.0" layoutY="311.0" prefWidth="150.0" />
                   <Button fx:id="sauvegarderBtn" layoutX="408.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleSauvegarder" text="sauvegarder" />
+                  <ChoiceBox fx:id="PriorityBox" layoutX="125.0" layoutY="215.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="deleteCategoryBox2" layoutX="359.0" layoutY="215.0" prefWidth="150.0" />
                </children>
             </Pane>
          </left>

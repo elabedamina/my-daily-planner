@@ -15,11 +15,9 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Utilisateur;
-import java.io.FileInputStream;
+import modals.Planify;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 
@@ -61,28 +59,17 @@ public class ControlleurAuthentification implements Initializable {
     @FXML
     private TextField pseudoField;
     private Utilisateur myCurrenUtilisateur = new Utilisateur("test", null, -1);
-    private String fileName = "users.dat";
+    private Planify planify = Planify.getInstance();
 
     @FXML
-    void handleConnexion(ActionEvent event) {
+    void handleConnexion(ActionEvent event) { 
         String pseudo = pseudoField.getText();
         if (!pseudo.isEmpty()) {
-            ArrayList<Utilisateur> userList;
-            try {
-                FileInputStream fileIn = new FileInputStream(fileName);
-                ObjectInputStream in = new ObjectInputStream(fileIn);
-                userList = (ArrayList<Utilisateur>) in.readObject();
-                in.close();
-                fileIn.close();
-            } catch (IOException | ClassNotFoundException e) {
-                userList = new ArrayList<>();
-            }
-
-            if (myCurrenUtilisateur.SignedUp(userList, pseudo) == null) {
+            if (planify.signedUp(pseudo) == -1) {
                 Alerts.unauthentifiedPseudo();
             } else {
-                myCurrenUtilisateur = myCurrenUtilisateur.SignedUp(userList, pseudo);
-                pseudoField.setText("");
+                myCurrenUtilisateur = planify.SignedUp2(pseudo);
+                pseudoField.clear();
                 inscriptionBtn.setVisible(false);
                 pseudoField.setVisible(false);
                 connexionBtn.setVisible(false);
@@ -112,12 +99,11 @@ public class ControlleurAuthentification implements Initializable {
             if (selectedMinTache != null && selectedDureeMin != null) {
                 myCurrenUtilisateur.setTacheMin(Integer.parseInt(selectedMinTache));
                 myCurrenUtilisateur.setDureeMin(Long.parseLong(selectedDureeMin));
-                myCurrenUtilisateur.addUserToFile(fileName);
+                planify.addUser(myCurrenUtilisateur);
                 getPseudo.setText("");
                 Alerts.successfulAuth();
                 firstpage.setVisible(true);
                 preference.setVisible(false);
-
             } else {
                 Alerts.emptyFields();
             }
