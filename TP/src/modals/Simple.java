@@ -2,6 +2,7 @@ package modals;
 import java.util.*;
 
 public class Simple extends Tache {
+    
     @Override
     public String toString() {
         return "Simple [periodicite=" + periodicite + "]";
@@ -9,14 +10,11 @@ public class Simple extends Tache {
 
     private int periodicite;
 
-    public Simple(String nom, float duree, Date date_limite, Priorite priorite, Categorie categorie, Etat etat,
+    public Simple(String nom, Long duree, Date date_limite, Priorite priorite, Categorie categorie,
             int periodicite) {
-        super(nom, duree, date_limite, priorite, categorie, etat);
+        super(nom, duree, date_limite, priorite, categorie);
         this.periodicite = periodicite;
-    }
-
-    
-    
+    }  
 
     public int getPeriodicite() {
         return periodicite;

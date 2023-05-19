@@ -42,6 +42,13 @@ public class Alerts {
         alert.setContentText("Votre inscription a été faite avec succès.\nConnectez-vous pour accéder à votre compte.");
         alert.showAndWait();
     }
+    public static void planningAdded() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Planning ajouté!");
+        alert.setHeaderText(null);
+        alert.setContentText("Votre nouveau planning a été crée avec succès.\n");
+        alert.showAndWait();
+    }
     public static void errorDate() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);

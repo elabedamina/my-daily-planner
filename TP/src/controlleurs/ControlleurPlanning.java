@@ -1,11 +1,8 @@
 package controlleurs;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
+import javafx.scene.Node;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,7 +11,10 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -26,6 +26,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import modals.Creneau;
 import modals.PeriodMe;
 import modals.Planning;
 import modals.Utilisateur;
@@ -108,6 +110,9 @@ public class ControlleurPlanning implements Initializable {
     private DatePicker startDatePicker;
 
     @FXML
+    private Button nextCreneauBtn;
+
+    @FXML
     private Text text;
 
     @FXML
@@ -125,60 +130,81 @@ public class ControlleurPlanning implements Initializable {
     @FXML
     private Button viewHistoryButton;
 
+    @FXML
+    private Button confirmCreneau2;
+
+    @FXML
+    private Button changeSceneBtn;
+
     private LocalDate startDate;
     private LocalDate endDate;
-    private LocalDate myDate;
     private LocalTime startHeure;
     private LocalTime EndHeure;
     private Utilisateur myCurrenUtilisateur;
     private String fileName = "users.dat";
     private PeriodMe period;
-
-    private boolean isBloque;
+    private ArrayList<Creneau> mySlots=new ArrayList<>();
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private Stage stage;
+    private Scene scene;
 
     @FXML
-    void handleCreation(ActionEvent event) {
+    private void handleCreation(ActionEvent event) {
         planningPage.setVisible(false);
         CurrentPlanningPage.setVisible(false);
         historyPage.setVisible(false);
         newPlanningPage.setVisible(true);
+        confirmDate.setVisible(true);
+        planning.setVisible(true);
+        textCreneau.setVisible(true);
+        startDatePicker.setVisible(true);
+        endDatePicker.setVisible(true);
+        datedebut.setVisible(true);
+        datefin.setVisible(true);
+        confirmCreneau2.setVisible(false);
+        startDatePicker.setValue(null);
+        endDatePicker.setValue(null);
+        datecreneau.setVisible(false);
+        ouiBtn.setDisable(false);
+        nonBtn.setDisable(false);
     }
 
     @FXML
-    void handleCurrentPlanning(ActionEvent event) {
+    private void handleCurrentPlanning(ActionEvent event) {
         planningPage.setVisible(false);
         CurrentPlanningPage.setVisible(true);
         historyPage.setVisible(false);
         newPlanningPage.setVisible(false);
         populateCurrentListPlanning();
+        handleItemClicks();
     }
 
     @FXML
-    void handleGoingBack(ActionEvent event) {
+    private void handleGoingBack(ActionEvent event) {
         planningPage.setVisible(true);
         CurrentPlanningPage.setVisible(false);
         historyPage.setVisible(false);
         newPlanningPage.setVisible(false);
         listCurrentPlanning.getItems().clear();
+        hideFields();
     }
 
     @FXML
-    void handleHistory(ActionEvent event) {
+    private void handleHistory(ActionEvent event) {
         planningPage.setVisible(false);
         CurrentPlanningPage.setVisible(false);
         historyPage.setVisible(true);
         newPlanningPage.setVisible(false);
         populateListPlanning();
-        handleItemClicks();
     }
 
     private void populateListPlanning() {// l'historique
         ArrayList<Planning> myPlannings = myCurrenUtilisateur.getPlanning();
         LocalDate currentDate = LocalDate.now();
-        for (Planning planning : myPlannings) {
-            if (planning.getPeriod().getEndDate().isBefore(currentDate)
-                    && planning.getPeriod().getStartDate().isBefore(currentDate)) {
-                listPlanning1.getItems().add(planning);
+        for (Planning _planning : myPlannings) {
+            if (_planning.getPeriod().getEndDate().isBefore(currentDate)
+                    && _planning.getPeriod().getStartDate().isBefore(currentDate)) {
+                listPlanning1.getItems().add(_planning);
             }
         }
     }
@@ -187,18 +213,18 @@ public class ControlleurPlanning implements Initializable {
         ArrayList<Planning> myPlannings = myCurrenUtilisateur.getPlanning();
         LocalDate currentDate = LocalDate.now();
         int nbPlanning = 0;
-        for (Planning planning : myPlannings) {
-            if (planning.getPeriod().getEndDate().isBefore(currentDate)
-                    && planning.getPeriod().getStartDate().isBefore(currentDate)) {
+        for (Planning _planning : myPlannings) {
+            if (_planning.getPeriod().getEndDate().isBefore(currentDate)
+                    && _planning.getPeriod().getStartDate().isBefore(currentDate)) {
                 nbPlanning = nbPlanning + 1;
             } else {
-                listCurrentPlanning.getItems().add(planning);
+                listCurrentPlanning.getItems().add(_planning);
             }
         }
     }
 
-    private void handleItemClicks() {// afficher les infos d'un planning expiré
-        listPlanning1.setOnMouseClicked(event -> {
+    private void handleItemClicks() {// to change : ylewahni l paga wyn nchuf les taches ta3 planning w les projets
+            listCurrentPlanning.setOnMouseClicked(event -> {
             Planning clickedPlanning = listCurrentPlanning.getSelectionModel().getSelectedItem();
             Dialog d = new Alert(AlertType.INFORMATION, clickedPlanning.toString());
             d.setTitle("Votre Planning");
@@ -208,7 +234,7 @@ public class ControlleurPlanning implements Initializable {
     }
 
     @FXML
-    void hideFields() {
+    private void hideFields() {
         textExp.setVisible(false);
         nonBtn.setVisible(false);
         ouiBtn.setVisible(false);
@@ -220,15 +246,29 @@ public class ControlleurPlanning implements Initializable {
         heureDebut.setVisible(false);
         heureFin.setVisible(false);
         confirmCreneau.setVisible(false);
+        nextCreneauBtn.setVisible(false);
     }
 
     @FXML
-    void handleEndDate(ActionEvent event) {
+    private void handleChangeScene2(ActionEvent event ) throws IOException{
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Tasks.fxml"));
+        Parent root = loader.load();
+        ControlleurTask controlleurTask = loader.getController();
+        controlleurTask.setUser(myCurrenUtilisateur);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    @FXML
+    private void handleEndDate(ActionEvent event) {
         endDate = endDatePicker.getValue();
     }
 
     @FXML
-    void handlePeriod(ActionEvent event) {
+    private void handlePeriod(ActionEvent event) {
+    //get the period of the new planning
         if (startDate == null || endDate == null) {
             Alerts.emptyFields();
         } else {
@@ -252,8 +292,6 @@ public class ControlleurPlanning implements Initializable {
                         endDatePicker.setVisible(false);
                         datedebut.setVisible(false);
                         datefin.setVisible(false);
-
-                        /* enter the available slot */
                     } else {
                         Alerts.errorPeriod();
                     }
@@ -264,7 +302,7 @@ public class ControlleurPlanning implements Initializable {
     }
 
     @FXML
-    void handleNon(ActionEvent event) {
+    private void handleNon(ActionEvent event) {
         nextBtn.setVisible(true);
         ouiBtn.setDisable(true);
         dateCreneau.setVisible(true);
@@ -276,15 +314,18 @@ public class ControlleurPlanning implements Initializable {
         heureDebut.setVisible(true);
         heureFin.setVisible(true);
         confirmCreneau.setVisible(false);
+        confirmCreneau2.setVisible(false);
         nonBtn.setVisible(false);
         ouiBtn.setVisible(false);
         textExp.setVisible(false);
-        period.setAllAvailableDays();
+        nextCreneauBtn.setVisible(true);
+        dateCreneau.setValue(startDate);
     }
 
     @FXML
-    void handleOui(ActionEvent event) {
-        // nonBtn.setDisable(true);
+    private void handleOui(ActionEvent event) {
+        confirmCreneau2.setVisible(false);
+        nextCreneauBtn.setVisible(true);
         text.setVisible(true);
         labelHeureDebut.setVisible(true);
         labelHeureFin.setVisible(true);
@@ -297,8 +338,20 @@ public class ControlleurPlanning implements Initializable {
     }
 
     @FXML
-    void handleCreneau(ActionEvent event) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private void handleCreneau2(ActionEvent event){
+    //gère la sauvegarde du nouveau planning avec des créneaux différents pour chaque jour
+        period.setSpecificAvailableSlot(mySlots);
+        Planning myCurrentPlanning = new Planning(period);
+        myCurrenUtilisateur.setPlanning(myCurrentPlanning);
+        myCurrenUtilisateur.updateUserFile(fileName, myCurrentPlanning);
+        Alerts.planningAdded();
+        handleGoingBack(event);
+        /* nlew7o l paga jaya */
+    }
+
+    @FXML
+    private void handleNextCreneau(ActionEvent event){
+    //if the user wants to add another slot to the same day
         String myHour1;
         String myHour;
         myHour1 = heureFin.getText();
@@ -309,81 +362,80 @@ public class ControlleurPlanning implements Initializable {
         if (myCurrenUtilisateur.getDureeMin() > duration) {
             Alerts.errorDuration();
         } else {
-            period.setAllAvailableSlots(startHeure, EndHeure, myCurrenUtilisateur.getDureeMin());
-            Planning myCurrentPlanning = new Planning(period);
-            myCurrenUtilisateur.setPlanning(myCurrentPlanning);
-            updateUserFile(myCurrenUtilisateur, fileName, myCurrentPlanning);
-            /* nlew7o l paga jaya */
+            mySlots.add(new Creneau(startHeure,EndHeure,myCurrenUtilisateur.getDureeMin(),false));
+            System.out.println("n\n hedo my slots : " + mySlots+"\n");
         }
+        heureDebut.clear();
+        heureFin.clear();
     }
 
     @FXML
-    void handleStartDate(ActionEvent event) {
-        startDate = startDatePicker.getValue();
-    }
-
-    @FXML
-    void handleDateCreneau(ActionEvent event) {
-        myDate = dateCreneau.getValue();
-    }
-
-    @FXML
-    void handleNext(ActionEvent event) {
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        String myHour2 = heureFin.getText();
-        String myHour3 = heureDebut.getText();
-        EndHeure = LocalTime.parse(myHour2, dateFormatter);
-        startHeure = LocalTime.parse(myHour3, dateFormatter);
+    private void handleCreneau(ActionEvent event) {     
+    //add the new planning to the user in the case where the user choose the same slots for all the period
+        String myHour1;
+        String myHour;
+        myHour1 = heureFin.getText();
+        myHour = heureDebut.getText();
+        EndHeure = LocalTime.parse(myHour1, dateFormatter);
+        startHeure = LocalTime.parse(myHour, dateFormatter);
         Long duration = Duration.between(startHeure, EndHeure).toMinutes();
         if (myCurrenUtilisateur.getDureeMin() > duration) {
             Alerts.errorDuration();
         } else {
-            period.setSpecificAvailableSlot(myDate, startHeure, EndHeure, myCurrenUtilisateur.getDureeMin(), isBloque);
-            // period.printMap();
-
+            mySlots.add(new Creneau(startHeure,EndHeure,myCurrenUtilisateur.getDureeMin(),false));
+            period.setAllAvailableSlots(mySlots);
+            Planning myCurrentPlanning = new Planning(period);
+            myCurrenUtilisateur.setPlanning(myCurrentPlanning);
+            myCurrenUtilisateur.updateUserFile(fileName, myCurrentPlanning);
+            Alerts.planningAdded();
+            handleGoingBack(event);
+            /* nlew7o l paga jaya */
         }
-        dateCreneau.setValue(null);
-        Planning myCurrentPlanning = new Planning(period);
-        myCurrenUtilisateur.setPlanning(myCurrentPlanning);
-        updateUserFile(myCurrenUtilisateur, fileName, myCurrentPlanning);
-        /* nlew7o l paga jaya */
+        heureDebut.clear();
+        heureFin.clear();
+    }
+
+    
+    @FXML
+    private void handleNext(ActionEvent event) {
+    //if the user wants to add different slots to each day of the planning
+        String myHour2 = heureFin.getText();
+        String myHour3 = heureDebut.getText();
+        if(!(myHour2.isEmpty()) && !(myHour3.isEmpty()) ){
+            EndHeure = LocalTime.parse(myHour2, dateFormatter);
+            startHeure = LocalTime.parse(myHour3, dateFormatter);
+            Long duration = Duration.between(startHeure, EndHeure).toMinutes();
+            if (myCurrenUtilisateur.getDureeMin() > duration) {
+                Alerts.errorDuration();
+            } else {
+                mySlots.add(new Creneau(startHeure,EndHeure,myCurrenUtilisateur.getDureeMin(),false));
+                period.setSpecificAvailableSlot(mySlots);
+            }
+        }
+        else{//empty hours
+            Alerts.emptyFields();
+        }
+        startDate = startDate.plusDays(1);
+        if(startDate.isBefore(endDate) || startDate.isEqual(endDate) ){ //on est pas arrivé à la fin de période
+            dateCreneau.setValue(startDate);                            // INCREMENT THE DATE BY 1 DAY
+            heureDebut.clear();
+            heureFin.clear();
+            mySlots.clear();
+        } 
+        else{
+            confirmCreneau2.setVisible(true);
+            nextBtn.setVisible(false);
+        }
+    }
+    
+    @FXML
+    private void handleStartDate(ActionEvent event) {
+        startDate = startDatePicker.getValue();
     }
 
     public void setUser(Utilisateur user) {
+        //to get the infos from the previous controller
         myCurrenUtilisateur = user;
-    }
-
-    public static void updateUserFile(Utilisateur userToUpdate, String fileName, Planning planning) {
-        ArrayList<Utilisateur> userList;
-        try {
-            FileInputStream fileIn = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            userList = (ArrayList<Utilisateur>) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException | ClassNotFoundException e) {
-            userList = new ArrayList<>();
-        }
-        int index = -1;
-        for (int i = 0; i < userList.size(); i++) {
-            if (userList.get(i).getPseudo().equals(userToUpdate.getPseudo())) {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
-            userList.get(index).setPlanning(planning);
-            System.out.println("this is it " + userList.get(index));
-            try {
-                FileOutputStream fileOut = new FileOutputStream(fileName);
-                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-                objectOut.writeObject(userList);
-                objectOut.close();
-                fileOut.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override

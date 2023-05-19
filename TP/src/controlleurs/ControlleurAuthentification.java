@@ -16,10 +16,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Utilisateur;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -80,11 +78,11 @@ public class ControlleurAuthentification implements Initializable {
                 userList = new ArrayList<>();
             }
 
-            if (SignedUp(userList, pseudo) == null) {
+            if (myCurrenUtilisateur.SignedUp(userList, pseudo) == null) {
                 Alerts.unauthentifiedPseudo();
             } else {
-                myCurrenUtilisateur = SignedUp(userList, pseudo);
-                // pseudoField.setText("");
+                myCurrenUtilisateur = myCurrenUtilisateur.SignedUp(userList, pseudo);
+                pseudoField.setText("");
                 inscriptionBtn.setVisible(false);
                 pseudoField.setVisible(false);
                 connexionBtn.setVisible(false);
@@ -114,7 +112,7 @@ public class ControlleurAuthentification implements Initializable {
             if (selectedMinTache != null && selectedDureeMin != null) {
                 myCurrenUtilisateur.setTacheMin(Integer.parseInt(selectedMinTache));
                 myCurrenUtilisateur.setDureeMin(Long.parseLong(selectedDureeMin));
-                addUserToFile(myCurrenUtilisateur, fileName);
+                myCurrenUtilisateur.addUserToFile(fileName);
                 getPseudo.setText("");
                 Alerts.successfulAuth();
                 firstpage.setVisible(true);
@@ -144,7 +142,6 @@ public class ControlleurAuthentification implements Initializable {
     }
 
     public void populateChoiceBoxes() {
-
         String[] minTaches = { "2", "3", "4", "5" };
         ObservableList<String> minTachesList = FXCollections.observableArrayList(minTaches);
         minTache.setItems(minTachesList);
@@ -153,48 +150,7 @@ public class ControlleurAuthentification implements Initializable {
         minDuree.setItems(minDureeList);
     }
 
-    public static void addUserToFile(Utilisateur newUser, String fileName) {
-        // Create an ArrayList to store all the User objects
-        ArrayList<Utilisateur> userList;
-        try {
-            // Load the existing User objects from the file, if it exists
-            FileInputStream fileIn = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            userList = (ArrayList<Utilisateur>) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException | ClassNotFoundException e) {
-            // If the file doesn't exist or cannot be loaded, create a new ArrayList
-            userList = new ArrayList<>();
-        }
-        // Add the new User object to the ArrayList
-        if (SignedUp(userList, newUser.getPseudo()) == null) {
-            userList.add(newUser);
-            // Write the entire ArrayList of User objects to the file
-            try {
-                FileOutputStream fileOut = new FileOutputStream(fileName);
-                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                out.writeObject(userList);
-                out.close();
-                fileOut.close();
-                System.out.println("User objects saved to " + fileName);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Alerts.usedPseudo();
-        }
-    }
-
-    private static Utilisateur SignedUp(ArrayList<Utilisateur> userList, String pseudo) {
-        for (Utilisateur user : userList) {
-            if (user.getPseudo().equals(pseudo)) {
-                return user;
-            }
-        }
-        return null;
-    }
+    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
