@@ -16,10 +16,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Utilisateur;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -144,7 +142,6 @@ public class ControlleurAuthentification implements Initializable {
     }
 
     public void populateChoiceBoxes() {
-
         String[] minTaches = { "2", "3", "4", "5" };
         ObservableList<String> minTachesList = FXCollections.observableArrayList(minTaches);
         minTache.setItems(minTachesList);

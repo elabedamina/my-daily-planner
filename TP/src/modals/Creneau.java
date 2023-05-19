@@ -29,6 +29,27 @@ public class Creneau implements Serializable{
     }
 
     public Creneau(){}
+
+    public boolean contains(Creneau other) {//retourne vrai if this contains other
+        return other.getHeureDebut().compareTo(heureDebut) >= 0 && other.getHeureFin().compareTo(heureFin) <= 0;
+    }
+
+    public boolean isDivisible(Long dureeTache){
+    //tester si un créneau est divisible
+        boolean isDiv = false;
+        if(duree-dureeTache>=dureeMin){
+            isDiv=true;
+        }
+        else{
+            isDiv=false;
+        }
+        return isDiv;
+    }
+
+    public void updateCreneau(Long dureeTache){
+    //si le creneau est divisible on change les intervalles de temps 
+        heureDebut = heureDebut.plusMinutes(dureeTache);
+    }
     
 
     public LocalTime getHeureDebut() {

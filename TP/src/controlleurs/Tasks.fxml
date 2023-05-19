@@ -1,62 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlleurs.ControlleurPlanning">
+<StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlleurs.ControlleurTask">
    <children>
-      <BorderPane fx:id="planningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
-         <right>
-            <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
-                     <font>
-                        <Font name="Segoe Script Bold" size="37.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#434242" layoutX="261.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planning" translateX="114.0" translateY="-23.0">
-                     <font>
-                        <Font name="Times New Roman Bold" size="24.0" />
-                     </font>
-                  </Text>
-                  <Button fx:id="createBtn" layoutX="20.0" layoutY="63.0" mnemonicParsing="false" onAction="#handleCreation" prefHeight="66.0" prefWidth="207.0" text="Créer un nouveau planning" />
-                  <Button fx:id="viewHistoryButton" layoutX="19.0" layoutY="153.0" mnemonicParsing="false" onAction="#handleHistory" prefHeight="72.0" prefWidth="209.0" text="Consulter mes plannings" />
-                  <Button fx:id="currentPlanningBtn" layoutX="22.0" layoutY="251.0" mnemonicParsing="false" onAction="#handleCurrentPlanning" prefHeight="78.0" prefWidth="212.0" text="mes plannings courants" />
-               </children>
-            </Pane>
-         </right>
-      </BorderPane>
-      <BorderPane fx:id="historyPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
-         <right>
-            <Pane prefHeight="374.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
-               <children>
-                  <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
-                     <font>
-                        <Font name="Segoe Script Bold" size="37.0" />
-                     </font>
-                  </Text>
-                  <Button fx:id="goBack1" layoutX="137.0" layoutY="322.0" mnemonicParsing="false" onAction="#handleGoingBack" text="go back" />
-                  <ListView fx:id="listPlanning1" layoutX="50.0" layoutY="18.0" prefHeight="200.0" prefWidth="200.0" />
-               </children>
-            </Pane>
-         </right>
+      <BorderPane fx:id="TaskMainPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <center>
-            <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" translateX="244.0" translateY="-157.0" BorderPane.alignment="CENTER">
-               <font>
-                  <Font name="Gabriola" size="43.0" />
-               </font>
-            </Text>
+            <Pane prefHeight="400.0" prefWidth="358.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fill="#ff0460" layoutX="115.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des tâches">
+                     <font>
+                        <Font name="Gabriola" size="53.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="manualBtn" layoutX="115.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleManual" prefHeight="40.0" prefWidth="313.0" style="-fx-background-color: d3d3d3;" text="new task + manual" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Italic" size="18.0" />
+                     </font></Button>
+                  <Button fx:id="projectBtn" layoutX="116.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleProject" prefHeight="39.0" prefWidth="310.0" style="-fx-background-color: d3d3d3;" text="Ajouter un projet" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Italic" size="18.0" />
+                     </font></Button>
+                  <Button fx:id="autoBtn" layoutX="136.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleAuto" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: d3d3d3;" text="Planifier automatiquement " textFill="#434242" translateX="-21.0">
+                     <font>
+                        <Font name="Calibri Italic" size="18.0" />
+                     </font></Button>
+                  <Button fx:id="updateBtn" layoutX="116.0" layoutY="239.0" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="46.0" prefWidth="311.0" text="Mettre à jour une tâche" />
+                  <Button fx:id="displayBtn" layoutX="116.0" layoutY="299.0" mnemonicParsing="false" onAction="#handleDisplay" prefHeight="42.0" prefWidth="312.0" text="Afficher mon calendrier" />
+                  <Button fx:id="categoryBtn" layoutX="115.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleCategory" prefHeight="25.0" prefWidth="314.0" text="Gérer les catégories des tâches" />
+                  <Button fx:id="goToPlanningBtn" layoutX="21.0" layoutY="354.0" mnemonicParsing="false" onAction="#changeSceneToPlannnig" text="revenir" />
+               </children>
+            </Pane>
          </center>
+         <left>
+            <Pane prefHeight="400.0" prefWidth="71.0" style="-fx-background-color: F89DAE;" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fill="WHITE" layoutX="67.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="63.0" fitWidth="58.0" layoutX="7.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </left>
       </BorderPane>
-      <BorderPane fx:id="CurrentPlanningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+      <BorderPane fx:id="AddPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="400.0" prefWidth="100.0" scaleX="1.06" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-533.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Text fill="WHITE" layoutX="64.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="52.0" fitWidth="55.0" layoutX="8.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </right>
          <center>
             <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" translateX="244.0" translateY="-157.0" BorderPane.alignment="CENTER">
                <font>
@@ -65,45 +89,306 @@
             </Text>
          </center>
          <left>
-            <Pane prefHeight="374.0" prefWidth="287.0" style="-fx-background-color: F89DAE;" BorderPane.alignment="CENTER">
+            <Pane prefHeight="400.0" prefWidth="535.0" translateX="71.0" BorderPane.alignment="CENTER">
                <children>
-                  <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
+                  <Button fx:id="goBack1" layoutX="21.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="24.0" prefWidth="60.0" style="-fx-background-color: F89DAE;" text="Revenir" textFill="WHITE">
                      <font>
-                        <Font name="Segoe Script Bold" size="37.0" />
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Text fx:id="addTaskText" fill="#ff0460" layoutX="163.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter une tâche">
+                     <font>
+                        <Font name="Gabriola" size="35.0" />
                      </font>
                   </Text>
-                  <Button fx:id="goBack1" layoutX="137.0" layoutY="322.0" mnemonicParsing="false" onAction="#handleGoingBack" text="go back" />
-                  <ListView fx:id="listCurrentPlanning" layoutX="37.0" layoutY="91.0" prefHeight="221.0" prefWidth="214.0" />
-                  <Text layoutX="57.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Voici tous vos plannings" wrappingWidth="186.8033676147461" />
+                  <Text fx:id="tacheText" layoutX="58.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votre tâche :" />
+                  <TextField fx:id="tacheTextField" layoutX="143.0" layoutY="91.0" prefHeight="47.0" prefWidth="348.0" promptText="Votre tâche" />
+                  <Text fx:id="dureeText" layoutX="58.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La durée :" wrappingWidth="66.13674926757812" />
+                  <TextField fx:id="dureeTextField" layoutX="143.0" layoutY="155.0" prefHeight="25.0" prefWidth="114.0" promptText="HH:MM" />
+                  <Text fx:id="deadlineText" layoutX="269.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La date limite :" wrappingWidth="84.80340576171875" />
+                  <DatePicker fx:id="deadlineDatePicker" layoutX="356.0" layoutY="155.0" onAction="#handleDeadline" prefHeight="25.0" prefWidth="155.0" promptText="Deadline" />
+                  <Text fx:id="priorityText" layoutX="55.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Priorité :" wrappingWidth="72.80340576171875" />
+                  <MenuButton fx:id="PriorityBox" layoutX="136.0" layoutY="215.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="128.0">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                  </MenuButton>
+                  <Text fx:id="categoryText" layoutX="284.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Catégorie :" wrappingWidth="66.13671875" />
+                  <MenuButton fx:id="categoryBox" layoutX="375.0" layoutY="215.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="118.0">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                  </MenuButton>
+                  <Text fx:id="qstText" layoutX="68.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous souhaitez la planifier ?" wrappingWidth="175.47003173828125" />
+                  <Button fx:id="ouiBtn" layoutX="258.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleOui" text="oui" />
+                  <Button fx:id="nonBtn" layoutX="312.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleNon" text="non" />
+                  <Text fx:id="typeText" layoutX="70.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de votre tâche :" wrappingWidth="130.80332946777344" />
+                  <ChoiceBox fx:id="typeBox" layoutX="209.0" layoutY="311.0" prefWidth="150.0" />
+                  <Button fx:id="sauvegarderBtn" layoutX="408.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleSauvegarder" text="sauvegarder" />
                </children>
             </Pane>
          </left>
       </BorderPane>
-      <BorderPane fx:id="newPlanningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
-         <right>
-            <Pane prefHeight="400.0" prefWidth="287.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-314.0" translateY="-11.0" BorderPane.alignment="CENTER">
+      <BorderPane fx:id="manualPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <center>
+            <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" translateX="244.0" translateY="-157.0" BorderPane.alignment="CENTER">
+               <font>
+                  <Font name="Gabriola" size="43.0" />
+               </font>
+            </Text>
+         </center>
+         <left>
+            <Pane prefHeight="400.0" prefWidth="72.0" style="-fx-background-color: F89DAE;" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="confirmDate" layoutX="90.0" layoutY="105.0" mnemonicParsing="false" onAction="#handlePeriod" prefHeight="25.0" prefWidth="179.0" text="Confirmer la période" />
-                  <DatePicker fx:id="startDatePicker" layoutX="88.0" layoutY="26.0" onAction="#handleStartDate" prefHeight="29.0" prefWidth="183.0" />
-                  <DatePicker fx:id="endDatePicker" layoutX="89.0" layoutY="61.0" onAction="#handleEndDate" prefHeight="29.0" prefWidth="181.0" />
-                  <Text fx:id="textExp" layoutX="12.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous désirez choisir un seul créneau disponible pour toute la période cliquez sur oui, sinon sur non" wrappingWidth="266.80338859558105" />
-                  <Button fx:id="ouiBtn" layoutX="189.0" layoutY="189.0" mnemonicParsing="false" onAction="#handleOui" text="oui" />
-                  <Button fx:id="nonBtn" layoutX="69.0" layoutY="189.0" mnemonicParsing="false" onAction="#handleNon" text="non" />
-                  <TextField fx:id="heureDebut" layoutX="73.0" layoutY="318.0" prefHeight="25.0" prefWidth="66.0" promptText="HH:MM" />
-                  <TextField fx:id="heureFin" layoutX="205.0" layoutY="318.0" prefHeight="25.0" prefWidth="74.0" promptText="HH:MM" />
-                  <Label fx:id="labelHeureDebut" layoutX="3.0" layoutY="322.0" prefHeight="17.0" prefWidth="75.0" text="heure début" />
-                  <Label fx:id="labelHeureFin" layoutX="145.0" layoutY="322.0" prefHeight="17.0" prefWidth="49.0" text="heure fin" />
-                  <Label layoutX="11.0" layoutY="36.0" text="Date début" />
-                  <Label layoutX="14.0" layoutY="71.0" text="Date fin" />
-                  <DatePicker fx:id="dateCreneau" layoutX="102.0" layoutY="245.0" onAction="#handleDateCreneau" />
-                  <Text fx:id="textCreneau" layoutX="14.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez une date de votre période" wrappingWidth="83.47003555297852" />
-                  <Text fx:id="text" layoutX="87.0" layoutY="301.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez un créneau" />
-                  <Button fx:id="confirmCreneau" layoutX="177.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleCreneau" prefHeight="25.0" prefWidth="97.0" text="Confirmer " />
-                  <Button fx:id="nextBtn" layoutX="83.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleNext" text="next" />
-                  <Button fx:id="goBack2" layoutX="5.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleGoingBack" text="go back" />
+                  <Text fill="WHITE" layoutX="67.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+                  <ImageView fitHeight="71.0" fitWidth="58.0" layoutX="7.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </Pane>
+         </left>
+         <right>
+            <Pane prefHeight="400.0" prefWidth="532.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="goBack1" layoutX="28.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="26.0" prefWidth="71.0" style="-fx-background-color: F89DAE;" text="Revenir" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="15.0" />
+                     </font></Button>
+                  <Text fx:id="titreManual" fill="#ff0460" layoutX="117.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planifier manuellement" wrappingWidth="285.8033676147461">
+                     <font>
+                        <Font name="Gabriola" size="34.0" />
+                     </font></Text>
+                  <Text fx:id="dateManualText" layoutX="99.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La date" wrappingWidth="67.2213134765625" />
+                  <DatePicker fx:id="dateManualPicker" layoutX="194.0" layoutY="106.0" />
+                  <Text fx:id="creneauText" layoutX="82.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Créneau" wrappingWidth="68.13671875" />
+                  <TextField fx:id="creneauDebutField" layoutX="133.0" layoutY="155.0" promptText="heure début HH:MM" />
+                  <TextField fx:id="creneauFinField" layoutX="302.0" layoutY="155.0" promptText="heure fin HH:MM" />
+                  <Button fx:id="planManualBtn" layoutX="238.0" layoutY="200.0" mnemonicParsing="false" onAction="#handlePlanManual" text="Planifier" />
                </children>
             </Pane>
          </right>
+      </BorderPane>
+      <BorderPane fx:id="autoPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="52.0" fitWidth="54.0" layoutX="11.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="10.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </right>
+         <center>
+            <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="goBack2" layoutX="35.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font></Button>
+                  <Text fx:id="titreAuto" fill="#ff0460" layoutX="108.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planifier automatiquement">
+                     <font>
+                        <Font name="Gabriola" size="35.0" />
+                     </font>
+                  </Text>
+                  <MenuButton fx:id="tasktList" layoutX="114.0" layoutY="70.0" mnemonicParsing="false" onAction="#handletaskList" prefHeight="44.0" prefWidth="300.0" text="vos tâches non planifiées">
+                    <items>
+                      <MenuItem mnemonicParsing="false" text="Action 1" />
+                      <MenuItem mnemonicParsing="false" text="Action 2" />
+                    </items>
+                  </MenuButton>
+                  <Text fx:id="periodeText" layoutX="38.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La période" wrappingWidth="58.66667938232422" />
+                  <DatePicker fx:id="periodDebutPicker" layoutX="114.0" layoutY="243.0" onAction="#handlePeriodDebutPicker" promptText="début de période" />
+                  <DatePicker fx:id="periodFinPicker" layoutX="317.0" layoutY="243.0" onAction="#handlePeriodFinPicker" promptText="fin de période" />
+                  <ListView fx:id="viewListTask" layoutX="116.0" layoutY="123.0" prefHeight="105.0" prefWidth="299.0" />
+                  <Button fx:id="planAutoBtn" layoutX="223.0" layoutY="291.0" mnemonicParsing="false" onAction="#handlePlanAuto" prefHeight="25.0" prefWidth="131.0" text="planifier" />
+                  <Button fx:id="confirmAutoBtn" layoutX="272.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleConfirmAuto" text="confirmer" />
+                  <Button fx:id="refuseAutoBtn" layoutX="354.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleRefuseAuto" text="refuser" />
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="projectPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="52.0" fitWidth="54.0" layoutX="11.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="10.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </right>
+         <center>
+            <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="goBack21" layoutX="35.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="titreProjet" fill="#ff0460" layoutX="171.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter un projet">
+                     <font>
+                        <Font name="Gabriola" size="35.0" />
+                     </font>
+                  </Text>
+                  <MenuButton fx:id="tasktList1" layoutX="134.0" layoutY="200.0" mnemonicParsing="false" onAction="#handletaskList" prefHeight="44.0" prefWidth="290.0" text="vos tâches non planifiées">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Action 1" />
+                        <MenuItem mnemonicParsing="false" text="Action 2" />
+                     </items>
+                  </MenuButton>
+                  <ListView fx:id="viewListTask1" layoutX="141.0" layoutY="252.0" prefHeight="105.0" prefWidth="299.0" />
+                  <Button fx:id="addProjetBtn" layoutX="263.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleAddProjet" prefHeight="25.0" prefWidth="131.0" text="ajouter projet" />
+                  <Text fx:id="nomProjetText" layoutX="7.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nom de votre projet" />
+                  <TextField fx:id="nomProjetField" layoutX="133.0" layoutY="81.0" onAction="#handleNomProjet" prefHeight="25.0" prefWidth="291.0" />
+                  <Text fx:id="descriptionText" layoutX="6.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="122.80338287353516" />
+                  <TextArea fx:id="descriptionField" layoutX="136.0" layoutY="120.0" prefHeight="68.0" prefWidth="309.0" />
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="updatePage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="52.0" fitWidth="54.0" layoutX="11.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="10.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </right>
+         <center>
+            <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="goBack22" layoutX="35.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="titreUpdate" fill="#ff0460" layoutX="113.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mettre à jour une tâche">
+                     <font>
+                        <Font name="Gabriola" size="35.0" />
+                     </font>
+                  </Text>
+                  <MenuButton fx:id="taskPlannedList" layoutX="113.0" layoutY="149.0" mnemonicParsing="false" onAction="#handletaskPlannedList" prefHeight="44.0" prefWidth="300.0" text="vos tâches planifiées">
+                     <items>
+                        <MenuItem mnemonicParsing="false" text="Action 1" />
+                        <MenuItem mnemonicParsing="false" text="Action 2" />
+                     </items>
+                  </MenuButton>
+                  <Button fx:id="confirmUpdateBtn" layoutX="272.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleConfirmUpdate" text="confirmer" />
+                  <Text fx:id="etatText" layoutX="49.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="état" wrappingWidth="63.18035888671875" />
+                  <ChoiceBox fx:id="etatBox" layoutX="113.0" layoutY="211.0" prefWidth="150.0" />
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="displayPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="52.0" fitWidth="54.0" layoutX="11.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="10.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </right>
+         <center>
+            <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="goBack23" layoutX="35.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="titreAffichage" fill="#ff0460" layoutX="201.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Affichage">
+                     <font>
+                        <Font name="Gabriola" size="35.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="enterDateText" layoutX="24.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="entrez la date :" wrappingWidth="126.80342102050781" />
+                  <DatePicker fx:id="enterDatePicker" layoutX="165.0" layoutY="90.0" onAction="#handleEnterDatePicker" />
+                  <Text fx:id="affichageText" layoutX="87.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous voulez afficher vos tâches prévues dans un jour précis, " />
+                  <ListView fx:id="displayList" layoutX="110.0" layoutY="121.0" prefHeight="200.0" prefWidth="306.0" />
+               </children>
+            </Pane>
+         </center>
+      </BorderPane>
+      <BorderPane fx:id="categoryPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+         <right>
+            <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ImageView fitHeight="52.0" fitWidth="54.0" layoutX="11.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Calendrier%20logo%203.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="WHITE" layoutX="10.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify">
+                     <font>
+                        <Font name="Segoe Script Bold" size="13.0" />
+                     </font>
+                  </Text>
+               </children>
+            </Pane>
+         </right>
+         <center>
+            <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="goBack24" layoutX="36.0" layoutY="339.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Text fx:id="titreCategory" fill="#ff0460" layoutX="88.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gérez vos catégories de tâches">
+                     <font>
+                        <Font name="Gabriola" size="35.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="categoryText" layoutX="68.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nom catégorie" />
+                  <TextField fx:id="categoryField" layoutX="188.0" layoutY="103.0" />
+                  <Text fx:id="colorText" layoutX="68.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="couleur" wrappingWidth="92.8033447265625" />
+                  <ColorPicker fx:id="colorPicker" layoutX="188.0" layoutY="137.0" onAction="#handleColorPicker" />
+                  <Button fx:id="addCategoBtn" layoutX="294.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleAddCategory" text="Ajouter cette catégorie" />
+                  <Text fx:id="deleteCategoryText" layoutX="89.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous voulez supprimer une catégorie , choississez-en une" />
+                  <ChoiceBox fx:id="deleteCategoryBox" layoutX="188.0" layoutY="259.0" prefWidth="150.0" />
+                  <Button fx:id="deleteCategoryBtn" layoutX="303.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleDeleteCategory" text="supprimer cette catégorie" />
+               </children>
+            </Pane>
+         </center>
       </BorderPane>
    </children>
 </StackPane>

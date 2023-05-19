@@ -1,6 +1,8 @@
 package modals;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -9,16 +11,20 @@ public class Planning implements Serializable  /* implements Planification */ {
     
     @Override
     public String toString() {
-        return "Planning : \nLe nombre de tâches complétées : " + nb_taches_comp + "\nLe nombre de projets complétés : " + nb_projets_comp + "\nLes badges gagnés : " + badge;
+        return "Planning de "+ period.getStartDate() +" à "+period.getEndDate() +" : " +"\nLe nombre de tâches complétées : " + nb_taches_comp + "\nLe nombre de projets complétés : " + nb_projets_comp + "\nLes badges gagnés : " + badge;
     }
     
     private int nb_taches_comp;         // nombre total de tâches complétées
     private int nb_projets_comp;        // nombre total de projets complétés
     private PeriodMe period;
     private Map<String, Integer> badge = new HashMap<>();
-    private ArrayList<Projet> projets = new ArrayList<>(); // la liste qui contient tous les projets à planifier    
-    private ArrayList<Tache> tachesPlanned = new ArrayList<>(); // to change into map fiha tache + creneau
+    private Map<Tache,Creneau> tachesPlanned = new HashMap<>();// contains the tasks of the planning and their slot after planification
 
+
+    /*WHEN displaying history of plannings i have to test wheter it is a planning of one day if no i return it with the getter, ndir 
+     * methode traj3li boolean 
+     * nroh l controller w fl parcours ta3 plannings nzid condition bl methode jdida
+     */
     public Planning( PeriodMe period) {
         this.period = period;
         this.nb_taches_comp = 0;
@@ -72,12 +78,34 @@ public class Planning implements Serializable  /* implements Planification */ {
         this.period = period;
     }
 
-    public ArrayList<Tache> getTachesPlanned() {
+    public Map<Tache, Creneau> getTachesPlanned() {
         return tachesPlanned;
     }
 
-    public void setTachesPlanned(ArrayList<Tache> tachesPlanned) {
+    public void setTachesPlanned(Map<Tache, Creneau> tachesPlanned) {
         this.tachesPlanned = tachesPlanned;
     }
 
+    public Creneau updateSlot(LocalDate d,Creneau c,Long dureeTache){
+        //mettre à jour un créneau après la planification d'une tâche
+        //returns the new slot so i can add it to the map tache, créneau
+        Creneau _creneau = c;
+        boolean isDivisible = _creneau.isDivisible(dureeTache);
+        if(isDivisible){//calculate the new slot and replace the old one, 
+           _creneau.updateCreneau(dureeTache);
+           period.updateSlotPeriod(d, c, _creneau);
+        }
+        else{//remove the slot from the arraylist of date,creneau
+            period.removeSlot(d, c);
+        }
+        return _creneau;
+    }
+    
+    public void addSingleTask(Tache t, Creneau c){
+        tachesPlanned.put(t,c);
+    }
+
+    /* add a methode to test if in the arrayList of plannedtasks , the date and slot are already taken */
+
+   
 }

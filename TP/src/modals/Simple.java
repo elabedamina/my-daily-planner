@@ -10,7 +10,7 @@ public class Simple extends Tache {
 
     private int periodicite;
 
-    public Simple(String nom, float duree, Date date_limite, Priorite priorite, Categorie categorie,
+    public Simple(String nom, Long duree, Date date_limite, Priorite priorite, Categorie categorie,
             int periodicite) {
         super(nom, duree, date_limite, priorite, categorie);
         this.periodicite = periodicite;

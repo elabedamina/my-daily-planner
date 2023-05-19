@@ -6,7 +6,9 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.ListIterator;
 
 import controlleurs.Alerts;
 
@@ -32,7 +34,7 @@ public class Utilisateur implements Serializable {
     private int tacheMin; // nombre minimal de tâche/jour pour être récompensé
     private ArrayList<Tache> tachesNotPlanned = new ArrayList<>(); // contains all the tasks li dkhlhom user w mazel maplanifahomch
     private ArrayList<Categorie> myCategories = new ArrayList<>(); 
-
+    private ArrayList<Projet> projets = new ArrayList<>(); // la liste qui contient tous les projets à planifier    
 
     public boolean isPeriodAvailable(PeriodMe period) {
         for (Planning _planning : planning) {
@@ -41,6 +43,68 @@ public class Utilisateur implements Serializable {
             }
         }
         return true; // Period is available
+    }
+
+    private Planning isDate(LocalDate d){
+        //teste si la date "d" est déja dans un des plannings
+        Planning indexP=null;
+        ArrayList<Planning> myPlannings = planning;
+        if (myPlannings != null) {
+            ListIterator<Planning> iterator = myPlannings.listIterator();
+            while (iterator.hasNext()) {
+                Planning currentPlanning = iterator.next();
+                if (currentPlanning.getPeriod().containsDate(d)) {
+                    indexP=currentPlanning;
+                    break;
+                }
+            }
+        }
+        return  indexP;
+    }
+
+    private Planning isDateAndCreneau(LocalDate d,Creneau c){
+        //teste si la date "d" et le créneau sont déjà dans un des plannings
+        Planning indexP=null;
+        ArrayList<Planning> myPlannings = planning;
+        if (myPlannings != null) {
+            ListIterator<Planning> iterator = myPlannings.listIterator();
+            while (iterator.hasNext()) {
+                Planning currentPlanning = iterator.next();
+                if (currentPlanning.getPeriod().containsDateAndCreneau(d,c) != -1) {
+                    indexP=currentPlanning;
+                    break;
+                }
+            }
+        }
+        return indexP;
+    }
+
+    public void planNewTaskSimple(Tache t,LocalDate d, Creneau c){
+        //planifier manuellement une tâche simple
+        if(t instanceof Simple){
+            if(isDate(d) == null){
+                //créer un plannig d'un jour 
+                PeriodMe periodMe= new PeriodMe(d, d);
+                Planning _planning = new Planning(periodMe);
+                t.setDate(d);
+                _planning.addSingleTask(t,c);
+                this.planning.add(_planning);
+            }
+            else{
+                Planning indexP = isDateAndCreneau(d, c);
+                if(indexP != null){
+                    //update the existing slot
+                    Creneau _creneau = indexP.updateSlot(d, c, t.getDuree()); /////// idk if its right to test on la classe tache
+                    t.setDate(d);
+                    indexP.addSingleTask(t, _creneau);
+                }
+                else{
+                    indexP=isDate(d);
+                    t.setDate(d);
+                    indexP.addSingleTask(t, c);
+                }
+            }
+        }
     }
 
     public String getPseudo() {
@@ -118,6 +182,39 @@ public class Utilisateur implements Serializable {
         return null;
     }
 
+    public void updateUserFile(String fileName, Planning planning) {
+        ArrayList<Utilisateur> userList;
+        try {
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            userList = (ArrayList<Utilisateur>) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException e) {
+            userList = new ArrayList<>();
+        }
+        int index = -1;
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).getPseudo().equals(this.getPseudo())) {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1) {
+            userList.get(index).setPlanning(planning);
+            System.out.println("this is it " + userList.get(index));
+            try {
+                FileOutputStream fileOut = new FileOutputStream(fileName);
+                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
+                objectOut.writeObject(userList);
+                objectOut.close();
+                fileOut.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void setPlanning(ArrayList<Planning> planning) {
         this.planning = planning;
     }
@@ -130,6 +227,10 @@ public class Utilisateur implements Serializable {
         tachesNotPlanned.add(task);
     }
 
+    public void removeTaskFromTachesNotPlanned(Tache task) {
+        tachesNotPlanned.remove(task);
+    }
+
     public void addNewCategory(Categorie c){
         myCategories.add(c);
     }
@@ -140,6 +241,22 @@ public class Utilisateur implements Serializable {
 
     public ArrayList<Categorie> getMyCategories() {
         return myCategories;
+    }
+
+    public ArrayList<Projet> getProjets() {
+        return projets;
+    }
+
+    public void setProjets(ArrayList<Projet> projets) {
+        this.projets = projets;
+    }
+
+    public void addNewProject(Projet p){
+        projets.add(p);
+    }
+
+    public void deleteProject(Projet p){
+        projets.remove(p);
     }
 
 
