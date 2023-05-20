@@ -15,7 +15,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlleurs.ControlleurPlanning">
    <children>
-      <BorderPane fx:id="planningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane fx:id="planningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
          <center>
             <Pane prefHeight="400.0" prefWidth="358.0" BorderPane.alignment="CENTER">
                <children>
@@ -24,34 +24,42 @@
                         <Font name="Gabriola" size="53.0" />
                      </font>
                   </Text>
-                  <Button fx:id="createBtn" layoutX="192.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleCreation" prefHeight="66.0" prefWidth="214.0" style="-fx-background-color: d3d3d3;" text="Ajouter un planning" textFill="#434242">
+                  <Button fx:id="createBtn" layoutX="192.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleCreation" prefHeight="43.0" prefWidth="214.0" style="-fx-background-color: d3d3d3;" text="Ajouter un planning" textFill="#434242">
                      <font>
                         <Font name="Calibri Italic" size="18.0" />
                      </font></Button>
-                  <Button fx:id="viewHistoryButton" layoutX="194.0" layoutY="289.0" mnemonicParsing="false" onAction="#handleHistory" prefHeight="72.0" prefWidth="209.0" style="-fx-background-color: d3d3d3;" text="Mes anciens plannings" textFill="#434242">
+                  <Button fx:id="viewHistoryButton" layoutX="192.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleHistory" prefHeight="43.0" prefWidth="214.0" style="-fx-background-color: d3d3d3;" text="Mes anciens plannings" textFill="#434242">
                      <font>
                         <Font name="Calibri Italic" size="18.0" />
                      </font></Button>
-                  <Button fx:id="currentPlanningBtn" layoutX="214.0" layoutY="194.0" mnemonicParsing="false" onAction="#handleCurrentPlanning" prefHeight="78.0" prefWidth="212.0" style="-fx-background-color: d3d3d3;" text="Mes plannings courants" textFill="#434242" translateX="-21.0">
+                  <Button fx:id="currentPlanningBtn" layoutX="213.0" layoutY="249.0" mnemonicParsing="false" onAction="#handleCurrentPlanning" prefHeight="43.0" prefWidth="214.0" style="-fx-background-color: d3d3d3;" text="Mes plannings courants" textFill="#434242" translateX="-21.0">
                      <font>
                         <Font name="Calibri Italic" size="18.0" />
                      </font></Button>
-                  <ImageView fitHeight="57.0" fitWidth="62.0" layoutX="102.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="57.0" fitWidth="53.0" layoutX="122.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../interface/Ajouter%20planning.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="59.0" fitWidth="64.0" layoutX="99.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="49.0" fitWidth="49.0" layoutX="124.0" layoutY="248.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../interface/Planning.png" />
                      </image>
                   </ImageView>
-                  <ImageView fitHeight="66.0" fitWidth="71.0" layoutX="99.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="55.0" fitWidth="55.0" layoutX="125.0" layoutY="174.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../interface/Historique.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="changeSceneBtn" layoutX="448.0" layoutY="358.0" mnemonicParsing="false" onAction="#handleChangeScene2" text="tâches" />
+                  <Button fx:id="changeSceneBtn" layoutX="192.0" layoutY="179.0" mnemonicParsing="false" onAction="#handleChangeScene2" prefHeight="43.0" prefWidth="214.0" style="-fx-background-color: d3d3d3;" text="Gestion des tâches" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Italic" size="18.0" />
+                     </font></Button>
+                  <ImageView fitHeight="54.0" fitWidth="45.0" layoutX="129.0" layoutY="309.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../interface/Historique%202.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
          </center>
@@ -163,7 +171,7 @@
             </Pane>
          </right>
       </BorderPane>
-      <BorderPane fx:id="newPlanningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+      <BorderPane fx:id="newPlanningPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <right>
             <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
                <children>
@@ -183,12 +191,12 @@
          <center>
             <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="confirmDate" layoutX="340.0" layoutY="326.0" mnemonicParsing="false" onAction="#handlePeriod" prefHeight="17.0" prefWidth="149.0" style="-fx-background-color: F89DAE;" text="Confirmer la période" textFill="WHITE" visible="false">
+                  <Button fx:id="confirmDate" layoutX="340.0" layoutY="326.0" mnemonicParsing="false" onAction="#handlePeriod" prefHeight="17.0" prefWidth="149.0" style="-fx-background-color: F89DAE;" text="Confirmer la période" textFill="WHITE">
                      <font>
                         <Font name="System Bold" size="13.0" />
                      </font></Button>
-                  <DatePicker fx:id="startDatePicker" layoutX="158.0" layoutY="215.0" onAction="#handleStartDate" prefHeight="29.0" prefWidth="183.0" visible="false" />
-                  <DatePicker fx:id="endDatePicker" layoutX="159.0" layoutY="271.0" onAction="#handleEndDate" prefHeight="29.0" prefWidth="181.0" visible="false" />
+                  <DatePicker fx:id="startDatePicker" layoutX="158.0" layoutY="215.0" onAction="#handleStartDate" prefHeight="29.0" prefWidth="183.0" />
+                  <DatePicker fx:id="endDatePicker" layoutX="159.0" layoutY="271.0" onAction="#handleEndDate" prefHeight="29.0" prefWidth="181.0" />
                   <Text fx:id="textExp" fill="#434242" layoutX="68.0" layoutY="210.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous désirez choisir le même créneau disponible pour toute la période cliquez sur oui, sinon cliquez sur non" textAlignment="CENTER" visible="false" wrappingWidth="361.80338859558105">
                      <font>
                         <Font name="Calibri Bold" size="14.0" />
@@ -208,12 +216,12 @@
                         <Font name="Calibri" size="12.0" />
                      </font></Label>
                   <Label fx:id="labelHeureFin" layoutX="273.0" layoutY="277.0" prefHeight="17.0" prefWidth="49.0" text="Heure fin" textFill="#434242" visible="false" />
-                  <Label fx:id="datedebut" layoutX="95.0" layoutY="223.0" text="Date début" textFill="#434242" visible="false">
+                  <Label fx:id="datedebut" layoutX="95.0" layoutY="223.0" text="Date début" textFill="#434242">
                      <font>
                         <Font name="Calibri" size="12.0" />
                      </font></Label>
-                  <Label fx:id="datefin" layoutX="102.0" layoutY="277.0" text="Date fin" textFill="#434242" visible="false" />
-                  <Text fx:id="textCreneau" fill="#434242" layoutX="95.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez une date de la période de votre planning" visible="false" wrappingWidth="309.4700355529785">
+                  <Label fx:id="datefin" layoutX="102.0" layoutY="277.0" text="Date fin" textFill="#434242" />
+                  <Text fx:id="textCreneau" fill="#434242" layoutX="95.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Choisissez une date de la période de votre planning" wrappingWidth="309.4700355529785">
                      <font>
                         <Font name="Calibri Bold" size="14.0" />
                      </font></Text>
@@ -225,9 +233,9 @@
                      <font>
                         <Font name="Calibri Bold" size="13.0" />
                      </font></Button>
-                  <Button fx:id="nextBtn" layoutX="397.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleNext" style="-fx-background-color: F89DAE;" text="la date suivante" textFill="WHITE">
+                  <Button fx:id="nextBtn" layoutX="397.0" layoutY="336.0" mnemonicParsing="false" onAction="#handleNext" style="-fx-background-color: F89DAE;" text="La date suivante" textFill="WHITE" visible="false">
                      <font>
-                        <Font name="Calibri Bold" size="14.0" />
+                        <Font name="Calibri Bold" size="13.0" />
                      </font></Button>
                   <Button fx:id="goBack2" layoutX="53.0" layoutY="326.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
                      <font>
@@ -250,8 +258,11 @@
                      </image>
                   </ImageView>
                   <Label fx:id="datecreneau1" layoutX="78.0" layoutY="215.0" text="Date du créneau" textFill="#434242" visible="false" />
-                  <Button fx:id="nextCreneauBtn" layoutX="216.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleNextCreneau" text="next creneau" visible="false" />
-                  <Button fx:id="confirmCreneau2" layoutX="301.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleCreneau2" prefHeight="25.0" prefWidth="207.0" style="-fx-background-color: F89DAE;" text="Confirmer la création du planning " textFill="WHITE">
+                  <Button fx:id="nextCreneauBtn" layoutX="190.0" layoutY="327.0" mnemonicParsing="false" onAction="#handleNextCreneau" style="-fx-background-color: F89DAE;" text="Ajouter un créneau" textFill="WHITE" visible="false">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Button fx:id="confirmCreneau2" layoutX="301.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleCreneau2" prefHeight="25.0" prefWidth="207.0" style="-fx-background-color: F89DAE;" text="Confirmer la création du planning " textFill="WHITE" visible="false">
                      <font>
                         <Font name="Calibri Bold" size="13.0" />
                      </font>

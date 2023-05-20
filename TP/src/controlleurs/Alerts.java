@@ -3,17 +3,18 @@ package controlleurs;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 
-public class Alerts {   
+public class Alerts {
 
     static final String ERROR = "Erreur";
 
     public static void emptyPseudoField() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle(ERROR);
-            alert.setHeaderText("Pseudo vide !");
-            alert.setContentText("Veuillez introduire votre pseudo.");
-            alert.showAndWait();
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Pseudo vide !");
+        alert.setContentText("Veuillez introduire votre pseudo.");
+        alert.showAndWait();
     }
+
     public static void usedPseudo() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -21,6 +22,7 @@ public class Alerts {
         alert.setContentText("Veuillez introduire un autre pseudo.");
         alert.showAndWait();
     }
+
     public static void unauthentifiedPseudo() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -28,6 +30,7 @@ public class Alerts {
         alert.setContentText("Le pseudo que vous avez introduit est introuvable.");
         alert.showAndWait();
     }
+
     public static void emptyFields() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -35,6 +38,7 @@ public class Alerts {
         alert.setContentText("Veuillez remplir les champs concernés !");
         alert.showAndWait();
     }
+
     public static void successfulAuth() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Inscription réussie!");
@@ -42,6 +46,7 @@ public class Alerts {
         alert.setContentText("Votre inscription a été faite avec succès.\nConnectez-vous pour accéder à votre compte.");
         alert.showAndWait();
     }
+
     public static void successfulPlan() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Planification réussie!");
@@ -49,6 +54,7 @@ public class Alerts {
         alert.setContentText("La planification a été faite avec succès.");
         alert.showAndWait();
     }
+
     public static void planningAdded() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Planning ajouté!");
@@ -56,6 +62,7 @@ public class Alerts {
         alert.setContentText("Votre nouveau planning a été crée avec succès.\n");
         alert.showAndWait();
     }
+
     public static void successfulCategory() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Catégorie ajoutée!");
@@ -63,6 +70,7 @@ public class Alerts {
         alert.setContentText("Votre nouvelle catégorie de tâches a été ajoutée avec succés.\n");
         alert.showAndWait();
     }
+
     public static void successfulDeleteCategory() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Catégorie suprimée!");
@@ -70,13 +78,16 @@ public class Alerts {
         alert.setContentText("Votre catégorie de tâches a été supprimée avec succés.\n");
         alert.showAndWait();
     }
+
     public static void sauvegarder() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Tâche sauvegardée!");
         alert.setHeaderText(null);
-        alert.setContentText("La tâche que vous venez d'introduire a été sauvegardée\navec succès dans la liste de tâches non planifiées.\n");
+        alert.setContentText(
+                "La tâche que vous venez d'introduire a été sauvegardée\navec succès dans la liste de tâches non planifiées.\n");
         alert.showAndWait();
     }
+
     public static void errorDate() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -84,6 +95,7 @@ public class Alerts {
         alert.setContentText("La date de fin de période doit être strictement\nsupérieur à la date de fin de période");
         alert.showAndWait();
     }
+
     public static void errorPlan() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -91,6 +103,7 @@ public class Alerts {
         alert.setContentText("Impossible de planifier cette tâche dans la date\nque vous avez introduit");
         alert.showAndWait();
     }
+
     public static void errorDeadline() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -98,6 +111,7 @@ public class Alerts {
         alert.setContentText("La date limite de la tâche doit être strictement\nsupérieur à la date d'aujourd'hui");
         alert.showAndWait();
     }
+
     public static void errorDeadlineandDate() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -105,6 +119,7 @@ public class Alerts {
         alert.setContentText("La date de planification doit être\nsupérieur à la date limite");
         alert.showAndWait();
     }
+
     public static void errorColor() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -112,13 +127,16 @@ public class Alerts {
         alert.setContentText("Cette couleur est déjà affectée à une autre catégorie");
         alert.showAndWait();
     }
+
     public static void errorCategory() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
         alert.setHeaderText("Erreur Nom De Catégorie!");
-        alert.setContentText("La nom que vous venez d'introduire\nest soit déjà été affecté à une autre catégorie\nou vous avez laisser le champs vide");
+        alert.setContentText(
+                "La nom que vous venez d'introduire\nest soit déjà été affecté à une autre catégorie\nou vous avez laisser le champs vide");
         alert.showAndWait();
     }
+
     public static void errorDateCurrent() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -126,6 +144,7 @@ public class Alerts {
         alert.setContentText("La date début de période doit être \nsupérieur à la date d'aujourd'hui");
         alert.showAndWait();
     }
+
     public static void errorDuration() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -133,11 +152,36 @@ public class Alerts {
         alert.setContentText("La durée du créneau doit être\nsupérieur à la durée minimale d'un créneau");
         alert.showAndWait();
     }
+
     public static void errorPeriod() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
         alert.setHeaderText("Période déjà prise !");
         alert.setContentText("Changez les dates. Un autre planning est déjà\nplannifié dans cette période! ");
+        alert.showAndWait();
+    }
+
+    public static void errorHour() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Heure incorrecte!");
+        alert.setContentText("Veuillez introduire l'heure sous la forme HH:MM ");
+        alert.showAndWait();
+    }
+
+    public static void creaneauExist() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Créneau existant!");
+        alert.setContentText("Ce créneau a déjà été créé. Veuillez introduire un autre");
+        alert.showAndWait();
+    }
+
+    public static void creaneauContained() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Créneau incorrect!");
+        alert.setContentText("Ce créneau est inclus dans un autre qui existe. Veuillez introduire un autre ");
         alert.showAndWait();
     }
 }
