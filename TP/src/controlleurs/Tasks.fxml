@@ -116,6 +116,8 @@
                   <Button fx:id="sauvegarderBtn" layoutX="408.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleSauvegarder" text="sauvegarder" />
                   <ChoiceBox fx:id="PriorityBox" layoutX="125.0" layoutY="215.0" prefWidth="150.0" />
                   <ChoiceBox fx:id="deleteCategoryBox2" layoutX="359.0" layoutY="215.0" prefWidth="150.0" />
+                  <Text fx:id="periodiciteText" layoutX="97.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="périodicité pour la tâche simple" wrappingWidth="101.53646850585938" />
+                  <TextField fx:id="periodiciteTextField" layoutX="201.0" layoutY="353.0" prefHeight="25.0" prefWidth="60.0" promptText="0-9" />
                </children>
             </Pane>
          </left>

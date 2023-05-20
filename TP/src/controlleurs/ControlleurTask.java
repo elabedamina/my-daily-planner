@@ -3,6 +3,8 @@ package controlleurs;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -249,6 +251,12 @@ public class ControlleurTask implements Initializable{
     private TextField tacheTextField;
 
     @FXML
+    private Text periodiciteText;
+
+    @FXML
+    private TextField periodiciteTextField;
+
+    @FXML
     private MenuButton taskPlannedList;
 
     @FXML
@@ -284,6 +292,8 @@ public class ControlleurTask implements Initializable{
     private Simple tacheSimple = new Simple();
     private Decomposable tacheDecomposable = new Decomposable();
     private LocalDate deadLine;
+    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
 
 
 
@@ -311,6 +321,8 @@ public class ControlleurTask implements Initializable{
             typeText.setVisible(true);
             sauvegarderBtn.setVisible(true);
             ouiBtn.setDisable(true);
+            periodiciteText.setVisible(true);
+            periodiciteTextField.setVisible(true);
         }
     }
 
@@ -334,10 +346,11 @@ public class ControlleurTask implements Initializable{
        String myType = typeBox.getSelectionModel().getSelectedItem();
        if( myType == "Tâche simple" ){
             tacheSimple.setNom(tacheText.getText());
-            tacheSimple.setDuree(Long.parseLong(dureeTextField.getText()));
+            tacheDecomposable.setDuree(convert(dureeTextField.getText()));
             tacheSimple.setDate_limite(deadlineDatePicker.getValue());
             tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
             tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+            tacheSimple.setPeriodicite(Integer.parseInt(periodiciteTextField.getText()));
             //update the user
             myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheSimple);
             System.out.println("print not planned "+myCurrenUtilisateur.toString2());
@@ -349,7 +362,7 @@ public class ControlleurTask implements Initializable{
         else{
             if( myType == "Tâche décomposable"){
                 tacheDecomposable.setNom(tacheText.getText());
-                tacheDecomposable.setDuree(Long.parseLong(dureeTextField.getText()));
+                tacheDecomposable.setDuree(convert(dureeTextField.getText()));
                 tacheDecomposable.setDate_limite(deadlineDatePicker.getValue());
                 tacheDecomposable.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
                 tacheDecomposable.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
@@ -366,9 +379,17 @@ public class ControlleurTask implements Initializable{
         }
     }
 
+    private Long convert (String durationString ){//convertir la durée en minutes
+        String[] parts = durationString.split(":");
+        Long hours = Long.parseLong(parts[0]);
+        Long minutes = Long.parseLong(parts[1]);
+        return hours * 60 + minutes;
+    }
+
     private void clearFields(){
         tacheTextField.setText("");
         dureeTextField.setText("");
+        periodiciteTextField.setText("");
         deadlineDatePicker.setValue(null);
         deleteCategoryBox2.getSelectionModel().clearSelection();
         PriorityBox.getSelectionModel().clearSelection();        
@@ -595,6 +616,8 @@ public class ControlleurTask implements Initializable{
         typeBox.setVisible(false);
         typeText.setVisible(false);
         sauvegarderBtn.setVisible(false);
+        periodiciteText.setVisible(false);
+        periodiciteTextField.setVisible(false);
     }
 
     @FXML
