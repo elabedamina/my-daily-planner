@@ -5,7 +5,7 @@ public class Simple extends Tache {
     
     @Override
     public String toString() {
-        return "Simple [periodicite=" + periodicite + "]";
+        return super.toString() + "\n---->Simple [periodicite=" + periodicite + "]";
     }
 
     private int periodicite;

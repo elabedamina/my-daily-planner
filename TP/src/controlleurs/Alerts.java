@@ -42,6 +42,13 @@ public class Alerts {
         alert.setContentText("Votre inscription a été faite avec succès.\nConnectez-vous pour accéder à votre compte.");
         alert.showAndWait();
     }
+    public static void successfulPlan() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Planification réussie!");
+        alert.setHeaderText(null);
+        alert.setContentText("La planification a été faite avec succès.");
+        alert.showAndWait();
+    }
     public static void planningAdded() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Planning ajouté!");
@@ -73,8 +80,29 @@ public class Alerts {
     public static void errorDate() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
-        alert.setHeaderText("Date erronée !");
+        alert.setHeaderText("Date erronée! ");
         alert.setContentText("La date de fin de période doit être strictement\nsupérieur à la date de fin de période");
+        alert.showAndWait();
+    }
+    public static void errorPlan() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Planification impossible ! ");
+        alert.setContentText("Impossible de planifier cette tâche dans la date\nque vous avez introduit");
+        alert.showAndWait();
+    }
+    public static void errorDeadline() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Deadline erronée !");
+        alert.setContentText("La date limite de la tâche doit être strictement\nsupérieur à la date d'aujourd'hui");
+        alert.showAndWait();
+    }
+    public static void errorDeadlineandDate() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Date erronée !");
+        alert.setContentText("La date de planification doit être\nsupérieur à la date limite");
         alert.showAndWait();
     }
     public static void errorColor() {

@@ -9,7 +9,7 @@ public class Creneau implements Serializable{
     @Override
     public String toString() {
         return "Creneau [heureDebut=" + heureDebut + ", heureFin=" + heureFin + ", duree=" + duree + ", dureeMin="
-                + dureeMin + ", bloque=" + bloque + ", occupe=" + occupe + "]";
+                + dureeMin + ", bloque=" + bloque + "]";
     }
 
     private LocalTime heureDebut;
@@ -17,7 +17,6 @@ public class Creneau implements Serializable{
     private Long duree;
     private Long dureeMin;
     private boolean bloque; // pour savoir si ce créneau est bloqué pour certaines tâches
-    private boolean occupe; // pour savoir si ce créneau contient déjà des tâches planifiées
 
     public Creneau(LocalTime heureDebut, LocalTime heureFin, Long dureeMin, boolean bloque){
         this.heureDebut = heureDebut;
@@ -25,17 +24,12 @@ public class Creneau implements Serializable{
         this.duree = Duration.between(heureDebut, heureFin).toMinutes();
         this.dureeMin=dureeMin;
         this.bloque = bloque;
-        this.occupe = false; // initialement le créneau qui vient d'être créé est libre
     }
 
     public Creneau(){}
-
-    public boolean contains(Creneau other) {//retourne vrai if this contains other
-        return other.getHeureDebut().compareTo(heureDebut) >= 0 && other.getHeureFin().compareTo(heureFin) <= 0;
-    }
-
+ 
     public boolean isDivisible(Long dureeTache){
-    //tester si un créneau est divisible
+        //tester si un créneau est divisible
         boolean isDiv = false;
         if(duree-dureeTache>=dureeMin){
             isDiv=true;
@@ -45,11 +39,19 @@ public class Creneau implements Serializable{
         }
         return isDiv;
     }
-
+    
     public void updateCreneau(Long dureeTache){
-    //si le creneau est divisible on change les intervalles de temps 
+        //si le creneau est divisible on change les intervalles de temps 
         heureDebut = heureDebut.plusMinutes(dureeTache);
     }
+    
+    public boolean overlaps(Creneau creneau1, Creneau creneau2) {
+    return creneau1.getHeureDebut().isBefore(creneau2.getHeureFin())
+        && creneau1.getHeureFin().isAfter(creneau2.getHeureDebut()) ||
+        creneau1.getHeureDebut().equals(creneau2.getHeureFin())
+        || creneau1.getHeureFin().equals(creneau2.getHeureDebut());
+    }
+
     
 
     public LocalTime getHeureDebut() {
@@ -82,14 +84,6 @@ public class Creneau implements Serializable{
 
     public void setBloque(boolean bloque) {
         this.bloque = bloque;
-    }
-
-    public boolean isOccupe() {
-        return occupe;
-    }
-
-    public void setOccupe(boolean occupe) {
-        this.occupe = occupe;
     }
 
     public Long getDureeMin() {

@@ -64,7 +64,7 @@
             </Pane>
          </left>
       </BorderPane>
-      <BorderPane fx:id="AddPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
+      <BorderPane fx:id="AddPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
          <right>
             <Pane prefHeight="400.0" prefWidth="100.0" scaleX="1.06" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-533.0" translateY="-11.0" BorderPane.alignment="CENTER">
                <children>
@@ -122,7 +122,7 @@
             </Pane>
          </left>
       </BorderPane>
-      <BorderPane fx:id="manualPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+      <BorderPane fx:id="manualPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <center>
             <Text fill="#ff0460" strokeType="OUTSIDE" strokeWidth="0.0" translateX="244.0" translateY="-157.0" BorderPane.alignment="CENTER">
                <font>
@@ -161,8 +161,9 @@
                   <DatePicker fx:id="dateManualPicker" layoutX="194.0" layoutY="106.0" />
                   <Text fx:id="creneauText" layoutX="82.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Créneau" wrappingWidth="68.13671875" />
                   <TextField fx:id="creneauDebutField" layoutX="133.0" layoutY="155.0" promptText="heure début HH:MM" />
-                  <TextField fx:id="creneauFinField" layoutX="302.0" layoutY="155.0" promptText="heure fin HH:MM" />
-                  <Button fx:id="planManualBtn" layoutX="238.0" layoutY="200.0" mnemonicParsing="false" onAction="#handlePlanManual" text="Planifier" />
+                  <Button fx:id="planManualBtn" layoutX="234.0" layoutY="230.0" mnemonicParsing="false" onAction="#handlePlanManual" text="Planifier" />
+                  <Text fx:id="bloqueText" layoutX="42.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous souhaitez bloquer ce créneau pour la tâche ?" />
+                  <ChoiceBox fx:id="bloqueBox" layoutX="328.0" layoutY="196.0" prefWidth="150.0" />
                </children>
             </Pane>
          </right>
@@ -373,7 +374,7 @@
                   <Text fx:id="categoryText" layoutX="68.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nom catégorie" />
                   <TextField fx:id="categoryField" layoutX="188.0" layoutY="103.0" />
                   <Text fx:id="colorText" layoutX="68.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="couleur" wrappingWidth="92.8033447265625" />
-                  <ColorPicker fx:id="colorPicker" layoutX="188.0" layoutY="137.0" onAction="#handleColorPicker" />
+                  <ColorPicker fx:id="colorPicker" layoutX="188.0" layoutY="137.0" />
                   <Button fx:id="addCategoBtn" layoutX="294.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleAddCategory" text="Ajouter cette catégorie" />
                   <Text fx:id="deleteCategoryText" layoutX="89.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous voulez supprimer une catégorie , choississez-en une" />
                   <ChoiceBox fx:id="deleteCategoryBox" layoutX="188.0" layoutY="259.0" prefWidth="150.0" />

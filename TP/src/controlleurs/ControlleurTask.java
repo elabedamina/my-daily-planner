@@ -29,11 +29,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Categorie;
+import modals.Creneau;
 import modals.Decomposable;
 import modals.Planify;
 import modals.Priorite;
 import modals.Simple;
-import modals.Tache;
 import modals.Utilisateur;
 import javafx.scene.Node;
 
@@ -93,9 +93,6 @@ public class ControlleurTask implements Initializable{
 
     @FXML
     private TextField creneauDebutField;
-
-    @FXML
-    private TextField creneauFinField;
 
     @FXML
     private Text creneauText;
@@ -272,6 +269,12 @@ public class ControlleurTask implements Initializable{
     private Text typeText;
 
     @FXML
+    private ChoiceBox<String> bloqueBox;
+
+    @FXML
+    private Text bloqueText;
+
+    @FXML
     private Button updateBtn;
 
     @FXML
@@ -289,22 +292,49 @@ public class ControlleurTask implements Initializable{
     
     private Utilisateur myCurrenUtilisateur;
     private Planify planify = Planify.getInstance();
-    private Simple tacheSimple = new Simple();
-    private Decomposable tacheDecomposable = new Decomposable();
     private LocalDate deadLine;
-    private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
-
-
-
-    /*----------------------------- */
-    
     @FXML
-    void handleColorPicker(ActionEvent event) {
-        
+    void handlePlanManual(ActionEvent event) {
+        Simple tacheSimple = new Simple();
+        tacheSimple.setNom(tacheTextField.getText());
+        tacheSimple.setDuree(convert(dureeTextField.getText()));
+        tacheSimple.setDate_limite(deadlineDatePicker.getValue());
+        tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+        tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+        if (dateManualPicker.getValue().isAfter(tacheSimple.getDate_limite())){
+            Alerts.errorDeadlineandDate();
+        }
+        else{
+            if(creneauDebutField.getText().isEmpty()){
+                Alerts.emptyFields();
+            }
+            else{
+                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+                LocalTime h = LocalTime.parse(creneauDebutField.getText(), timeFormatter);
+                LocalTime h1 = h.plusMinutes(tacheSimple.getDuree());
+                boolean bloque=false;
+                if(bloqueBox.getSelectionModel().getSelectedItem() == "Oui"){
+                    bloque=true;
+                }
+                Creneau c = new Creneau(h, h1, myCurrenUtilisateur.getDureeMin(),bloque);
+                if(myCurrenUtilisateur.planNewTaskSimple(tacheSimple, dateManualPicker.getValue(), c)){
+                    Alerts.successfulPlan();
+                    System.out.println(myCurrenUtilisateur);
+                }
+                else{
+                    Alerts.errorPlan();
+                }
+                planify.updateUser(myCurrenUtilisateur);
+                handleGoingBack(event);
+                clearFields();
+            }
+        }
+        dateManualPicker.setValue(null);
+        creneauDebutField.clear();
+        bloqueBox.getSelectionModel().clearSelection();
     }
-    
-    /*----------------------------- */
+
     private boolean getTache(){
         if(tacheTextField.getText().isEmpty()|| dureeTextField.getText().isEmpty() 
         || deadLine == null || PriorityBox.getSelectionModel().getSelectedItem() == null
@@ -314,30 +344,36 @@ public class ControlleurTask implements Initializable{
         }
         return true;
     }
+
     @FXML
     void handleNon(ActionEvent event) {
         if (getTache()){
-            typeBox.setVisible(true);
-            typeText.setVisible(true);
-            sauvegarderBtn.setVisible(true);
-            ouiBtn.setDisable(true);
-            periodiciteText.setVisible(true);
-            periodiciteTextField.setVisible(true);
+            if(deadlineDatePicker.getValue().isBefore(LocalDate.now())){
+                Alerts.errorDeadline();
+            }
+            else{
+                typeBox.setVisible(true);
+                typeText.setVisible(true);
+                sauvegarderBtn.setVisible(true);
+                ouiBtn.setDisable(true);
+                periodiciteText.setVisible(true);
+                periodiciteTextField.setVisible(true);
+            }
         }
     }
 
     @FXML
     void handleOui(ActionEvent event) {
         if(getTache()){
-            AddPage.setVisible(false);
-            manualPage.setVisible(true);
-            deleteCategoryBox.getSelectionModel().clearSelection();
-            nonBtn.setDisable(true);
-            tacheSimple.setNom(tacheText.getText());
-            tacheSimple.setDuree(Long.parseLong(dureeTextField.getText()));
-            tacheSimple.setDate_limite(deadlineDatePicker.getValue());
-            tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
-            tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+            if(deadlineDatePicker.getValue().isBefore(LocalDate.now())){
+                Alerts.errorDeadline();
+            }
+            else{
+                AddPage.setVisible(false);
+                manualPage.setVisible(true);
+                deleteCategoryBox.getSelectionModel().clearSelection();
+                nonBtn.setDisable(true);
+            }
         }
     }
 
@@ -345,38 +381,53 @@ public class ControlleurTask implements Initializable{
     void handleSauvegarder(ActionEvent event) {
        String myType = typeBox.getSelectionModel().getSelectedItem();
        if( myType == "Tâche simple" ){
-            tacheSimple.setNom(tacheText.getText());
-            tacheDecomposable.setDuree(convert(dureeTextField.getText()));
-            tacheSimple.setDate_limite(deadlineDatePicker.getValue());
-            tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
-            tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
-            tacheSimple.setPeriodicite(Integer.parseInt(periodiciteTextField.getText()));
-            //update the user
-            myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheSimple);
-            System.out.println("print not planned "+myCurrenUtilisateur.toString2());
-            planify.updateUser(myCurrenUtilisateur);
-            clearFields();
-            Alerts.sauvegarder();
-            handleGoingBack(event);
-        }
-        else{
-            if( myType == "Tâche décomposable"){
-                tacheDecomposable.setNom(tacheText.getText());
-                tacheDecomposable.setDuree(convert(dureeTextField.getText()));
-                tacheDecomposable.setDate_limite(deadlineDatePicker.getValue());
-                tacheDecomposable.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
-                tacheDecomposable.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
-                myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheDecomposable);
-                System.out.println("print not planned "+myCurrenUtilisateur.toString2());
+           if(deadlineDatePicker.getValue().isBefore(LocalDate.now())){
+               Alerts.errorDeadline();
+            }
+            else{
+                Simple tacheSimple = new Simple();
+                tacheSimple.setNom(tacheTextField.getText());
+                tacheSimple.setDuree(convert(dureeTextField.getText()));
+                tacheSimple.setDate_limite(deadlineDatePicker.getValue());
+                tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+                tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+                tacheSimple.setPeriodicite(Integer.parseInt(periodiciteTextField.getText()));
+                //update the user
+                myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheSimple);
                 planify.updateUser(myCurrenUtilisateur);
                 clearFields();
                 Alerts.sauvegarder();
                 handleGoingBack(event);
             }
+        }
+        else{
+            if( myType == "Tâche décomposable"){
+                if(deadlineDatePicker.getValue().isBefore(LocalDate.now())){
+                    Alerts.errorDeadline();
+                }
+                else{
+                    Decomposable tacheDecomposable = new Decomposable();
+                    tacheDecomposable.setNom(tacheTextField.getText());
+                    tacheDecomposable.setDuree(convert(dureeTextField.getText()));
+                    tacheDecomposable.setDate_limite(deadlineDatePicker.getValue());
+                    tacheDecomposable.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+                    tacheDecomposable.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+                    myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheDecomposable);
+                    planify.updateUser(myCurrenUtilisateur);
+                    clearFields();
+                    Alerts.sauvegarder();
+                    handleGoingBack(event);
+                }
+            }
             else{
                 Alerts.emptyFields();
             }
         }
+    }
+
+    @FXML
+    void handleDeadline(ActionEvent event) {
+        deadLine = deadlineDatePicker.getValue();
     }
 
     private Long convert (String durationString ){//convertir la durée en minutes
@@ -480,12 +531,6 @@ public class ControlleurTask implements Initializable{
     }
 
     @FXML
-    void handleDeadline(ActionEvent event) {
-        deadLine = deadlineDatePicker.getValue();
-    }
-
-
-    @FXML
     void handleEnterDatePicker(ActionEvent event) {
 
     }
@@ -505,18 +550,11 @@ public class ControlleurTask implements Initializable{
     void handlePeriodFinPicker(ActionEvent event) {
 
     }
-
-    @FXML
-    void handlePlanManual(ActionEvent event) {
-
-    }
-
-    
+  
     @FXML
     void handleRefuseAuto(ActionEvent event) {
 
     }
-
 
     @FXML
     void handletaskList(ActionEvent event) {
@@ -533,6 +571,14 @@ public class ControlleurTask implements Initializable{
         myCurrenUtilisateur = user;
     }
 
+    private void populateBloque(){
+        ArrayList<String> a = new ArrayList<>();
+        a.add("Oui");
+        a.add("Non");
+        ObservableList<String> aList = FXCollections.observableArrayList(a);
+        bloqueBox.setItems(aList);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         TaskMainPage.setVisible(true);
@@ -545,6 +591,7 @@ public class ControlleurTask implements Initializable{
         categoryPage.setVisible(false);
         populatePriority();
         populateType();
+        populateBloque();
     }
 
     private Stage stage;

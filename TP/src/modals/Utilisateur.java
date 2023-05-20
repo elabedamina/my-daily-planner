@@ -9,12 +9,9 @@ public class Utilisateur implements Serializable {
 
     @Override
     public String toString() {
-        return "Utilisateur [pseudo=" + pseudo + ", planning=" + planning + ", dureeMin=" + dureeMin
-                + ", tacheMin=" + tacheMin + "]";
-    }
-
-    public String toString2() {
-        return "Utilisateur [pseudo=" + pseudo +  "les taches non planned" + tachesNotPlanned + "]";
+        return "----------------------------\nUtilisateur : pseudo=" + pseudo + "\n->planning :\n" + planning + "\n->dureeMin=\n" + dureeMin + "\n->tacheMin=\n"
+                + tacheMin + "\n->tachesNotPlanned= \n" + tachesNotPlanned + "\n->myCategories=\n" + myCategories + "\n->projets=\n"
+                + projets + "]\n----------------------------";
     }
 
     public Utilisateur(String pseudo, Long dureeMin, int tacheMin) {
@@ -42,66 +39,128 @@ public class Utilisateur implements Serializable {
         return true; // Period is available
     }
 
-    private Planning isDate(LocalDate d){
+    private int isDate(LocalDate d){
         //teste si la date "d" est déja dans un des plannings
-        Planning indexP=null;
+        int index = -1;
         ArrayList<Planning> myPlannings = planning;
         if (myPlannings != null) {
             ListIterator<Planning> iterator = myPlannings.listIterator();
             while (iterator.hasNext()) {
                 Planning currentPlanning = iterator.next();
-                if (currentPlanning.getPeriod().containsDate(d)) {
-                    indexP=currentPlanning;
+                if (currentPlanning.getPeriod().containsDate(d)||(currentPlanning.getPeriod().isTacheSimple() && currentPlanning.getPeriod().getStartDate().isEqual(d))) {
+                    index = myPlannings.indexOf(currentPlanning);
                     break;
                 }
             }
         }
-        return  indexP;
+        return  index;
     }
 
-    private Planning isDateAndCreneau(LocalDate d,Creneau c){
-        //teste si la date "d" et le créneau sont déjà dans un des plannings
-        Planning indexP=null;
-        ArrayList<Planning> myPlannings = planning;
-        if (myPlannings != null) {
-            ListIterator<Planning> iterator = myPlannings.listIterator();
-            while (iterator.hasNext()) {
-                Planning currentPlanning = iterator.next();
-                if (currentPlanning.getPeriod().containsDateAndCreneau(d,c) != -1) {
-                    indexP=currentPlanning;
-                    break;
-                }
-            }
+    private boolean creneauLibre(LocalDate d,Creneau c, int indexPlanning){
+        //retourne vrai si pour une date de planning donnée le créneau est libre
+        if (planning.get(indexPlanning).getPeriod().containsDateAndCreneau(d,c) != -1) {
+            return true;
         }
-        return indexP;
+        return false;
     }
 
-    public void planNewTaskSimple(Tache t,LocalDate d, Creneau c){
-        //planifier manuellement une tâche simple
+    private boolean creneauOccupe(Creneau c, int indexPlanning){
+        //retrourne vrai si le créneau est occupé
+        System.out.println(" dkhalt l creneau ocuuppee ");
+
+        return planning.get(indexPlanning).containsCreneauValue(c);
+    }
+
+    private boolean creneauNotExist(LocalDate d,Creneau c, int indexPlanning){
+        //retourne vrai si le créneau n'existe
+        return(!creneauLibre(d, c, indexPlanning) && !creneauOccupe(c, indexPlanning));      
+    }
+
+    public boolean planNewTaskSimple(Tache t,LocalDate d, Creneau c){
+    //planifier manuellement une tâche simple
         if(t instanceof Simple){
-            if(isDate(d) == null){
-                //créer un plannig d'un jour 
+            if(isDate(d) == -1){    //la date n'est dans aucun planning
                 PeriodMe periodMe= new PeriodMe(d, d);
                 Planning _planning = new Planning(periodMe);
+                t.setEtat(Etat.INPROGRESS);
                 t.setDate(d);
                 _planning.addSingleTask(t,c);
                 this.planning.add(_planning);
+                System.out.println("date not prise");
+                return true;//planification is done
             }
-            else{
-                Planning indexP = isDateAndCreneau(d, c);
-                if(indexP != null){
-                    //update the existing slot
-                    Creneau _creneau = indexP.updateSlot(d, c, t.getDuree()); /////// idk if its right to test on la classe tache
-                    t.setDate(d);
-                    indexP.addSingleTask(t, _creneau);
-                }
-                else{
-                    indexP=isDate(d);
-                    t.setDate(d);
-                    indexP.addSingleTask(t, c);
-                }
+            else{//un planning contient cette date
+                System.out.println("this is the index : "+ isDate(d));
+                System.out.println("heda wsh raj3li creneau occuppee: "+ creneauOccupe(c, isDate(d)));
+                    if(creneauOccupe(c, isDate(d))){
+                    //2eme cas : le créneau est occupé, planification impossible
+                        System.out.println("impoooo");
+                        return false;
+                    }
+                    else{
+                        System.out.println("dkhalt lel elseee : ");
+
+                        if (creneauLibre(d, c, isDate(d))){
+                            //3eme cas : le créneau est libre
+                            /*il faut vérifier si le créneau est divisible ou non puis planifier*/
+                            if(c.isDivisible(t.getDuree())){
+                                c.updateCreneau(t.getDuree());
+                                System.out.println("divisible");
+                            }
+                            else{
+                                /*s'il n'est pas divisible je l'enlève de la liste des créneaux libres et je planifie */
+                                planning.get(isDate(d)).getPeriod().removeSlot(d, c);
+                                System.out.println("not divis");
+                            }
+                            t.setEtat(Etat.INPROGRESS);
+                            t.setDate(d);
+                            planning.get(isDate(d)).addSingleTask(t,c);
+                            System.out.println("done");
+                            return true;//planification is done
+                        }
+                        else{
+                            if(creneauNotExist(d, c, isDate(d))){
+                                // 1er cas : le creneau n'est ni occupé ni libre, ajouter la tache
+                                t.setEtat(Etat.INPROGRESS);
+                                t.setDate(d);
+                                planning.get(isDate(d)).addSingleTask(t,c);
+                                System.out.println("creneau libre");
+                                return true;
+                            }
+                        }
+                    }
             }
         }
+        else{
+            return false;
+        }
+        return false;
+    }
+
+    public void addNewProject(Projet p){
+        projets.add(p);
+    }
+
+    public void deleteProject(Projet p){
+        projets.remove(p);
+    }
+
+    public boolean isColor(java.awt.Color c){
+        for (Categorie category : myCategories) {
+            if (category.getCouleur().equals(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNameCategory(String n){
+        for (Categorie category : myCategories) {
+            if (category.getNom().equals(n)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public String getPseudo() {
@@ -171,33 +230,5 @@ public class Utilisateur implements Serializable {
     public void setProjets(ArrayList<Projet> projets) {
         this.projets = projets;
     }
-
-    public void addNewProject(Projet p){
-        projets.add(p);
-    }
-
-    public void deleteProject(Projet p){
-        projets.remove(p);
-    }
-
-    public boolean isColor(java.awt.Color c){
-        for (Categorie category : myCategories) {
-            if (category.getCouleur().equals(c)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean isNameCategory(String n){
-        for (Categorie category : myCategories) {
-            if (category.getNom().equals(n)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    
 
 }

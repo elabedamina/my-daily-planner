@@ -5,7 +5,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.ListIterator;
 import java.util.Map;
 
 public class PeriodMe implements Serializable {
@@ -48,20 +47,10 @@ public class PeriodMe implements Serializable {
             }
         }    
     }
-
-    public void updateSlotPeriod(LocalDate d,Creneau oldCreneau, Creneau newCreneau){
-        //mettre à jour un créneau dans le cas ou il est divisible
-        ArrayList<Creneau> creneauxList = mapAvailableSlot.get(d);
-        if (creneauxList != null) {
-            ListIterator<Creneau> iterator = creneauxList.listIterator();
-            while (iterator.hasNext()) {
-                Creneau currentCreneau = iterator.next();
-                if (currentCreneau.equals(oldCreneau)) {
-                    iterator.set(newCreneau);
-                    break;
-                }
-            }
-        }
+   
+    public boolean isTacheSimple(){
+        //planning d'un jour
+        return (this.startDate.equals(this.endDate));
     }
 
     public void setAllAvailableSlots(ArrayList<Creneau> mySlot){
@@ -110,13 +99,13 @@ public class PeriodMe implements Serializable {
 
     @Override
     public String toString() {
-        return "PeriodMe [La date de début : " + startDate + "\nLa date de fin : " + endDate + "Les créneaux de la période : " + printMap()+ "]";
+        return "\nPeriodMe [La date de début : " + startDate + "\nLa date de fin : " + endDate + "Les créneaux dispo de la période : " + printMap()+ "]";
     }
 
     public String printMap(){
         String myText = "";
         for (Map.Entry<LocalDate, ArrayList<Creneau> > entry : mapAvailableSlot.entrySet()) {
-           myText= myText+"La date : "+ entry.getKey()+"Le créneau : "+ entry.getValue();
+           myText= myText+"\nLa date : "+ entry.getKey()+"Le créneau : "+ entry.getValue();
         }
         return myText;
     }
@@ -129,10 +118,6 @@ public class PeriodMe implements Serializable {
 
     public void setMapAvailableSlot(Map<LocalDate, ArrayList<Creneau>> mapAvailableSlot) {
         this.mapAvailableSlot = mapAvailableSlot;
-    }
-
-    public boolean isTacheSimple(){
-        return (this.startDate.equals(this.endDate));
     }
 
 }
