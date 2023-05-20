@@ -13,6 +13,10 @@ public class Utilisateur implements Serializable {
                 + ", tacheMin=" + tacheMin + "]";
     }
 
+    public String toString2() {
+        return "Utilisateur [pseudo=" + pseudo +  "les taches non planned" + tachesNotPlanned + "]";
+    }
+
     public Utilisateur(String pseudo, Long dureeMin, int tacheMin) {
         this.pseudo = pseudo;
         this.dureeMin = dureeMin;

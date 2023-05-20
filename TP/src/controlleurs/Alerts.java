@@ -63,6 +63,13 @@ public class Alerts {
         alert.setContentText("Votre catégorie de tâches a été supprimée avec succés.\n");
         alert.showAndWait();
     }
+    public static void sauvegarder() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Tâche sauvegardée!");
+        alert.setHeaderText(null);
+        alert.setContentText("La tâche que vous venez d'introduire a été sauvegardée\navec succès dans la liste de tâches non planifiées.\n");
+        alert.showAndWait();
+    }
     public static void errorDate() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);

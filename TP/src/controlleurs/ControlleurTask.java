@@ -2,6 +2,7 @@ package controlleurs;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
@@ -26,8 +27,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Categorie;
+import modals.Decomposable;
 import modals.Planify;
 import modals.Priorite;
+import modals.Simple;
+import modals.Tache;
 import modals.Utilisateur;
 import javafx.scene.Node;
 
@@ -254,7 +258,7 @@ public class ControlleurTask implements Initializable{
     private MenuButton tasktList1;
 
     @FXML
-    private ChoiceBox<?> typeBox;
+    private ChoiceBox<String> typeBox;
 
     @FXML
     private Text typeText;
@@ -277,6 +281,10 @@ public class ControlleurTask implements Initializable{
     
     private Utilisateur myCurrenUtilisateur;
     private Planify planify = Planify.getInstance();
+    private Simple tacheSimple = new Simple();
+    private Decomposable tacheDecomposable = new Decomposable();
+    private LocalDate deadLine;
+
 
 
     /*----------------------------- */
@@ -287,14 +295,101 @@ public class ControlleurTask implements Initializable{
     }
     
     /*----------------------------- */
+    private boolean getTache(){
+        if(tacheTextField.getText().isEmpty()|| dureeTextField.getText().isEmpty() 
+        || deadLine == null || PriorityBox.getSelectionModel().getSelectedItem() == null
+        || deleteCategoryBox2.getSelectionModel().getSelectedItem()== null){
+            Alerts.emptyFields();
+            return false;
+        }
+        return true;
+    }
+    @FXML
+    void handleNon(ActionEvent event) {
+        if (getTache()){
+            typeBox.setVisible(true);
+            typeText.setVisible(true);
+            sauvegarderBtn.setVisible(true);
+            ouiBtn.setDisable(true);
+        }
+    }
 
-    private void populatePriority(){/*nzidha f initialize */
+    @FXML
+    void handleOui(ActionEvent event) {
+        if(getTache()){
+            AddPage.setVisible(false);
+            manualPage.setVisible(true);
+            deleteCategoryBox.getSelectionModel().clearSelection();
+            nonBtn.setDisable(true);
+            tacheSimple.setNom(tacheText.getText());
+            tacheSimple.setDuree(Long.parseLong(dureeTextField.getText()));
+            tacheSimple.setDate_limite(deadlineDatePicker.getValue());
+            tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+            tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+        }
+    }
+
+    @FXML
+    void handleSauvegarder(ActionEvent event) {
+       String myType = typeBox.getSelectionModel().getSelectedItem();
+       if( myType == "Tâche simple" ){
+            tacheSimple.setNom(tacheText.getText());
+            tacheSimple.setDuree(Long.parseLong(dureeTextField.getText()));
+            tacheSimple.setDate_limite(deadlineDatePicker.getValue());
+            tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+            tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+            //update the user
+            myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheSimple);
+            System.out.println("print not planned "+myCurrenUtilisateur.toString2());
+            planify.updateUser(myCurrenUtilisateur);
+            clearFields();
+            Alerts.sauvegarder();
+            handleGoingBack(event);
+        }
+        else{
+            if( myType == "Tâche décomposable"){
+                tacheDecomposable.setNom(tacheText.getText());
+                tacheDecomposable.setDuree(Long.parseLong(dureeTextField.getText()));
+                tacheDecomposable.setDate_limite(deadlineDatePicker.getValue());
+                tacheDecomposable.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+                tacheDecomposable.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+                myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheDecomposable);
+                System.out.println("print not planned "+myCurrenUtilisateur.toString2());
+                planify.updateUser(myCurrenUtilisateur);
+                clearFields();
+                Alerts.sauvegarder();
+                handleGoingBack(event);
+            }
+            else{
+                Alerts.emptyFields();
+            }
+        }
+    }
+
+    private void clearFields(){
+        tacheTextField.setText("");
+        dureeTextField.setText("");
+        deadlineDatePicker.setValue(null);
+        deleteCategoryBox2.getSelectionModel().clearSelection();
+        PriorityBox.getSelectionModel().clearSelection();        
+        typeBox.getSelectionModel().clearSelection();        
+    }
+
+    private void populatePriority(){
         ArrayList<Priorite> myPriorities = new ArrayList<>();
         myPriorities.add(Priorite.HIGH);
         myPriorities.add(Priorite.MEDIUM);
         myPriorities.add(Priorite.LOW);
         ObservableList<Priorite> myPrioritiesList = FXCollections.observableArrayList(myPriorities);
         PriorityBox.setItems(myPrioritiesList);
+    }
+
+    private void populateType(){
+        ArrayList<String> myTypes = new ArrayList<>();
+        myTypes.add("Tâche simple");
+        myTypes.add("Tâche décomposable");
+        ObservableList<String> myTypesList = FXCollections.observableArrayList(myTypes);
+        typeBox.setItems(myTypesList);
     }
 
     @FXML
@@ -321,7 +416,6 @@ public class ControlleurTask implements Initializable{
                 categoryField.clear();
                 colorPicker.setValue(Color.WHITE);
                 deleteCategoryBox.getItems().add(myCategorie);                
-                /* i have to update the user in the file */
             }
         }
     }
@@ -342,7 +436,6 @@ public class ControlleurTask implements Initializable{
             deleteCategoryBox.getSelectionModel().clearSelection();
             populateCategory();
             Alerts.successfulDeleteCategory();
-            /* i have to update the user in the file */
         }
         else{
             Alerts.emptyFields();
@@ -367,7 +460,7 @@ public class ControlleurTask implements Initializable{
 
     @FXML
     void handleDeadline(ActionEvent event) {
-
+        deadLine = deadlineDatePicker.getValue();
     }
 
 
@@ -403,10 +496,6 @@ public class ControlleurTask implements Initializable{
 
     }
 
-    @FXML
-    void handleSauvegarder(ActionEvent event) {
-        deleteCategoryBox.getSelectionModel().clearSelection();
-    }
 
     @FXML
     void handletaskList(ActionEvent event) {
@@ -434,6 +523,7 @@ public class ControlleurTask implements Initializable{
         displayPage.setVisible(false);
         categoryPage.setVisible(false);
         populatePriority();
+        populateType();
     }
 
     private Stage stage;
@@ -475,20 +565,6 @@ public class ControlleurTask implements Initializable{
         categoryPage.setVisible(false);
     }
 
-    @FXML
-    void handleNon(ActionEvent event) {
-        typeBox.setVisible(true);
-        typeText.setVisible(true);
-        sauvegarderBtn.setVisible(true);
-    }
-
-    @FXML
-    void handleOui(ActionEvent event) {
-        AddPage.setVisible(false);
-        manualPage.setVisible(true);
-        deleteCategoryBox.getSelectionModel().clearSelection();
-
-    }
 
     @FXML
     void handleGoingBack(ActionEvent event) {
@@ -508,6 +584,8 @@ public class ControlleurTask implements Initializable{
         TaskMainPage.setVisible(false);
         AddPage.setVisible(true);
         populateCategory();
+        nonBtn.setDisable(false);
+        ouiBtn.setDisable(false);
         manualPage.setVisible(false);
         autoPage.setVisible(false);
         projectPage.setVisible(false);
