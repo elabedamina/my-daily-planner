@@ -29,7 +29,7 @@ public class Decomposable extends Tache{
 
     @Override
     public String toString() {
-        return "Decomposable [tab_taches=" + tab_taches + "]";
+        return super.toString()+ "\n----> Decomposable [tab_taches=" + tab_taches + "]";
     }
 
 }

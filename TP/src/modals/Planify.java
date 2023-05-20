@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Planify {
-    private static final String FILE_NAME = "users.dat";
+    private static final String FILE_NAME = "users.txt";
     private static Planify instance;
     private ArrayList<Utilisateur> users;
 

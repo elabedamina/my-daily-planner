@@ -29,8 +29,8 @@ public class Tache implements Serializable{
 
     @Override
     public String toString() {
-        return "Tache [nom=" + nom + ", duree=" + duree + ", date_limite=" + date_limite + ", priorite=" + priorite
-                + ", categorie=" + categorie + ", etat=" + etat + "]";
+        return "\n---------\nTache [nom=" + nom + ", duree=" + duree + ", date_limite=" + date_limite + ", priorite=" + priorite
+                + ", categorie=" + categorie + ", etat=" + etat + ", date : "+ date +"]";
     }
 
     public String getNom() {
