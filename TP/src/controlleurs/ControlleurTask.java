@@ -2,8 +2,12 @@ package controlleurs;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,8 +23,15 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import modals.Categorie;
+import modals.Decomposable;
+import modals.Planify;
+import modals.Priorite;
+import modals.Simple;
+import modals.Tache;
 import modals.Utilisateur;
 import javafx.scene.Node;
 
@@ -31,7 +42,7 @@ public class ControlleurTask implements Initializable{
     private BorderPane AddPage;
 
     @FXML
-    private MenuButton PriorityBox;
+    private ChoiceBox<Priorite> PriorityBox;
 
     @FXML
     private BorderPane TaskMainPage;
@@ -53,9 +64,6 @@ public class ControlleurTask implements Initializable{
 
     @FXML
     private BorderPane autoPage;
-
-    @FXML
-    private MenuButton categoryBox;
 
     @FXML
     private Button categoryBtn;
@@ -103,7 +111,10 @@ public class ControlleurTask implements Initializable{
     private Text deadlineText;
 
     @FXML
-    private ChoiceBox<?> deleteCategoryBox;
+    private ChoiceBox<Categorie> deleteCategoryBox;
+
+    @FXML
+    private ChoiceBox<Categorie> deleteCategoryBox2;
 
     @FXML
     private Button deleteCategoryBtn;
@@ -247,7 +258,7 @@ public class ControlleurTask implements Initializable{
     private MenuButton tasktList1;
 
     @FXML
-    private ChoiceBox<?> typeBox;
+    private ChoiceBox<String> typeBox;
 
     @FXML
     private Text typeText;
@@ -269,15 +280,321 @@ public class ControlleurTask implements Initializable{
 
     
     private Utilisateur myCurrenUtilisateur;
+    private Planify planify = Planify.getInstance();
+    private Simple tacheSimple = new Simple();
+    private Decomposable tacheDecomposable = new Decomposable();
+    private LocalDate deadLine;
+
+
+
+    /*----------------------------- */
+    
+    @FXML
+    void handleColorPicker(ActionEvent event) {
+        
+    }
+    
+    /*----------------------------- */
+    private boolean getTache(){
+        if(tacheTextField.getText().isEmpty()|| dureeTextField.getText().isEmpty() 
+        || deadLine == null || PriorityBox.getSelectionModel().getSelectedItem() == null
+        || deleteCategoryBox2.getSelectionModel().getSelectedItem()== null){
+            Alerts.emptyFields();
+            return false;
+        }
+        return true;
+    }
+    @FXML
+    void handleNon(ActionEvent event) {
+        if (getTache()){
+            typeBox.setVisible(true);
+            typeText.setVisible(true);
+            sauvegarderBtn.setVisible(true);
+            ouiBtn.setDisable(true);
+        }
+    }
+
+    @FXML
+    void handleOui(ActionEvent event) {
+        if(getTache()){
+            AddPage.setVisible(false);
+            manualPage.setVisible(true);
+            deleteCategoryBox.getSelectionModel().clearSelection();
+            nonBtn.setDisable(true);
+            tacheSimple.setNom(tacheText.getText());
+            tacheSimple.setDuree(Long.parseLong(dureeTextField.getText()));
+            tacheSimple.setDate_limite(deadlineDatePicker.getValue());
+            tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+            tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+        }
+    }
+
+    @FXML
+    void handleSauvegarder(ActionEvent event) {
+       String myType = typeBox.getSelectionModel().getSelectedItem();
+       if( myType == "Tâche simple" ){
+            tacheSimple.setNom(tacheText.getText());
+            tacheSimple.setDuree(Long.parseLong(dureeTextField.getText()));
+            tacheSimple.setDate_limite(deadlineDatePicker.getValue());
+            tacheSimple.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+            tacheSimple.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+            //update the user
+            myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheSimple);
+            System.out.println("print not planned "+myCurrenUtilisateur.toString2());
+            planify.updateUser(myCurrenUtilisateur);
+            clearFields();
+            Alerts.sauvegarder();
+            handleGoingBack(event);
+        }
+        else{
+            if( myType == "Tâche décomposable"){
+                tacheDecomposable.setNom(tacheText.getText());
+                tacheDecomposable.setDuree(Long.parseLong(dureeTextField.getText()));
+                tacheDecomposable.setDate_limite(deadlineDatePicker.getValue());
+                tacheDecomposable.setCategorie(deleteCategoryBox2.getSelectionModel().getSelectedItem());
+                tacheDecomposable.setPriorite(PriorityBox.getSelectionModel().getSelectedItem());
+                myCurrenUtilisateur.addTaskToTachesNotPlanned(tacheDecomposable);
+                System.out.println("print not planned "+myCurrenUtilisateur.toString2());
+                planify.updateUser(myCurrenUtilisateur);
+                clearFields();
+                Alerts.sauvegarder();
+                handleGoingBack(event);
+            }
+            else{
+                Alerts.emptyFields();
+            }
+        }
+    }
+
+    private void clearFields(){
+        tacheTextField.setText("");
+        dureeTextField.setText("");
+        deadlineDatePicker.setValue(null);
+        deleteCategoryBox2.getSelectionModel().clearSelection();
+        PriorityBox.getSelectionModel().clearSelection();        
+        typeBox.getSelectionModel().clearSelection();        
+    }
+
+    private void populatePriority(){
+        ArrayList<Priorite> myPriorities = new ArrayList<>();
+        myPriorities.add(Priorite.HIGH);
+        myPriorities.add(Priorite.MEDIUM);
+        myPriorities.add(Priorite.LOW);
+        ObservableList<Priorite> myPrioritiesList = FXCollections.observableArrayList(myPriorities);
+        PriorityBox.setItems(myPrioritiesList);
+    }
+
+    private void populateType(){
+        ArrayList<String> myTypes = new ArrayList<>();
+        myTypes.add("Tâche simple");
+        myTypes.add("Tâche décomposable");
+        ObservableList<String> myTypesList = FXCollections.observableArrayList(myTypes);
+        typeBox.setItems(myTypesList);
+    }
 
     @FXML
     void handleAddCategory(ActionEvent event) {
+        String _name= categoryField.getText();
+        Color _color = colorPicker.getValue();
+        int red = (int) (_color.getRed() * 255);
+        int green = (int) (_color.getGreen() * 255);
+        int blue = (int) (_color.getBlue() * 255);
+        int alpha = (int) (_color.getOpacity() * 255);
+        java.awt.Color color_ = new java.awt.Color(red, green, blue, alpha);
+        if (myCurrenUtilisateur.isColor(color_)){
+            Alerts.errorColor();
+        }
+        else{
+            if (myCurrenUtilisateur.isNameCategory(_name) || _name.isEmpty()){
+                Alerts.errorCategory();
+            }
+            else{
+                Categorie myCategorie= new Categorie(_name, color_);
+                myCurrenUtilisateur.addNewCategory(myCategorie);
+                planify.updateUser(myCurrenUtilisateur);
+                Alerts.successfulCategory();
+                categoryField.clear();
+                colorPicker.setValue(Color.WHITE);
+                deleteCategoryBox.getItems().add(myCategorie);                
+            }
+        }
+    }
 
+    private void populateCategory(){
+        ArrayList<Categorie> myCategories = myCurrenUtilisateur.getMyCategories();
+        ObservableList<Categorie> myCategoriesList = FXCollections.observableArrayList(myCategories);
+        deleteCategoryBox.setItems(myCategoriesList);
+        deleteCategoryBox2.setItems(myCategoriesList);
+    }
+    
+    @FXML
+    void handleDeleteCategory(ActionEvent event) {
+        Categorie catTodelete = deleteCategoryBox.getSelectionModel().getSelectedItem();  
+        if(catTodelete!=null){
+            myCurrenUtilisateur.deleteCategory(catTodelete);
+            planify.updateUser(myCurrenUtilisateur);
+            deleteCategoryBox.getSelectionModel().clearSelection();
+            populateCategory();
+            Alerts.successfulDeleteCategory();
+        }
+        else{
+            Alerts.emptyFields();
+        }
+        
     }
 
     @FXML
     void handleAddProjet(ActionEvent event) {
 
+    }
+
+    @FXML
+    void handleConfirmAuto(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleConfirmUpdate(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handleDeadline(ActionEvent event) {
+        deadLine = deadlineDatePicker.getValue();
+    }
+
+
+    @FXML
+    void handleEnterDatePicker(ActionEvent event) {
+
+    }
+
+
+    @FXML
+    void handleNomProjet(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handlePeriodDebutPicker(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handlePeriodFinPicker(ActionEvent event) {
+
+    }
+
+    @FXML
+    void handlePlanManual(ActionEvent event) {
+
+    }
+
+    
+    @FXML
+    void handleRefuseAuto(ActionEvent event) {
+
+    }
+
+
+    @FXML
+    void handletaskList(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void handletaskPlannedList(ActionEvent event) {
+
+    }
+
+    public void setUser(Utilisateur user) {
+        //to get the infos from the previous controller
+        myCurrenUtilisateur = user;
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        TaskMainPage.setVisible(true);
+        AddPage.setVisible(false);
+        manualPage.setVisible(false);
+        autoPage.setVisible(false);
+        projectPage.setVisible(false);
+        updatePage.setVisible(false);
+        displayPage.setVisible(false);
+        categoryPage.setVisible(false);
+        populatePriority();
+        populateType();
+    }
+
+    private Stage stage;
+    private Scene scene;
+    
+    public void changeSceneToPlannnig(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Planning.fxml"));
+        Parent root = loader.load();
+        ControlleurPlanning controlleurPlanning = loader.getController();
+        controlleurPlanning.setUser(myCurrenUtilisateur);
+        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    
+    @FXML
+    void handleUpdate(ActionEvent event) {
+        TaskMainPage.setVisible(false);
+        AddPage.setVisible(false);
+        manualPage.setVisible(false);
+        autoPage.setVisible(false);
+        projectPage.setVisible(false);
+        updatePage.setVisible(true);
+        displayPage.setVisible(false);
+        categoryPage.setVisible(false);
+    }
+
+    @FXML
+    void handleProject(ActionEvent event) {
+        TaskMainPage.setVisible(false);
+        AddPage.setVisible(false);
+        manualPage.setVisible(false);
+        autoPage.setVisible(false);
+        projectPage.setVisible(true);
+        updatePage.setVisible(false);
+        displayPage.setVisible(false);
+        categoryPage.setVisible(false);
+    }
+
+
+    @FXML
+    void handleGoingBack(ActionEvent event) {
+        TaskMainPage.setVisible(true);
+        AddPage.setVisible(false);
+        manualPage.setVisible(false);
+        autoPage.setVisible(false);
+        projectPage.setVisible(false);
+        updatePage.setVisible(false);
+        displayPage.setVisible(false);
+        categoryPage.setVisible(false);
+        deleteCategoryBox.getSelectionModel().clearSelection();
+    }
+
+    @FXML
+    void handleManual(ActionEvent event) {
+        TaskMainPage.setVisible(false);
+        AddPage.setVisible(true);
+        populateCategory();
+        nonBtn.setDisable(false);
+        ouiBtn.setDisable(false);
+        manualPage.setVisible(false);
+        autoPage.setVisible(false);
+        projectPage.setVisible(false);
+        updatePage.setVisible(false);
+        displayPage.setVisible(false);
+        categoryPage.setVisible(false);
+        typeBox.setVisible(false);
+        typeText.setVisible(false);
+        sauvegarderBtn.setVisible(false);
     }
 
     @FXML
@@ -304,33 +621,17 @@ public class ControlleurTask implements Initializable{
         updatePage.setVisible(false);
         displayPage.setVisible(false);
         categoryPage.setVisible(true);
+        populateCategory();
     }
-
+    
     @FXML
-    void handleColorPicker(ActionEvent event) {
-
+    void handlePlanAuto(ActionEvent event) {
+        confirmAutoBtn.setVisible(true);
+        refuseAutoBtn.setVisible(true);
+        planAutoBtn.setVisible(false);
     }
 
-    @FXML
-    void handleConfirmAuto(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleConfirmUpdate(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleDeadline(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleDeleteCategory(ActionEvent event) {
-
-    }
-
+    
     @FXML
     void handleDisplay(ActionEvent event) {
         TaskMainPage.setVisible(false);
@@ -342,152 +643,4 @@ public class ControlleurTask implements Initializable{
         displayPage.setVisible(true);
         categoryPage.setVisible(false);
     }
-
-    @FXML
-    void handleEnterDatePicker(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleGoingBack(ActionEvent event) {
-        TaskMainPage.setVisible(true);
-        AddPage.setVisible(false);
-        manualPage.setVisible(false);
-        autoPage.setVisible(false);
-        projectPage.setVisible(false);
-        updatePage.setVisible(false);
-        displayPage.setVisible(false);
-        categoryPage.setVisible(false);
-    }
-
-    @FXML
-    void handleManual(ActionEvent event) {
-        TaskMainPage.setVisible(false);
-        AddPage.setVisible(true);
-        manualPage.setVisible(false);
-        autoPage.setVisible(false);
-        projectPage.setVisible(false);
-        updatePage.setVisible(false);
-        displayPage.setVisible(false);
-        categoryPage.setVisible(false);
-        typeBox.setVisible(false);
-        typeText.setVisible(false);
-        sauvegarderBtn.setVisible(false);
-    }
-
-    @FXML
-    void handleNomProjet(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleNon(ActionEvent event) {
-        typeBox.setVisible(true);
-        typeText.setVisible(true);
-        sauvegarderBtn.setVisible(true);
-    }
-
-    @FXML
-    void handleOui(ActionEvent event) {
-        AddPage.setVisible(false);
-        manualPage.setVisible(true);
-    }
-
-    @FXML
-    void handlePeriodDebutPicker(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handlePeriodFinPicker(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handlePlanAuto(ActionEvent event) {
-        confirmAutoBtn.setVisible(true);
-        refuseAutoBtn.setVisible(true);
-        planAutoBtn.setVisible(false);
-    }
-
-    @FXML
-    void handlePlanManual(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleProject(ActionEvent event) {
-        TaskMainPage.setVisible(false);
-        AddPage.setVisible(false);
-        manualPage.setVisible(false);
-        autoPage.setVisible(false);
-        projectPage.setVisible(true);
-        updatePage.setVisible(false);
-        displayPage.setVisible(false);
-        categoryPage.setVisible(false);
-    }
-
-    @FXML
-    void handleRefuseAuto(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleSauvegarder(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleUpdate(ActionEvent event) {
-        TaskMainPage.setVisible(false);
-        AddPage.setVisible(false);
-        manualPage.setVisible(false);
-        autoPage.setVisible(false);
-        projectPage.setVisible(false);
-        updatePage.setVisible(true);
-        displayPage.setVisible(false);
-        categoryPage.setVisible(false);
-    }
-
-    @FXML
-    void handletaskList(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handletaskPlannedList(ActionEvent event) {
-
-    }
-
-    public void setUser(Utilisateur user) {
-        //to get the infos from the previous controller
-        myCurrenUtilisateur = user;
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        TaskMainPage.setVisible(true);
-        AddPage.setVisible(false);
-        manualPage.setVisible(false);
-        autoPage.setVisible(false);
-        projectPage.setVisible(false);
-        updatePage.setVisible(false);
-        displayPage.setVisible(false);
-        categoryPage.setVisible(false);
-    }
-
-    private Stage stage;
-    private Scene scene;
-
-    public void changeSceneToPlannnig(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Planning.fxml"));
-        Parent root = loader.load();
-        ControlleurPlanning controlleurPlanning = loader.getController();
-        controlleurPlanning.setUser(myCurrenUtilisateur);
-        stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-    }
-
 }

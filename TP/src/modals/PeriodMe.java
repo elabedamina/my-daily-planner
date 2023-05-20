@@ -88,7 +88,7 @@ public class PeriodMe implements Serializable {
     }
     
     public boolean overlaps(PeriodMe other) {
-        return this.startDate.isEqual(other.startDate) && other.endDate.isEqual(this.endDate);
+        return !(other.getEndDate().isBefore(startDate) || other.getStartDate().isAfter(endDate));
     }
 
     public LocalDate getStartDate() {

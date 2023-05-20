@@ -2,17 +2,21 @@ package modals;
 
 import java.io.Serializable;
 
-import javafx.scene.paint.Color;
+import java.awt.Color;
 
 public class Categorie implements Serializable{
+    public Categorie() {
+    }
+
     private String nom;
-    private Color couleur;
+    private Color couleur  ;
 
     public Categorie(String nom, Color couleur) {
         this.nom = nom;
         this.couleur = couleur;
     }
 
+    
     public String getNom() {
         return nom;
     }
@@ -34,4 +38,5 @@ public class Categorie implements Serializable{
         return "Categorie [nom=" + nom + ", couleur=" + couleur + "]";
     }
 
+    
 }

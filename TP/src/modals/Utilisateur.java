@@ -1,16 +1,9 @@
 package modals;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.ListIterator;
-
-import controlleurs.Alerts;
 
 public class Utilisateur implements Serializable {
 
@@ -18,6 +11,10 @@ public class Utilisateur implements Serializable {
     public String toString() {
         return "Utilisateur [pseudo=" + pseudo + ", planning=" + planning + ", dureeMin=" + dureeMin
                 + ", tacheMin=" + tacheMin + "]";
+    }
+
+    public String toString2() {
+        return "Utilisateur [pseudo=" + pseudo +  "les taches non planned" + tachesNotPlanned + "]";
     }
 
     public Utilisateur(String pseudo, Long dureeMin, int tacheMin) {
@@ -139,82 +136,6 @@ public class Utilisateur implements Serializable {
         this.tacheMin = tacheMin;
     }
     
-    public void addUserToFile( String fileName) {
-        // Create an ArrayList to store all the User objects
-        ArrayList<Utilisateur> userList;
-        try {
-            // Load the existing User objects from the file, if it exists
-            FileInputStream fileIn = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            userList = (ArrayList<Utilisateur>) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException | ClassNotFoundException e) {
-            // If the file doesn't exist or cannot be loaded, create a new ArrayList
-            userList = new ArrayList<>();
-        }
-        // Add the new User object to the ArrayList
-        if (SignedUp(userList, this.getPseudo()) == null) {
-            userList.add(this);
-            // Write the entire ArrayList of User objects to the file
-            try {
-                FileOutputStream fileOut = new FileOutputStream(fileName);
-                ObjectOutputStream out = new ObjectOutputStream(fileOut);
-                out.writeObject(userList);
-                out.close();
-                fileOut.close();
-                System.out.println("User objects saved to " + fileName);
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            Alerts.usedPseudo();
-        }
-    }
-
-    public Utilisateur SignedUp(ArrayList<Utilisateur> userList, String pseudo) {
-        for (Utilisateur user : userList) {
-            if (user.getPseudo().equals(pseudo)) {
-                return user;
-            }
-        }
-        return null;
-    }
-
-    public void updateUserFile(String fileName, Planning planning) {
-        ArrayList<Utilisateur> userList;
-        try {
-            FileInputStream fileIn = new FileInputStream(fileName);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
-            userList = (ArrayList<Utilisateur>) in.readObject();
-            in.close();
-            fileIn.close();
-        } catch (IOException | ClassNotFoundException e) {
-            userList = new ArrayList<>();
-        }
-        int index = -1;
-        for (int i = 0; i < userList.size(); i++) {
-            if (userList.get(i).getPseudo().equals(this.getPseudo())) {
-                index = i;
-                break;
-            }
-        }
-        if (index != -1) {
-            userList.get(index).setPlanning(planning);
-            System.out.println("this is it " + userList.get(index));
-            try {
-                FileOutputStream fileOut = new FileOutputStream(fileName);
-                ObjectOutputStream objectOut = new ObjectOutputStream(fileOut);
-                objectOut.writeObject(userList);
-                objectOut.close();
-                fileOut.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public void setPlanning(ArrayList<Planning> planning) {
         this.planning = planning;
     }
@@ -259,5 +180,24 @@ public class Utilisateur implements Serializable {
         projets.remove(p);
     }
 
+    public boolean isColor(java.awt.Color c){
+        for (Categorie category : myCategories) {
+            if (category.getCouleur().equals(c)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isNameCategory(String n){
+        for (Categorie category : myCategories) {
+            if (category.getNom().equals(n)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    
 
 }

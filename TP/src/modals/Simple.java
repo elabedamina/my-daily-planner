@@ -1,5 +1,5 @@
 package modals;
-import java.util.*;
+import java.time.LocalDate;
 
 public class Simple extends Tache {
     
@@ -10,10 +10,14 @@ public class Simple extends Tache {
 
     private int periodicite;
 
-    public Simple(String nom, Long duree, Date date_limite, Priorite priorite, Categorie categorie,
+    public Simple(String nom, Long duree, LocalDate date_limite, Priorite priorite, Categorie categorie,
             int periodicite) {
         super(nom, duree, date_limite, priorite, categorie);
         this.periodicite = periodicite;
+    } 
+    
+    public Simple() {
+        super();
     }  
 
     public int getPeriodicite() {
@@ -24,8 +28,5 @@ public class Simple extends Tache {
         this.periodicite = periodicite;
     }
 
-    @Override
-    public void evaluerEtat() {
-        throw new UnsupportedOperationException("Unimplemented method 'evaluerEtat'");
-    }
+   
 }
