@@ -23,27 +23,39 @@
          <center>
             <Pane prefHeight="400.0" prefWidth="358.0" BorderPane.alignment="CENTER">
                <children>
-                  <Text fill="#ff0460" layoutX="115.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des tâches">
+                  <Text fill="#ff0460" layoutX="107.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gestion des tâches">
                      <font>
                         <Font name="Gabriola" size="53.0" />
                      </font>
                   </Text>
-                  <Button fx:id="manualBtn" layoutX="115.0" layoutY="90.0" mnemonicParsing="false" onAction="#handleManual" prefHeight="40.0" prefWidth="313.0" style="-fx-background-color: d3d3d3;" text="new task + manual" textFill="#434242">
+                  <Button fx:id="manualBtn" layoutX="104.0" layoutY="88.0" mnemonicParsing="false" onAction="#handleManual" prefHeight="40.0" prefWidth="313.0" style="-fx-background-color: d3d3d3;" text="Ajouter une tâche manuellement" textFill="#434242">
                      <font>
                         <Font name="Calibri Italic" size="18.0" />
                      </font></Button>
-                  <Button fx:id="projectBtn" layoutX="116.0" layoutY="190.0" mnemonicParsing="false" onAction="#handleProject" prefHeight="39.0" prefWidth="310.0" style="-fx-background-color: d3d3d3;" text="Ajouter un projet" textFill="#434242">
+                  <Button fx:id="projectBtn" layoutX="105.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleProject" prefHeight="39.0" prefWidth="310.0" style="-fx-background-color: d3d3d3;" text="Ajouter un projet" textFill="#434242">
                      <font>
                         <Font name="Calibri Italic" size="18.0" />
                      </font></Button>
-                  <Button fx:id="autoBtn" layoutX="136.0" layoutY="140.0" mnemonicParsing="false" onAction="#handleAuto" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: d3d3d3;" text="Planifier automatiquement " textFill="#434242" translateX="-21.0">
+                  <Button fx:id="autoBtn" layoutX="125.0" layoutY="138.0" mnemonicParsing="false" onAction="#handleAuto" prefHeight="43.0" prefWidth="311.0" style="-fx-background-color: d3d3d3;" text="Planifier automatiquement " textFill="#434242" translateX="-21.0">
                      <font>
                         <Font name="Calibri Italic" size="18.0" />
                      </font></Button>
-                  <Button fx:id="updateBtn" layoutX="116.0" layoutY="239.0" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="46.0" prefWidth="311.0" text="Mettre à jour une tâche" />
-                  <Button fx:id="displayBtn" layoutX="116.0" layoutY="299.0" mnemonicParsing="false" onAction="#handleDisplay" prefHeight="42.0" prefWidth="312.0" text="Afficher mon calendrier" />
-                  <Button fx:id="categoryBtn" layoutX="115.0" layoutY="354.0" mnemonicParsing="false" onAction="#handleCategory" prefHeight="25.0" prefWidth="314.0" text="Gérer les catégories des tâches" />
-                  <Button fx:id="goToPlanningBtn" layoutX="21.0" layoutY="354.0" mnemonicParsing="false" onAction="#changeSceneToPlannnig" text="revenir" />
+                  <Button fx:id="updateBtn" layoutX="105.0" layoutY="237.0" mnemonicParsing="false" onAction="#handleUpdate" prefHeight="40.0" prefWidth="313.0" style="-fx-background-color: d3d3d3;" text="Mettre à jour une tâche" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Italic" size="18.0" />
+                     </font></Button>
+                  <Button fx:id="displayBtn" layoutX="105.0" layoutY="286.0" mnemonicParsing="false" onAction="#handleDisplay" prefHeight="40.0" prefWidth="313.0" style="-fx-background-color: d3d3d3;" text="Afficher mon calendrier" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Italic" size="18.0" />
+                     </font></Button>
+                  <Button fx:id="categoryBtn" layoutX="104.0" layoutY="337.0" mnemonicParsing="false" onAction="#handleCategory" prefHeight="40.0" prefWidth="313.0" style="-fx-background-color: d3d3d3;" text="Gérer les catégories des tâches" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Italic" size="18.0" />
+                     </font></Button>
+                  <Button fx:id="goToPlanningBtn" layoutX="21.0" layoutY="354.0" mnemonicParsing="false" onAction="#changeSceneToPlannnig" prefHeight="25.0" prefWidth="64.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
                </children>
             </Pane>
          </center>
@@ -91,33 +103,63 @@
          <left>
             <Pane prefHeight="400.0" prefWidth="535.0" translateX="71.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="goBack1" layoutX="21.0" layoutY="340.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="24.0" prefWidth="60.0" style="-fx-background-color: F89DAE;" text="Revenir" textFill="WHITE">
+                  <Button fx:id="goBack1" layoutX="14.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="24.0" prefWidth="60.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
                      <font>
                         <Font name="Calibri Bold" size="13.0" />
                      </font></Button>
-                  <Text fx:id="addTaskText" fill="#ff0460" layoutX="163.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter une tâche">
+                  <Text fx:id="addTaskText" fill="#ff0460" layoutX="156.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter une tâche">
                      <font>
                         <Font name="Gabriola" size="35.0" />
                      </font>
                   </Text>
-                  <Text fx:id="tacheText" layoutX="58.0" layoutY="108.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votre tâche :" />
-                  <TextField fx:id="tacheTextField" layoutX="143.0" layoutY="91.0" prefHeight="47.0" prefWidth="348.0" promptText="Votre tâche" />
-                  <Text fx:id="dureeText" layoutX="58.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La durée :" wrappingWidth="66.13674926757812" />
-                  <TextField fx:id="dureeTextField" layoutX="143.0" layoutY="155.0" prefHeight="25.0" prefWidth="114.0" promptText="HH:MM" />
-                  <Text fx:id="deadlineText" layoutX="269.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La date limite :" wrappingWidth="84.80340576171875" />
-                  <DatePicker fx:id="deadlineDatePicker" layoutX="356.0" layoutY="155.0" onAction="#handleDeadline" prefHeight="25.0" prefWidth="155.0" promptText="Deadline" />
-                  <Text fx:id="priorityText" layoutX="55.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Priorité :" wrappingWidth="72.80340576171875" />
-                  <Text fx:id="categoryText" layoutX="284.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Catégorie :" wrappingWidth="66.13671875" />
-                  <Text fx:id="qstText" layoutX="68.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous souhaitez la planifier ?" wrappingWidth="175.47003173828125" />
-                  <Button fx:id="ouiBtn" layoutX="258.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleOui" text="oui" />
-                  <Button fx:id="nonBtn" layoutX="312.0" layoutY="278.0" mnemonicParsing="false" onAction="#handleNon" text="non" />
-                  <Text fx:id="typeText" layoutX="70.0" layoutY="328.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de votre tâche :" wrappingWidth="130.80332946777344" />
-                  <ChoiceBox fx:id="typeBox" layoutX="209.0" layoutY="311.0" prefWidth="150.0" />
-                  <Button fx:id="sauvegarderBtn" layoutX="408.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleSauvegarder" text="sauvegarder" />
-                  <ChoiceBox fx:id="PriorityBox" layoutX="125.0" layoutY="215.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="deleteCategoryBox2" layoutX="359.0" layoutY="215.0" prefWidth="150.0" />
-                  <Text fx:id="periodiciteText" layoutX="97.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="périodicité pour la tâche simple" wrappingWidth="101.53646850585938" />
-                  <TextField fx:id="periodiciteTextField" layoutX="201.0" layoutY="353.0" prefHeight="25.0" prefWidth="60.0" promptText="0-9" />
+                  <Text fx:id="tacheText" fill="#434242" layoutX="42.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Votre tâche :">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <TextField fx:id="tacheTextField" layoutX="122.0" layoutY="88.0" prefHeight="39.0" prefWidth="348.0" promptText="Votre tâche" />
+                  <Text fx:id="dureeText" fill="#434242" layoutX="41.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Durée :" wrappingWidth="66.13674926757812">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <TextField fx:id="dureeTextField" layoutX="95.0" layoutY="156.0" prefHeight="25.0" prefWidth="65.0" promptText="HH:MM" />
+                  <Text fx:id="deadlineText" fill="#434242" layoutX="243.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date limite :" wrappingWidth="84.80340576171875">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <DatePicker fx:id="deadlineDatePicker" layoutX="315.0" layoutY="155.0" onAction="#handleDeadline" prefHeight="25.0" prefWidth="155.0" promptText="Date limite" />
+                  <Text fx:id="priorityText" fill="#434242" layoutX="43.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Priorité :" wrappingWidth="61.80340576171875">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <Text fx:id="categoryText" fill="#434242" layoutX="250.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Catégorie :" wrappingWidth="66.13671875">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <Text fx:id="qstText" fill="#434242" layoutX="162.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous souhaitez la planifier ?" wrappingWidth="175.47003173828125">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <Button fx:id="ouiBtn" layoutX="185.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleOui" style="-fx-background-color: F89DAE;" text="oui" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Button fx:id="nonBtn" layoutX="267.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleNon" style="-fx-background-color: d3d3d3;" text="non" />
+                  <Text fx:id="typeText" fill="#434242" layoutX="32.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type de votre tâche :" wrappingWidth="115.80332946777344">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <ChoiceBox fx:id="typeBox" layoutX="156.0" layoutY="267.0" prefWidth="150.0" style="-fx-background-color: d3d3d3;" />
+                  <Button fx:id="sauvegarderBtn" layoutX="408.0" layoutY="353.0" mnemonicParsing="false" onAction="#handleSauvegarder" style="-fx-background-color: F89DAE;" text="Sauvegarder" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <ChoiceBox fx:id="PriorityBox" layoutX="95.0" layoutY="215.0" prefHeight="25.0" prefWidth="114.0" style="-fx-background-color: d3d3d3;" />
+                  <ChoiceBox fx:id="deleteCategoryBox2" layoutX="316.0" layoutY="214.0" prefWidth="150.0" style="-fx-background-color: d3d3d3;" />
+                  <Text fx:id="periodiciteText" fill="#434242" layoutX="325.0" layoutY="275.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Périodicité pour la tâche simple" textAlignment="CENTER" wrappingWidth="101.53646850585938">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <TextField fx:id="periodiciteTextField" layoutX="435.0" layoutY="271.0" prefHeight="25.0" prefWidth="60.0" promptText="0-9" />
                </children>
             </Pane>
          </left>
@@ -130,6 +172,7 @@
                </font>
             </Text>
          </center>
+
          <left>
             <Pane prefHeight="400.0" prefWidth="72.0" style="-fx-background-color: F89DAE;" BorderPane.alignment="CENTER">
                <children>
@@ -149,25 +192,38 @@
          <right>
             <Pane prefHeight="400.0" prefWidth="532.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="goBack1" layoutX="28.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="26.0" prefWidth="71.0" style="-fx-background-color: F89DAE;" text="Revenir" textFill="WHITE">
+                  <Button fx:id="goBack1" layoutX="28.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="26.0" prefWidth="61.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
                      <font>
-                        <Font name="Calibri Bold" size="15.0" />
+                        <Font name="Calibri Bold" size="13.0" />
                      </font></Button>
                   <Text fx:id="titreManual" fill="#ff0460" layoutX="117.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planifier manuellement" wrappingWidth="285.8033676147461">
                      <font>
                         <Font name="Gabriola" size="34.0" />
                      </font></Text>
-                  <Text fx:id="dateManualText" layoutX="99.0" layoutY="123.0" strokeType="OUTSIDE" strokeWidth="0.0" text="La date" wrappingWidth="67.2213134765625" />
-                  <DatePicker fx:id="dateManualPicker" layoutX="194.0" layoutY="106.0" />
-                  <Text fx:id="creneauText" layoutX="82.0" layoutY="172.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Créneau" wrappingWidth="68.13671875" />
-                  <TextField fx:id="creneauDebutField" layoutX="133.0" layoutY="155.0" promptText="heure début HH:MM" />
-                  <Button fx:id="planManualBtn" layoutX="234.0" layoutY="230.0" mnemonicParsing="false" onAction="#handlePlanManual" text="Planifier" />
-                  <Text fx:id="bloqueText" layoutX="42.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vous souhaitez bloquer ce créneau pour la tâche ?" />
-                  <ChoiceBox fx:id="bloqueBox" layoutX="328.0" layoutY="196.0" prefWidth="150.0" />
+                  <Text fx:id="dateManualText" fill="#434242" layoutX="125.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" wrappingWidth="40.2213134765625">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font></Text>
+                  <DatePicker fx:id="dateManualPicker" layoutX="177.0" layoutY="127.0" />
+                  <Text fx:id="creneauText" fill="#434242" layoutX="111.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Créneau :" wrappingWidth="68.13671875">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font></Text>
+                  <TextField fx:id="creneauDebutField" layoutX="190.0" layoutY="176.0" promptText="heure début HH:MM" />
+                  <Button fx:id="planManualBtn" layoutX="403.0" layoutY="345.0" mnemonicParsing="false" onAction="#handlePlanManual" style="-fx-background-color: F89DAE;" text="Planifier" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Text fx:id="bloqueText" fill="#434242" layoutX="106.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Souhaitez-vous bloquer ce créneau pour la tâche ?">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font></Text>
+                  <ChoiceBox fx:id="bloqueBox" layoutX="177.0" layoutY="277.0" prefWidth="150.0" />
                </children>
             </Pane>
          </right>
       </BorderPane>
+
       <BorderPane fx:id="projectPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
          <right>
             <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
@@ -188,23 +244,32 @@
          <center>
             <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="goBack21" layoutX="35.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                  <Button fx:id="goBack21" layoutX="14.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="19.0" prefWidth="60.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
                      <font>
-                        <Font name="Calibri Bold" size="14.0" />
+                        <Font name="Calibri Bold" size="13.0" />
                      </font>
                   </Button>
-                  <Text fx:id="titreProjet" fill="#ff0460" layoutX="171.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter un projet">
+                  <Text fx:id="titreProjet" fill="#ff0460" layoutX="164.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ajouter un projet">
                      <font>
                         <Font name="Gabriola" size="35.0" />
                      </font>
                   </Text>
-                  <ListView fx:id="viewListTask1" layoutX="141.0" layoutY="252.0" prefHeight="105.0" prefWidth="299.0" />
-                  <Button fx:id="addProjetBtn" layoutX="263.0" layoutY="361.0" mnemonicParsing="false" onAction="#handleAddProjet" prefHeight="25.0" prefWidth="131.0" text="ajouter projet" />
-                  <Text fx:id="nomProjetText" layoutX="7.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nom de votre projet" />
-                  <TextField fx:id="nomProjetField" layoutX="133.0" layoutY="81.0" onAction="#handleNomProjet" prefHeight="25.0" prefWidth="291.0" />
-                  <Text fx:id="descriptionText" layoutX="6.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description" wrappingWidth="122.80338287353516" />
-                  <TextArea fx:id="descriptionField" layoutX="136.0" layoutY="120.0" prefHeight="68.0" prefWidth="309.0" />
                   <ChoiceBox fx:id="tasktList1" layoutX="156.0" layoutY="210.0" prefHeight="25.0" prefWidth="317.0" />
+                  <ListView fx:id="viewListTask1" layoutX="122.0" layoutY="235.0" prefHeight="105.0" prefWidth="289.0" />
+                  <Button fx:id="addProjetBtn" layoutX="416.0" layoutY="349.0" mnemonicParsing="false" onAction="#handleAddProjet" prefHeight="25.0" prefWidth="96.0" style="-fx-background-color: F89DAE;" text="Ajouter projet" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Text fx:id="nomProjetText" fill="#434242" layoutX="28.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom du projet :">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <TextField fx:id="nomProjetField" layoutX="123.0" layoutY="71.0" onAction="#handleNomProjet" prefHeight="25.0" prefWidth="291.0" />
+                  <Text fx:id="descriptionText" fill="#434242" layoutX="32.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description :" wrappingWidth="71.80338287353516">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <TextArea fx:id="descriptionField" layoutX="121.0" layoutY="111.0" prefHeight="68.0" prefWidth="295.0" />
                </children>
             </Pane>
          </center>
@@ -234,20 +299,29 @@
                         <Font name="Calibri Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Text fx:id="titreUpdate" fill="#ff0460" layoutX="113.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mettre à jour une tâche">
+                  <Text fx:id="titreUpdate" fill="#ff0460" layoutX="120.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mettre à jour une tâche">
                      <font>
                         <Font name="Gabriola" size="35.0" />
                      </font>
                   </Text>
-                  <MenuButton fx:id="taskPlannedList" layoutX="113.0" layoutY="149.0" mnemonicParsing="false" onAction="#handletaskPlannedList" prefHeight="44.0" prefWidth="300.0" text="vos tâches planifiées">
+                  <MenuButton fx:id="taskPlannedList" layoutX="113.0" layoutY="149.0" mnemonicParsing="false" onAction="#handletaskPlannedList" prefHeight="34.0" prefWidth="300.0" style="-fx-background-color: d3d3d3;" text="Vos tâches planifiées" textFill="#434242">
                      <items>
                         <MenuItem mnemonicParsing="false" text="Action 1" />
                         <MenuItem mnemonicParsing="false" text="Action 2" />
                      </items>
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font>
                   </MenuButton>
-                  <Button fx:id="confirmUpdateBtn" layoutX="272.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleConfirmUpdate" text="confirmer" />
-                  <Text fx:id="etatText" layoutX="49.0" layoutY="228.0" strokeType="OUTSIDE" strokeWidth="0.0" text="état" wrappingWidth="63.18035888671875" />
-                  <ChoiceBox fx:id="etatBox" layoutX="113.0" layoutY="211.0" prefWidth="150.0" />
+                  <Button fx:id="confirmUpdateBtn" layoutX="395.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleConfirmUpdate" style="-fx-background-color: F89DAE;" text="Confirmer" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Text fx:id="etatText" fill="#434242" layoutX="61.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Etat :" wrappingWidth="44.18035888671875">
+                     <font>
+                        <Font name="Calibri Bold" size="14.0" />
+                     </font></Text>
+                  <ChoiceBox fx:id="etatBox" layoutX="113.0" layoutY="211.0" prefWidth="150.0" style="-fx-background-color: d3d3d3;" />
                </children>
             </Pane>
          </center>
@@ -272,26 +346,31 @@
          <center>
             <Pane prefHeight="423.0" prefWidth="313.0" translateX="73.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="goBack23" layoutX="35.0" layoutY="330.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
+                  <Button fx:id="goBack23" layoutX="21.0" layoutY="341.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
                      <font>
                         <Font name="Calibri Bold" size="14.0" />
                      </font>
                   </Button>
-                  <Text fx:id="titreAffichage" fill="#ff0460" layoutX="201.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Affichage">
+                  <Text fx:id="titreAffichage" fill="#ff0460" layoutX="201.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Affichage">
                      <font>
                         <Font name="Gabriola" size="35.0" />
                      </font>
                   </Text>
-                  <Text fx:id="enterDateText" layoutX="24.0" layoutY="107.0" strokeType="OUTSIDE" strokeWidth="0.0" text="entrez la date :" wrappingWidth="126.80342102050781" />
-                  <DatePicker fx:id="enterDatePicker" layoutX="165.0" layoutY="90.0" onAction="#handleEnterDatePicker" />
-                  <Text fx:id="affichageText" layoutX="87.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous voulez afficher vos tâches prévues dans un jour précis, " />
-                  <ListView fx:id="displayList" layoutX="110.0" layoutY="121.0" prefHeight="200.0" prefWidth="306.0" />
-                  <Button fx:id="afficherBtn" layoutX="390.0" layoutY="345.0" mnemonicParsing="false" onAction="#handleAfficher" text="Afficher" />
+                  <Text fx:id="enterDateText" fill="#434242" layoutX="123.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date :" wrappingWidth="34.80342102050781">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <DatePicker fx:id="enterDatePicker" layoutX="165.0" layoutY="110.0" onAction="#handleEnterDatePicker" />
+                  <Text fx:id="affichageText" fill="#434242" layoutX="57.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous voulez afficher vos tâches prévues dans un jour précis, entrez la date">
+                     <font>
+                        <Font name="Calibri Bold Italic" size="13.0" />
+                     </font></Text>
+                  <ListView fx:id="displayList" layoutX="111.0" layoutY="141.0" prefHeight="200.0" prefWidth="306.0" />
                </children>
             </Pane>
          </center>
       </BorderPane>
-      <BorderPane fx:id="categoryPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+      <BorderPane fx:id="categoryPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <right>
             <Pane prefHeight="400.0" prefWidth="73.0" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-528.0" translateY="-11.0" BorderPane.alignment="CENTER">
                <children>
@@ -321,14 +400,29 @@
                         <Font name="Gabriola" size="35.0" />
                      </font>
                   </Text>
-                  <Text fx:id="categoryText" layoutX="68.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="nom catégorie" />
-                  <TextField fx:id="categoryField" layoutX="188.0" layoutY="103.0" />
-                  <Text fx:id="colorText" layoutX="68.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="couleur" wrappingWidth="92.8033447265625" />
-                  <ColorPicker fx:id="colorPicker" layoutX="188.0" layoutY="137.0" />
-                  <Button fx:id="addCategoBtn" layoutX="294.0" layoutY="175.0" mnemonicParsing="false" onAction="#handleAddCategory" text="Ajouter cette catégorie" />
-                  <Text fx:id="deleteCategoryText" layoutX="89.0" layoutY="239.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous voulez supprimer une catégorie , choississez-en une" />
-                  <ChoiceBox fx:id="deleteCategoryBox" layoutX="188.0" layoutY="259.0" prefWidth="150.0" />
-                  <Button fx:id="deleteCategoryBtn" layoutX="303.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleDeleteCategory" text="supprimer cette catégorie" />
+                  <Text fx:id="categoryText" fill="#434242" layoutX="59.0" layoutY="120.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nom de la catégorie :">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <TextField fx:id="categoryField" layoutX="183.0" layoutY="103.0" />
+                  <Text fx:id="colorText" fill="#434242" layoutX="124.0" layoutY="154.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Couleur :" wrappingWidth="62.8033447265625">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Text>
+                  <ColorPicker fx:id="colorPicker" layoutX="188.0" layoutY="137.0" style="-fx-background-color: d3d3d3;" />
+                  <Button fx:id="addCategoBtn" layoutX="336.0" layoutY="188.0" mnemonicParsing="false" onAction="#handleAddCategory" style="-fx-background-color: F89DAE;" text="Ajouter cette catégorie" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
+                  <Text fx:id="deleteCategoryText" fill="#434242" layoutX="89.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Si vous voulez supprimer une catégorie , choississez-en une">
+                     <font>
+                        <Font name="Calibri Bold Italic" size="13.0" />
+                     </font></Text>
+                  <ChoiceBox fx:id="deleteCategoryBox" layoutX="189.0" layoutY="271.0" prefWidth="150.0" style="-fx-background-color: d3d3d3;" />
+                  <Button fx:id="deleteCategoryBtn" layoutX="330.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleDeleteCategory" style="-fx-background-color: F89DAE;" text="Supprimer cette catégorie" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
+                     </font></Button>
                </children>
             </Pane>
          </center>

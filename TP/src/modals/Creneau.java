@@ -1,11 +1,12 @@
 
 package modals;
+
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalTime;
 
-public class Creneau implements Serializable{
-    
+public class Creneau implements Serializable {
+
     @Override
     public String toString() {
         return "Creneau [heureDebut=" + heureDebut + ", heureFin=" + heureFin + ", duree=" + duree + ", dureeMin="
@@ -18,41 +19,59 @@ public class Creneau implements Serializable{
     private Long dureeMin;
     private boolean bloque; // pour savoir si ce créneau est bloqué pour certaines tâches
 
-    public Creneau(LocalTime heureDebut, LocalTime heureFin, Long dureeMin, boolean bloque){
+    public Creneau(LocalTime heureDebut, LocalTime heureFin, Long dureeMin, boolean bloque) {
         this.heureDebut = heureDebut;
         this.heureFin = heureFin;
         this.duree = Duration.between(heureDebut, heureFin).toMinutes();
-        this.dureeMin=dureeMin;
+        this.dureeMin = dureeMin;
         this.bloque = bloque;
     }
 
-    public Creneau(){}
- 
-    public boolean isDivisible(Long dureeTache){
-        //tester si un créneau est divisible
+    public Creneau() {
+    }
+
+    public boolean contains(Creneau other) { // retourne vrai si this contient other
+        return other.getHeureDebut().compareTo(heureDebut) >= 0 && other.getHeureFin().compareTo(heureFin) < 0;
+    }
+
+    public boolean contains2(Creneau other) {
+        /* pour vérifier s'il y a toute sorte de chevauchement entre les 2 créneaux */
+        return other.getHeureDebut().compareTo(heureFin) < 0 && other.getHeureFin().compareTo(heureDebut) >= 0;
+    }
+
+    public void modifCreneau(Creneau other) {
+        /*
+         * pour modifier les heures en cas de chevauchement et prendre l'intervalle le
+         * plus large
+         */
+        if (other.getHeureDebut().compareTo(heureDebut) > 0)
+            other.setHeureDebut(heureDebut);
+        if (other.getHeureFin().compareTo(heureFin) < 0)
+            other.setHeureFin(heureFin);
+    }
+
+    public boolean isDivisible(Long dureeTache) {
+        // tester si un créneau est divisible
         boolean isDiv = false;
-        if(duree-dureeTache>=dureeMin){
-            isDiv=true;
-        }
-        else{
-            isDiv=false;
+        if (duree - dureeTache >= dureeMin) {
+            isDiv = true;
+        } else {
+            isDiv = false;
         }
         return isDiv;
     }
-    
-    public void updateCreneau(Long dureeTache){
-        //si le creneau est divisible on change les intervalles de temps 
+
+    public void updateCreneau(Long dureeTache) {
+        // si le creneau est divisible on change les intervalles de temps
         heureDebut = heureDebut.plusMinutes(dureeTache);
     }
-    
-    public boolean overlaps(Creneau creneau1, Creneau creneau2) {
-    return creneau1.getHeureDebut().isBefore(creneau2.getHeureFin())
-        && creneau1.getHeureFin().isAfter(creneau2.getHeureDebut()) ||
-        creneau1.getHeureDebut().equals(creneau2.getHeureFin())
-        || creneau1.getHeureFin().equals(creneau2.getHeureDebut());
-    }
 
-    
+    public boolean overlaps(Creneau creneau1, Creneau creneau2) {
+        return creneau1.getHeureDebut().isBefore(creneau2.getHeureFin())
+                && creneau1.getHeureFin().isAfter(creneau2.getHeureDebut()) ||
+                creneau1.getHeureDebut().equals(creneau2.getHeureFin())
+                || creneau1.getHeureFin().equals(creneau2.getHeureDebut());
+    }
 
     public LocalTime getHeureDebut() {
         return heureDebut;
@@ -93,5 +112,5 @@ public class Creneau implements Serializable{
     public void setDureeMin(Long dureeMin) {
         this.dureeMin = dureeMin;
     }
-    
+
 }

@@ -1,6 +1,8 @@
-## Getting Started
+## About the repo
 
-Welcome to the VS Code Java world. Here is a guideline to help you get started to write Java code in Visual Studio Code.
+Welcome to my repository.
+This repo contains a java desktop application named *planify*. It is a virtual planner.
+This project was done as an assignement for OOP module, in Esi Algiers.
 
 ## Folder Structure
 

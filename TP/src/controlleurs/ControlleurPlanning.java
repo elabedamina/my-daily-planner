@@ -144,7 +144,7 @@ public class ControlleurPlanning implements Initializable {
     private Utilisateur myCurrenUtilisateur;
     private Planify planify = Planify.getInstance();
     private PeriodMe period;
-    private ArrayList<Creneau> mySlots=new ArrayList<>();
+    private ArrayList<Creneau> mySlots = new ArrayList<>();
     private DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("HH:mm");
     private Stage stage;
     private Scene scene;
@@ -225,7 +225,7 @@ public class ControlleurPlanning implements Initializable {
     }
 
     private void handleItemClicks() {// to change : ylewahni l paga wyn nchuf les taches ta3 planning w les projets
-            listCurrentPlanning.setOnMouseClicked(event -> {
+        listCurrentPlanning.setOnMouseClicked(event -> {
             Planning clickedPlanning = listCurrentPlanning.getSelectionModel().getSelectedItem();
             Alert d = new Alert(AlertType.INFORMATION, clickedPlanning.toString());
             d.setTitle("Votre Planning");
@@ -251,7 +251,7 @@ public class ControlleurPlanning implements Initializable {
     }
 
     @FXML
-    private void handleChangeScene2(ActionEvent event ) throws IOException{
+    private void handleChangeScene2(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Tasks.fxml"));
         Parent root = loader.load();
         ControlleurTask controlleurTask = loader.getController();
@@ -269,7 +269,7 @@ public class ControlleurPlanning implements Initializable {
 
     @FXML
     private void handlePeriod(ActionEvent event) {
-    //get the period of the new planning
+        // get the period of the new planning
         if (startDate == null || endDate == null) {
             Alerts.emptyFields();
         } else {
@@ -339,8 +339,9 @@ public class ControlleurPlanning implements Initializable {
     }
 
     @FXML
-    private void handleCreneau2(ActionEvent event){
-    //gère la sauvegarde du nouveau planning avec des créneaux différents pour chaque jour
+    private void handleCreneau2(ActionEvent event) {
+        // gère la sauvegarde du nouveau planning avec des créneaux différents pour
+        // chaque jour
         period.setSpecificAvailableSlot(mySlots);
         Planning myCurrentPlanning = new Planning(period);
         myCurrenUtilisateur.setPlanning(myCurrentPlanning);
@@ -350,34 +351,61 @@ public class ControlleurPlanning implements Initializable {
     }
 
     @FXML
-    private void handleNextCreneau(ActionEvent event){
-    //if the user wants to add another slot to the same day
+    private void handleNextCreneau(ActionEvent event) {
+        // if the user wants to add another slot to the same day
         String myHour1;
         String myHour;
         myHour1 = heureFin.getText();
         myHour = heureDebut.getText();
-        EndHeure = LocalTime.parse(myHour1, dateFormatter);
-        startHeure = LocalTime.parse(myHour, dateFormatter);
+        try {
+            EndHeure = LocalTime.parse(myHour1, dateFormatter);
+            startHeure = LocalTime.parse(myHour, dateFormatter);
+        } catch (Exception e) {
+            Alerts.errorHour();
+        }
         Long duration = Duration.between(startHeure, EndHeure).toMinutes();
         if (myCurrenUtilisateur.getDureeMin() > duration) {
             Alerts.errorDuration();
         } else {
-            mySlots.add(new Creneau(startHeure,EndHeure,myCurrenUtilisateur.getDureeMin(),false));
-            System.out.println("n\n hedo my slots : " + mySlots+"\n");
+            Creneau creneau = new Creneau(startHeure, EndHeure, myCurrenUtilisateur.getDureeMin(), false);
+            if (mySlots.contains(creneau)) {
+                Alerts.creaneauExist();
+            } else {
+                for (Creneau element : mySlots) {
+                    if (element.contains(creneau)) {
+                        Alerts.creaneauContained();
+                        creneau = null;
+                    } else {
+                        if (element.contains2(creneau)) {
+                            creneau.modifCreneau(element);
+                            creneau = null;
+                        }
+                    }
+                }
+            }
+            if (creneau != null)
+                mySlots.add(creneau);
+            System.out.println("n\n hedo my slots : " + mySlots + "\n");
         }
         heureDebut.clear();
         heureFin.clear();
     }
 
     @FXML
-    private void handleCreneau(ActionEvent event) {     
-    //add the new planning to the user in the case where the user choose the same slots for all the period
+    private void handleCreneau(ActionEvent event) {
+        // add the new planning to the user in the case where the user choose the same
+        // slots for all the period
         String myHour1;
         String myHour;
         myHour1 = heureFin.getText();
         myHour = heureDebut.getText();
-        EndHeure = LocalTime.parse(myHour1, dateFormatter);
-        startHeure = LocalTime.parse(myHour, dateFormatter);
+        try {
+            EndHeure = LocalTime.parse(myHour1, dateFormatter);
+            startHeure = LocalTime.parse(myHour, dateFormatter);
+        } catch (Exception e) {
+            Alerts.errorHour();
+        }
+
         Long duration = Duration.between(startHeure, EndHeure).toMinutes();
         if (myCurrenUtilisateur.getDureeMin() > duration) {
             Alerts.errorDuration();
@@ -398,46 +426,43 @@ public class ControlleurPlanning implements Initializable {
         heureFin.clear();
     }
 
-    
     @FXML
     private void handleNext(ActionEvent event) {
-    //if the user wants to add different slots to each day of the planning
+        // if the user wants to add different slots to each day of the planning
         String myHour2 = heureFin.getText();
         String myHour3 = heureDebut.getText();
-        if(!(myHour2.isEmpty()) && !(myHour3.isEmpty()) ){
+        if (!(myHour2.isEmpty()) && !(myHour3.isEmpty())) {
             EndHeure = LocalTime.parse(myHour2, dateFormatter);
             startHeure = LocalTime.parse(myHour3, dateFormatter);
             Long duration = Duration.between(startHeure, EndHeure).toMinutes();
             if (myCurrenUtilisateur.getDureeMin() > duration) {
                 Alerts.errorDuration();
             } else {
-                mySlots.add(new Creneau(startHeure,EndHeure,myCurrenUtilisateur.getDureeMin(),false));
+                mySlots.add(new Creneau(startHeure, EndHeure, myCurrenUtilisateur.getDureeMin(), false));
                 period.setSpecificAvailableSlot(mySlots);
             }
-        }
-        else{//empty hours
+        } else {// empty hours
             Alerts.emptyFields();
         }
         startDate = startDate.plusDays(1);
-        if(startDate.isBefore(endDate) || startDate.isEqual(endDate) ){ //on est pas arrivé à la fin de période
-            dateCreneau.setValue(startDate);                            // INCREMENT THE DATE BY 1 DAY
+        if (startDate.isBefore(endDate) || startDate.isEqual(endDate)) { // on est pas arrivé à la fin de période
+            dateCreneau.setValue(startDate); // INCREMENT THE DATE BY 1 DAY
             heureDebut.clear();
             heureFin.clear();
             mySlots.clear();
-        } 
-        else{
+        } else {
             confirmCreneau2.setVisible(true);
             nextBtn.setVisible(false);
         }
     }
-    
+
     @FXML
     private void handleStartDate(ActionEvent event) {
         startDate = startDatePicker.getValue();
     }
 
     public void setUser(Utilisateur user) {
-        //to get the infos from the previous controller
+        // to get the infos from the previous controller
         myCurrenUtilisateur = user;
     }
 

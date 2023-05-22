@@ -62,7 +62,7 @@
       </BorderPane>
       <BorderPane fx:id="firstpage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <right>
-            <Pane prefHeight="447.0" prefWidth="287.0" scaleY="1.1" style="-fx-background-color: F89DAE;" translateX="-314.0" BorderPane.alignment="CENTER">
+            <Pane prefHeight="447.0" prefWidth="287.0" style="-fx-background-color: F89DAE;" translateX="-314.0" BorderPane.alignment="CENTER">
                <children>
                   <Text fill="WHITE" layoutX="132.0" layoutY="279.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Planify" translateX="-58.0" translateY="13.0">
                      <font>
