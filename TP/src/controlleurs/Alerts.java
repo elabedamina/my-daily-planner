@@ -88,6 +88,54 @@ public class Alerts {
         alert.showAndWait();
     }
 
+    public static void Feliciter() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Bravo !");
+        alert.setHeaderText(null);
+        alert.setContentText("Félicitations! Vous étiez efficace aujourd'hui\n");
+        alert.showAndWait();
+    }
+
+    public static void FeliciterGood() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Badge GOOD");
+        alert.setHeaderText(null);
+        alert.setContentText("Félicitations! Vous avez obtenu le badge GOOD\n");
+        alert.showAndWait();
+    }
+
+    public static void FeliciterVeryGood() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Badge VeryGOOD");
+        alert.setHeaderText(null);
+        alert.setContentText("Félicitations! Vous avez obtenu le badge VeryGOOD\n");
+        alert.showAndWait();
+    }
+
+    public static void FeliciterEXCELLENT() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Badge EXCELLENT");
+        alert.setHeaderText(null);
+        alert.setContentText("Félicitations! Vous avez obtenu le badge Excellent\n");
+        alert.showAndWait();
+    }
+
+    public static void modifier() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Modification réussie!");
+        alert.setHeaderText(null);
+        alert.setContentText("Vos modifications ont été effectuées avec succès\n");
+        alert.showAndWait();
+    }
+
+    public static void setEtat() {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Modification état réussie!");
+        alert.setHeaderText(null);
+        alert.setContentText("L'état de votre tâche a été mis à jour\n");
+        alert.showAndWait();
+    }
+
     public static void errorDate() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
@@ -182,6 +230,30 @@ public class Alerts {
         alert.setTitle(ERROR);
         alert.setHeaderText("Créneau incorrect!");
         alert.setContentText("Ce créneau est inclus dans un autre qui existe. Veuillez introduire un autre ");
+        alert.showAndWait();
+    }
+
+    public static void tacheEmpty() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Tâche vide!");
+        alert.setContentText("Veuillez choisir la tâche que vous souhaitez modifier ");
+        alert.showAndWait();
+    }
+
+    public static void modifEmpty() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Champs vide!");
+        alert.setContentText("Veuillez introduire des données dans les champs que vous souhaitez modifier ");
+        alert.showAndWait();
+    }
+
+    public static void etatEmpty() {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(ERROR);
+        alert.setHeaderText("Etat vide!");
+        alert.setContentText("Veuillez introduire le nouvel état de la tâche");
         alert.showAndWait();
     }
 }
