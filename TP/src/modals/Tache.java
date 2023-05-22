@@ -16,7 +16,7 @@ public class Tache implements Serializable {
     public Tache() {
         this.etat = Etat.UNSCHEDULED;
     }
-
+    
     public Tache(String nom, Long duree, LocalDate date_limite, Priorite priorite, Categorie categorie) {
         this.nom = nom;
         this.duree = duree;

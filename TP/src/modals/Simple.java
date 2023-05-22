@@ -18,7 +18,11 @@ public class Simple extends Tache {
     
     public Simple() {
         super();
-    }  
+    }
+    
+    public boolean isRealised() {
+        return this.getEtat().equals(Etat.COMPLETED);
+    }
 
     public int getPeriodicite() {
         return periodicite;

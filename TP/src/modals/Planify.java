@@ -4,13 +4,13 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class Planify {
-    private static final String FILE_NAME = "users.txt";
+    private static final String FILE_NAME = "users.dat";
     private static Planify instance;
     private ArrayList<Utilisateur> users;
 
     private Planify() {
         users = new ArrayList<>();
-        loadUsersFromFile(); // Load existing users from the file on initialization
+        loadUsersFromFile(); 
     }
 
     public static synchronized Planify getInstance() {
