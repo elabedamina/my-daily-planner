@@ -7,6 +7,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -382,7 +383,11 @@ public class ControlleurPlanning implements Initializable {
             Alerts.errorDuration();
         } else {
             mySlots.add(new Creneau(startHeure,EndHeure,myCurrenUtilisateur.getDureeMin(),false));
-            period.setAllAvailableSlots(mySlots);
+            long daysBetween = ChronoUnit.DAYS.between(period.getStartDate(), period.getEndDate());
+            int numberOfDays = Math.toIntExact(daysBetween);
+            for ( int i=0;i<numberOfDays+1;i++){
+                period.setSpecificAvailableSlot(mySlots);
+            }
             Planning myCurrentPlanning = new Planning(period);
             myCurrenUtilisateur.setPlanning(myCurrentPlanning);
             planify.updateUser(myCurrenUtilisateur);

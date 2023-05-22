@@ -42,4 +42,5 @@ public class Projet implements Serializable {
     public String toString() {
         return "Projet [nom=" + nom + ", description=" + description + ", listeTaches=" + listeTaches + "]";
     }
+    
 }
