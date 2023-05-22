@@ -10,6 +10,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +21,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -137,6 +141,33 @@ public class ControlleurPlanning implements Initializable {
     @FXML
     private Button changeSceneBtn;
 
+    @FXML
+    private BorderPane profilePage;
+
+    @FXML
+    private ChoiceBox<String> modifDureeMin;
+
+    @FXML
+    private ChoiceBox<String> modifNbMin;
+
+    @FXML
+    private Label rendement;
+
+    @FXML
+    private Label felicitation;
+
+    @FXML
+    private Label good;
+
+    @FXML
+    private Label veryGood;
+
+    @FXML
+    private Label excellent;
+
+    @FXML
+    private Button profileBtn;
+
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalTime startHeure;
@@ -154,6 +185,7 @@ public class ControlleurPlanning implements Initializable {
         planningPage.setVisible(false);
         CurrentPlanningPage.setVisible(false);
         historyPage.setVisible(false);
+        profilePage.setVisible(false);
         newPlanningPage.setVisible(true);
         confirmDate.setVisible(true);
         planning.setVisible(true);
@@ -176,6 +208,7 @@ public class ControlleurPlanning implements Initializable {
         CurrentPlanningPage.setVisible(true);
         historyPage.setVisible(false);
         newPlanningPage.setVisible(false);
+        profilePage.setVisible(false);
         populateCurrentListPlanning();
         handleItemClicks();
     }
@@ -186,6 +219,7 @@ public class ControlleurPlanning implements Initializable {
         CurrentPlanningPage.setVisible(false);
         historyPage.setVisible(false);
         newPlanningPage.setVisible(false);
+        profilePage.setVisible(false);
         listCurrentPlanning.getItems().clear();
         hideFields();
     }
@@ -196,6 +230,7 @@ public class ControlleurPlanning implements Initializable {
         CurrentPlanningPage.setVisible(false);
         historyPage.setVisible(true);
         newPlanningPage.setVisible(false);
+        profilePage.setVisible(false);
         populateListPlanning();
     }
 
@@ -466,12 +501,49 @@ public class ControlleurPlanning implements Initializable {
         myCurrenUtilisateur = user;
     }
 
+    @FXML
+    public void populateChoiceBoxes() {
+        String[] minTaches = { "2", "3", "4", "5" };
+        ObservableList<String> minTachesList = FXCollections.observableArrayList(minTaches);
+        modifNbMin.setItems(minTachesList);
+        String[] minDurees = { "30", "45", "60" };
+        ObservableList<String> minDureeList = FXCollections.observableArrayList(minDurees);
+        modifDureeMin.setItems(minDureeList);
+    }
+
+    @FXML
+    public void handleProfile(ActionEvent event) {
+        populateChoiceBoxes();
+        planningPage.setVisible(false);
+        CurrentPlanningPage.setVisible(false);
+        historyPage.setVisible(false);
+        profilePage.setVisible(true);
+        newPlanningPage.setVisible(false);
+        String selectedMinTache = modifNbMin.getSelectionModel().getSelectedItem();
+        String selectedDureeMin = modifDureeMin.getSelectionModel().getSelectedItem();
+        if (selectedDureeMin != null) {
+            myCurrenUtilisateur.setDureeMin(Long.parseLong(selectedDureeMin));
+            Alerts.modifier();
+        }
+        if (selectedMinTache != null) {
+            myCurrenUtilisateur.setTacheMin(Integer.parseInt(selectedMinTache));
+        }
+        felicitation.setText(String.valueOf(myCurrenUtilisateur.getNb_felicitation()));
+        good.setText(String.valueOf(myCurrenUtilisateur.getGood()));
+        veryGood.setText(String.valueOf(myCurrenUtilisateur.getVeryGOOD()));
+        excellent.setText(String.valueOf(myCurrenUtilisateur.getEXCELLENT()));
+        float pourcentage = myCurrenUtilisateur.getNbTacheCompleted() / myCurrenUtilisateur.getNbTacheTotal() * 100;
+        rendement.setText(String.valueOf(pourcentage));
+        planify.updateUser(myCurrenUtilisateur);
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         planningPage.setVisible(true);
         CurrentPlanningPage.setVisible(false);
         historyPage.setVisible(false);
         newPlanningPage.setVisible(false);
+        profilePage.setVisible(false);
         hideFields();
     }
 

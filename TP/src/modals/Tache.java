@@ -1,16 +1,17 @@
 package modals;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Tache implements Serializable{
-    
+public class Tache implements Serializable {
+
     private String nom;
     private Long duree;
     private LocalDate date_limite;
     private Priorite priorite;
     private Categorie categorie;
     private Etat etat;
-    private LocalDate date; //when planified i add the date
+    private LocalDate date;// when planified i add the date
 
     public Tache() {
         this.etat = Etat.UNSCHEDULED;
@@ -25,12 +26,13 @@ public class Tache implements Serializable{
         this.etat = Etat.UNSCHEDULED;
     }
 
-   /* public void evaluerEtat(); */ 
+    /* public void evaluerEtat(); */
 
     @Override
     public String toString() {
-        return "\n---------\nTache [nom=" + nom + ", duree=" + duree + ", date_limite=" + date_limite + ", priorite=" + priorite
-                + ", categorie=" + categorie + ", etat=" + etat + ", date : "+ date +"]";
+        return "\n---------\nTache [nom=" + nom + ", duree=" + duree + ", date_limite=" + date_limite + ", priorite="
+                + priorite
+                + ", categorie=" + categorie + ", etat=" + etat + ", date : " + date + "]";
     }
 
     public String getNom() {
