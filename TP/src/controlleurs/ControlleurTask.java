@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -31,9 +32,13 @@ import javafx.stage.Stage;
 import modals.Categorie;
 import modals.Creneau;
 import modals.Decomposable;
+import modals.PeriodMe;
 import modals.Planify;
+import modals.Planning;
 import modals.Priorite;
+import modals.Projet;
 import modals.Simple;
+import modals.Tache;
 import modals.Utilisateur;
 import javafx.scene.Node;
 
@@ -116,6 +121,9 @@ public class ControlleurTask implements Initializable{
     private ChoiceBox<Categorie> deleteCategoryBox2;
 
     @FXML
+    private ChoiceBox<String> extendBox;
+
+    @FXML
     private Button deleteCategoryBtn;
 
     @FXML
@@ -131,7 +139,7 @@ public class ControlleurTask implements Initializable{
     private Button displayBtn;
 
     @FXML
-    private ListView<?> displayList;
+    private ListView<Tache> displayList;
 
     @FXML
     private BorderPane displayPage;
@@ -257,10 +265,10 @@ public class ControlleurTask implements Initializable{
     private MenuButton taskPlannedList;
 
     @FXML
-    private MenuButton tasktList;
+    private ChoiceBox<Tache> tasktList;
 
     @FXML
-    private MenuButton tasktList1;
+    private ChoiceBox<Tache> tasktList1;
 
     @FXML
     private ChoiceBox<String> typeBox;
@@ -275,6 +283,12 @@ public class ControlleurTask implements Initializable{
     private Text bloqueText;
 
     @FXML
+    private Text autoText;
+
+    @FXML
+    private Text extendText;
+
+    @FXML
     private Button updateBtn;
 
     @FXML
@@ -284,15 +298,137 @@ public class ControlleurTask implements Initializable{
     private BorderPane updatePage;
 
     @FXML
-    private ListView<?> viewListTask;
+    private ListView<Tache> viewListTask;
 
     @FXML
-    private ListView<?> viewListTask1;
+    private ListView<Tache> viewListTask1;
 
+    @FXML
+    private Button afficherBtn;
     
     private Utilisateur myCurrenUtilisateur;
     private Planify planify = Planify.getInstance();
     private LocalDate deadLine;
+    private DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+    private ArrayList<Tache> listToPlanAuto = new ArrayList<>();
+    private ArrayList<Tache> listProject = new ArrayList<>();
+    private Planning p = new Planning();
+    private Planning p_ = new Planning();
+    private LocalDate dateDisplay;
+
+    @FXML
+    void handleAfficher(ActionEvent event ){
+        displayList.getItems().clear();
+        ArrayList<Tache> unscList = myCurrenUtilisateur.getAllPlannedDay(dateDisplay);
+        ObservableList<Tache> myUnscist = FXCollections.observableArrayList(unscList);
+        displayList.setItems(myUnscist);
+    }
+
+    @FXML
+    void handleConfirmAuto(ActionEvent event) {
+        myCurrenUtilisateur.deletePlanning(p_);
+        myCurrenUtilisateur.addPlanning(p);
+        tasktList.getSelectionModel().clearSelection();
+        viewListTask.getItems().clear();
+        listToPlanAuto.clear();
+        extendBox.getSelectionModel().clearSelection();
+        planify.updateUser(myCurrenUtilisateur);
+    }
+
+    @FXML
+    void handleRefuseAuto(ActionEvent event) {
+        handleGoingBack(event);
+        tasktList.getSelectionModel().clearSelection();
+        viewListTask.getItems().clear();
+        listToPlanAuto.clear();
+        extendBox.getSelectionModel().clearSelection();
+
+    }
+    
+    private void populateUnscheduled(){
+        ArrayList<Tache> unscList = myCurrenUtilisateur.getTachesNotPlanned();
+        ObservableList<Tache> myUnscist = FXCollections.observableArrayList(unscList);
+        tasktList.setItems(myUnscist);
+        tasktList1.setItems(myUnscist);
+    }
+
+    private void handleSelectedUnscheduled(){
+        tasktList.setOnAction(e -> {
+            Tache tache = tasktList.getSelectionModel().getSelectedItem();
+            if( tache != null){
+                listToPlanAuto.add(tache);
+                viewListTask.getItems().clear();
+                viewListTask.getItems().addAll(listToPlanAuto);
+            }
+        });
+    }
+
+    private void handleSelectedUnscheduled2(){
+        tasktList1.setOnAction(e -> {
+            Tache tache = tasktList1.getSelectionModel().getSelectedItem();
+            if( tache != null){
+                listProject.add(tache);
+                viewListTask1.getItems().clear();
+                viewListTask1.getItems().addAll(listProject);
+            }
+        });
+    }
+
+    
+
+    @FXML
+    void handlePeriodDebutPicker(ActionEvent event) {
+        
+    }
+
+    @FXML
+    void handlePeriodFinPicker(ActionEvent event) {
+
+    }
+
+    
+    @FXML
+    void handlePlanAuto(ActionEvent event) {
+        LocalDate dateDebut = periodDebutPicker.getValue();
+        LocalDate dateFin = periodFinPicker.getValue();
+        if(dateDebut.isAfter(dateFin)){
+            Alerts.errorDate();
+        }
+        else {
+            LocalDate currentDate = LocalDate.now();
+                if (dateDebut.isBefore(currentDate)) {
+                    Alerts.errorDateCurrent();
+                }
+                else {
+                    PeriodMe period = new PeriodMe(dateDebut, dateFin);
+                    if(myCurrenUtilisateur.isPeriodAvailable2(period) == null){
+                        Alerts.errorPlanning();
+                        handleGoingBack(event);
+                        tasktList.getSelectionModel().clearSelection();
+                        viewListTask.getItems().clear();
+                        listToPlanAuto.clear();
+                        extendBox.getSelectionModel().clearSelection();
+                    }
+                    else{//ici je planifie
+                            System.out.println("hnaaa");
+                            boolean extend=false;
+                            if(extendBox.getSelectionModel().getSelectedItem() == "Oui"){
+                                extend=true;
+                            }
+                            else{
+                                extend=false;
+                            }
+                            p_ = myCurrenUtilisateur.isPeriodAvailable2(period);
+                            p = myCurrenUtilisateur.planAuto(listToPlanAuto, myCurrenUtilisateur.isPeriodAvailable2(period), extend);
+                            Alerts.displayPlanning(p);
+                            confirmAutoBtn.setVisible(true);
+                            refuseAutoBtn.setVisible(true);
+                            planAutoBtn.setVisible(false);                 
+                    }
+                }    
+        }
+    }
+
 
     @FXML
     void handlePlanManual(ActionEvent event) {
@@ -310,7 +446,6 @@ public class ControlleurTask implements Initializable{
                 Alerts.emptyFields();
             }
             else{
-                DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
                 LocalTime h = LocalTime.parse(creneauDebutField.getText(), timeFormatter);
                 LocalTime h1 = h.plusMinutes(tacheSimple.getDuree());
                 boolean bloque=false;
@@ -355,7 +490,7 @@ public class ControlleurTask implements Initializable{
                 typeBox.setVisible(true);
                 typeText.setVisible(true);
                 sauvegarderBtn.setVisible(true);
-                ouiBtn.setDisable(true);
+
                 periodiciteText.setVisible(true);
                 periodiciteTextField.setVisible(true);
             }
@@ -444,7 +579,8 @@ public class ControlleurTask implements Initializable{
         deadlineDatePicker.setValue(null);
         deleteCategoryBox2.getSelectionModel().clearSelection();
         PriorityBox.getSelectionModel().clearSelection();        
-        typeBox.getSelectionModel().clearSelection();        
+        typeBox.getSelectionModel().clearSelection();    
+
     }
 
     private void populatePriority(){
@@ -517,12 +653,19 @@ public class ControlleurTask implements Initializable{
 
     @FXML
     void handleAddProjet(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handleConfirmAuto(ActionEvent event) {
-
+        if(nomProjetField.getText().isEmpty()|| descriptionField.getText().isEmpty() || listProject.isEmpty()){
+            Alerts.emptyFields();
+        }else{
+            Projet projet = new Projet(nomProjetField.getText(), descriptionField.getText(), listProject);
+            myCurrenUtilisateur.addNewProject(projet);
+            planify.updateUser(myCurrenUtilisateur);
+            Alerts.top();
+            listProject.clear();
+            viewListTask1.getItems().clear();
+            nomProjetField.setText("");
+            descriptionField.setText("");
+            handleGoingBack(event);
+        }
     }
 
     @FXML
@@ -532,7 +675,7 @@ public class ControlleurTask implements Initializable{
 
     @FXML
     void handleEnterDatePicker(ActionEvent event) {
-
+        dateDisplay=enterDatePicker.getValue();
     }
 
 
@@ -540,27 +683,7 @@ public class ControlleurTask implements Initializable{
     void handleNomProjet(ActionEvent event) {
 
     }
-
-    @FXML
-    void handlePeriodDebutPicker(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handlePeriodFinPicker(ActionEvent event) {
-
-    }
-  
-    @FXML
-    void handleRefuseAuto(ActionEvent event) {
-
-    }
-
-    @FXML
-    void handletaskList(ActionEvent event) {
-
-    }
-    
+      
     @FXML
     void handletaskPlannedList(ActionEvent event) {
 
@@ -577,7 +700,8 @@ public class ControlleurTask implements Initializable{
         a.add("Non");
         ObservableList<String> aList = FXCollections.observableArrayList(a);
         bloqueBox.setItems(aList);
-    }
+        extendBox.setItems(aList);
+    } 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -631,11 +755,16 @@ public class ControlleurTask implements Initializable{
         updatePage.setVisible(false);
         displayPage.setVisible(false);
         categoryPage.setVisible(false);
+        populateUnscheduled();
+        handleSelectedUnscheduled2();
     }
 
 
     @FXML
     void handleGoingBack(ActionEvent event) {
+        nonBtn.setDisable(false);
+        ouiBtn.setDisable(false);
+
         TaskMainPage.setVisible(true);
         AddPage.setVisible(false);
         manualPage.setVisible(false);
@@ -645,6 +774,12 @@ public class ControlleurTask implements Initializable{
         displayPage.setVisible(false);
         categoryPage.setVisible(false);
         deleteCategoryBox.getSelectionModel().clearSelection();
+        tasktList.getSelectionModel().clearSelection();
+        displayList.getSelectionModel().clearSelection();
+        viewListTask.getItems().clear();
+        viewListTask1.getItems().clear();
+        listToPlanAuto.clear();
+        extendBox.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -652,8 +787,7 @@ public class ControlleurTask implements Initializable{
         TaskMainPage.setVisible(false);
         AddPage.setVisible(true);
         populateCategory();
-        nonBtn.setDisable(false);
-        ouiBtn.setDisable(false);
+
         manualPage.setVisible(false);
         autoPage.setVisible(false);
         projectPage.setVisible(false);
@@ -679,6 +813,10 @@ public class ControlleurTask implements Initializable{
         categoryPage.setVisible(false);
         confirmAutoBtn.setVisible(false);
         refuseAutoBtn.setVisible(false);
+        populateUnscheduled();
+        handleSelectedUnscheduled();
+        planAutoBtn.setVisible(true);
+
     }
 
     @FXML
@@ -693,14 +831,6 @@ public class ControlleurTask implements Initializable{
         categoryPage.setVisible(true);
         populateCategory();
     }
-    
-    @FXML
-    void handlePlanAuto(ActionEvent event) {
-        confirmAutoBtn.setVisible(true);
-        refuseAutoBtn.setVisible(true);
-        planAutoBtn.setVisible(false);
-    }
-
     
     @FXML
     void handleDisplay(ActionEvent event) {

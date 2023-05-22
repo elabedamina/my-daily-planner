@@ -10,12 +10,12 @@ public class Tache implements Serializable{
     private Priorite priorite;
     private Categorie categorie;
     private Etat etat;
-    private LocalDate date;//when planified i add the date
+    private LocalDate date; //when planified i add the date
 
     public Tache() {
         this.etat = Etat.UNSCHEDULED;
     }
-
+    
     public Tache(String nom, Long duree, LocalDate date_limite, Priorite priorite, Categorie categorie) {
         this.nom = nom;
         this.duree = duree;

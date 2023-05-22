@@ -1,6 +1,8 @@
 package modals;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +18,9 @@ public class Planning implements Serializable  /* implements Planification */ {
     private Map<Tache,Creneau> tachesPlanned = new HashMap<>();// contains the tasks of the planning and their slot after planification
 
 
+    public Planning() {
+    }
+
     /*WHEN displaying history of plannings i have to test wheter it is a planning of one day if no i return it with the getter, ndir 
      * methode traj3li boolean 
      * nroh l controller w fl parcours ta3 plannings nzid condition bl methode jdida
@@ -27,6 +32,53 @@ public class Planning implements Serializable  /* implements Planification */ {
         badge.put("GOOD", 0);
         badge.put("VeryGOOD", 0);
         badge.put("EXCELLENT", 0);
+    }
+
+    public ArrayList<Tache> getTachesForDay(LocalDate date) {
+        //returns the list of taches scheduled in a given date
+        ArrayList<Tache> tachesForDay = new ArrayList<>();
+        for (Tache tache : tachesPlanned.keySet()) {
+            LocalDate tacheDate = tache.getDate(); 
+            if (tacheDate.equals(date)) {
+                tachesForDay.add(tache);
+            }
+        }
+        return tachesForDay;
+    }
+
+    public void addTachesToPlanned(Map<Tache, Creneau> tachesToAdd) {
+        tachesPlanned.putAll(tachesToAdd);
+    }
+
+    public void addSingleTask(Tache t, Creneau c){
+        tachesPlanned.put(t,c);
+    }
+
+    public boolean containsCreneauValue(Creneau creneau) {
+        boolean b=false;
+        for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
+            Creneau currentCreneau = entry.getValue();
+                if(currentCreneau.overlaps(creneau,currentCreneau)){
+                    b=true;
+                } 
+            
+        }
+        return b;
+    }
+
+    @Override
+    public String toString() {
+        return "\n-------->Planning [period=" + period + ", tachesPlanned = " + printtacheplanned()  + "]";
+    }
+
+    public String printtacheplanned(){
+        String text="";
+        for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
+            Tache tache = entry.getKey();
+            Creneau creneau = entry.getValue();
+           text=text+ "------\nTache: " + tache + ", Creneau: " + creneau;
+        }   
+        return text;        
     }
 
     public int getNb_taches_comp() {
@@ -80,36 +132,4 @@ public class Planning implements Serializable  /* implements Planification */ {
     public void setTachesPlanned(Map<Tache, Creneau> tachesPlanned) {
         this.tachesPlanned = tachesPlanned;
     }
-    
-    public void addSingleTask(Tache t, Creneau c){
-        tachesPlanned.put(t,c);
-    }
-
-    public boolean containsCreneauValue(Creneau creneau) {
-        boolean b=false;
-        for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
-            Creneau currentCreneau = entry.getValue();
-                if(currentCreneau.overlaps(creneau,currentCreneau)){
-                    b=true;
-                } 
-            
-        }
-        return b;
-    }
-
-    @Override
-    public String toString() {
-        return "\n-------->Planning [period=" + period + ", tachesPlanned = " + printtacheplanned()  + "]";
-    }
-
-    public String printtacheplanned(){
-        String text="";
-        for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
-            Tache tache = entry.getKey();
-            Creneau creneau = entry.getValue();
-           text=text+ "------\nTache: " + tache + ", Creneau: " + creneau;
-        }   
-        return text;        
-    }
-   
 }
