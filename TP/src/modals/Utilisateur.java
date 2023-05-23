@@ -390,13 +390,11 @@ public boolean planNewTaskSimple(Tache t,LocalDate d, Creneau c){
                 PeriodMe period = new PeriodMe(lastLocalDate.plusDays(1), lastLocalDate.plusDays(2));
                 period.setSpecificAvailableSlot(mySlots);
                 Planning newPlanning = new Planning(period);
-                Planning new_ = planAuto(listeTachesUnscheduled, newPlanning, isExtend);
-                /*concaténer les plannings */
-                planning.getPeriod().extendPerdiod(lastLocalDate.plusDays(2), mySlots);
+                Planning new_ = planAuto(listeTachesUnscheduled, newPlanning, false);
+                planning.getPeriod().setSpecificAvailableSlot(mySlots);
                 planning.addTachesToPlanned(new_.getTachesPlanned());
                 listeTachesUnscheduled.clear();
                 System.out.println("\n\nPlanning proposé 1 " + planning);
-
                 return planning;
             }
             

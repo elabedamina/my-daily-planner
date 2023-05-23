@@ -120,6 +120,7 @@ public class ControlleurAuthentification implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Planning.fxml"));
         Parent root = loader.load();
         ControlleurPlanning controlleurPlanning = loader.getController();
+       
         controlleurPlanning.setUser(myCurrenUtilisateur);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);
