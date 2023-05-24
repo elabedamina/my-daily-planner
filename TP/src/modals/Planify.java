@@ -53,7 +53,7 @@ public class Planify {
             users.set(index, updatedUser);
             saveUsersToFile(); 
         } else {
-            System.out.println("Invalid index for user update.");
+            System.err.println("Invalid index for user update.");
         }
     }
 
@@ -62,7 +62,7 @@ public class Planify {
             oos.writeObject(users);
             System.out.println("saved");
         } catch (IOException e) {
-            System.out.println("Error saving users to file: " + e.getMessage());
+            System.err.println("Error saving users to file: " + e.getMessage());
         }   
     }
 
@@ -70,7 +70,7 @@ public class Planify {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(FILE_NAME))) {
             users = (ArrayList<Utilisateur>) ois.readObject();  
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("Error loading users from file: " + e.getMessage());
+            System.err.println("Error loading users from file: " + e.getMessage());
         }   
     }
 }
