@@ -16,7 +16,7 @@
 
 <StackPane xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controlleurs.ControlleurPlanning">
    <children>
-      <BorderPane fx:id="profilePage" prefHeight="200.0" prefWidth="200.0">
+      <BorderPane fx:id="profilePage" prefHeight="200.0" prefWidth="200.0" visible="false">
          <left>
             <Pane prefHeight="400.0" prefWidth="71.0" style="-fx-background-color: F89DAE;" BorderPane.alignment="CENTER">
                <children>
@@ -52,11 +52,6 @@
                      </font>
                   </Text>
                   <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
-                  <Text fill="#434242" layoutX="102.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon rendement :">
-                     <font>
-                        <Font name="Calibri Bold" size="14.0" />
-                     </font>
-                  </Text>
                   <Text fill="#434242" layoutX="103.0" layoutY="256.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre de félicitations obtenues :">
                      <font>
                         <Font name="Calibri Bold" size="14.0" />
@@ -79,7 +74,6 @@
                   </Text>
                   <ChoiceBox fx:id="modifDureeMin" layoutX="317.0" layoutY="106.0" prefWidth="150.0" style="-fx-background-color: d3d3d3;" />
                   <ChoiceBox fx:id="modifNbMin" layoutX="317.0" layoutY="154.0" prefWidth="150.0" style="-fx-background-color: d3d3d3;" />
-                  <Label fx:id="rendement" layoutX="344.0" layoutY="207.0" text="rendement" />
                   <Label fx:id="felicitation" layoutX="359.0" layoutY="244.0" text="Label" />
                   <Label fx:id="good" layoutX="359.0" layoutY="278.0" text="Label" />
                   <Label fx:id="veryGood" layoutX="359.0" layoutY="310.0" text="Label" />
@@ -87,6 +81,11 @@
                   <Button fx:id="goBack3" layoutX="22.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleGoingBack" prefHeight="27.0" prefWidth="65.0" style="-fx-background-color: d3d3d3;" text="Revenir" textFill="#434242">
                      <font>
                         <Font name="Calibri Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="modifPrefBtn" layoutX="344.0" layoutY="362.0" mnemonicParsing="false" onAction="#handleModifPref" style="-fx-background-color: F89DAE;" text="Confirmer les modifications" textFill="WHITE">
+                     <font>
+                        <Font name="Calibri Bold" size="13.0" />
                      </font>
                   </Button>
                </children>
@@ -167,7 +166,7 @@
             </Pane>
          </left>
       </BorderPane>
-      <BorderPane fx:id="historyPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" visible="false">
+      <BorderPane fx:id="historyPage" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0">
          <right>
             <Pane prefHeight="400.0" prefWidth="100.0" scaleX="1.06" scaleY="1.06" style="-fx-background-color: F89DAE;" translateX="-533.0" translateY="-11.0" BorderPane.alignment="CENTER">
                <children>

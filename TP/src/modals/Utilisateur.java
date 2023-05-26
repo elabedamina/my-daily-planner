@@ -62,6 +62,7 @@ public class Utilisateur implements Serializable {
             Alerts.FeliciterGood();
         }
         if (badge.get(Badge.GOOD) % 3 == 0 && badge.get(Badge.GOOD) != 0) {
+            // le nombre be dasge GOOD est multiple de 3 => badge VerryGOOD
             badge.put(Badge.VeryGOOD, badge.get(Badge.VeryGOOD) + 1);
             Alerts.FeliciterGood();
         }
@@ -86,6 +87,20 @@ public class Utilisateur implements Serializable {
         return tachesList;
     }
 
+    public Planning getTachePlanning(Tache tache) {
+        /*
+         * retourne une liste contenant toutes les tâches plannifiées de tous les
+         * plannings
+         */
+        for (Planning element : planning) {
+            for (Tache cle : element.getTachesPlanned().keySet()) {
+                if (tache == cle)
+                    return element;
+            }
+        }
+        return null;
+    }
+
     public Integer getNbTacheTotal() {
         /* retourne le nombre total de tâches planifiées */
         Integer nb = 0;
@@ -103,28 +118,6 @@ public class Utilisateur implements Serializable {
         return nb;
     }
 
-    public void setPlannedTaches(Tache tacheInit, Tache tacheModif) { // on fournit l'ancienne tâche et sa version
-                                                                      // modifiée
-        /* dans le cas de modification d'une tâche, on sauvegarde la tâche modifier */
-        for (Planning element : planning) {
-            Iterator<Tache> iteratorMap = element.getTachesPlanned().keySet().iterator();
-            while (iteratorMap.hasNext()) {
-                Tache tacheMap = iteratorMap.next(); // la tâche qui existe dans le map (pour vérifier si elle est celle
-                                                     // qu'on cherche à remplacer)
-                if (tacheMap == tacheInit) {
-                    Creneau creneau = element.getTachesPlanned().get(tacheMap);
-                    element.getTachesPlanned().remove(tacheMap);
-                    element.getTachesPlanned().put(tacheModif, creneau);
-                    if (tacheModif.getEtat() == Etat.COMPLETED && tacheInit.getEtat() != Etat.COMPLETED)
-                        element.setNb_taches_comp(element.getNb_taches_comp() + 1);
-                    // si la tâche et devenue COMPLETED on incrémente le nombre de tâches complétées
-                    // dans le planning concerné
-                }
-            }
-
-        }
-    }
-
     public boolean isPeriodAvailable(PeriodMe period) {
         for (Planning _planning : planning) {
             if (_planning.getPeriod().overlaps(period)) {
@@ -133,8 +126,9 @@ public class Utilisateur implements Serializable {
         }
         return true; // Period is available
     }
+
     public ArrayList<Tache> getAllPlannedDay(LocalDate d) {
-        ArrayList<Tache> a =new ArrayList<>();
+        ArrayList<Tache> a = new ArrayList<>();
         for (Planning _planning : planning) {
             if (_planning.getPeriod().containsDate(d)) {
                 a.addAll(_planning.getTachesForDay(d));
@@ -148,14 +142,14 @@ public class Utilisateur implements Serializable {
     }
 
     public void addPlanning(Planning newPlanning) {
-    planning.add(newPlanning);
+        planning.add(newPlanning);
     }
 
     public Planning isPeriodAvailable2(PeriodMe period) {
         Planning p = null;
         for (Planning _planning : planning) {
             if (_planning.getPeriod().overlaps2(period)) {
-                p=_planning; // Period is not available
+                p = _planning; // Period is not available
             }
         }
         return p; // Period is available
@@ -179,163 +173,174 @@ public class Utilisateur implements Serializable {
         return index;
     }
 
-
-    private boolean availableSlot(LocalDate d,Creneau c, int indexPlanning){
-        //retourne vrai si pour une date de planning donnée le créneau est libre
-        if (planning.get(indexPlanning).getPeriod().containsDateAndCreneau(d,c) != -1) {
+    private boolean availableSlot(LocalDate d, Creneau c, int indexPlanning) {
+        // retourne vrai si pour une date de planning donnée le créneau est libre
+        if (planning.get(indexPlanning).getPeriod().containsDateAndCreneau(d, c) != -1) {
             return true;
         }
         return false;
     }
 
-    private boolean creneauOccupe(Creneau c, int indexPlanning){
-        //retrourne vrai si le créneau est occupé
+    private boolean creneauOccupe(Creneau c, int indexPlanning) {
+        // retrourne vrai si le créneau est occupé
         return planning.get(indexPlanning).containsCreneauValue(c);
     }
 
-    private boolean creneauNotExist(LocalDate d,Creneau c, int indexPlanning){
-        //retourne vrai si le créneau n'existe
-        return(!availableSlot(d, c, indexPlanning) && !creneauOccupe(c, indexPlanning));      
+    private boolean creneauNotExist(LocalDate d, Creneau c, int indexPlanning) {
+        // retourne vrai si le créneau n'existe
+        return (!availableSlot(d, c, indexPlanning) && !creneauOccupe(c, indexPlanning));
     }
 
-public boolean planNewTaskSimple(Tache t,LocalDate d, Creneau c){
-    //planifier manuellement une tâche simple
-        if(t instanceof Simple){
-            if(isDate(d) == -1){    //la date n'est dans aucun planning
-                PeriodMe periodMe= new PeriodMe(d, d);
+    public boolean planNewTaskSimple(Tache t, LocalDate d, Creneau c) {
+        // planifier manuellement une tâche simple
+        if (t instanceof Simple) {
+            if (isDate(d) == -1) { // la date n'est dans aucun planning
+                PeriodMe periodMe = new PeriodMe(d, d);
                 Planning _planning = new Planning(periodMe);
                 t.setEtat(Etat.INPROGRESS);
                 t.setDate(d);
-                _planning.addSingleTask(t,c);
+                _planning.addSingleTask(t, c);
                 this.planning.add(_planning);
-                return true;//planification is done
-            }
-            else{//un planning contient cette date
-                    if(creneauOccupe(c, isDate(d))){
-                    //2eme cas : le créneau est occupé, planification impossible
-                        return false;
-                    }
-                    else{
-                        if (availableSlot(d, c, isDate(d))){
-                            //3eme cas : le créneau est libre
-                            /*il faut vérifier si le créneau est divisible ou non puis planifier*/
-                            if(c.isDivisible(t.getDuree())){
-                                LocalTime firstSlotfin = c.getHeureDebut().plusMinutes(t.getDuree());
-                                LocalTime endSLocalTime = c.getHeureDebut().plusMinutes(t.getDuree());
-                                Creneau firstSlot = new Creneau(c.getHeureDebut(), firstSlotfin,this.dureeMin,false);
-                                Creneau creneau2 = new Creneau(endSLocalTime, c.getHeureFin(),this.dureeMin,false);
-                                t.setEtat(Etat.INPROGRESS);
-                                t.setDate(d);
-                                planning.get(isDate(d)).addSingleTask(t, firstSlot);
-                                planning.get(isDate(d)).getPeriod().removeSlot(d, c);
-                                planning.get(isDate(d)).getPeriod().addSlot(d, creneau2);
-                                return true;
-                            }
-                            else{
-                                /*s'il n'est pas divisible je l'enlève de la liste des créneaux libres et je planifie */
-                                t.setEtat(Etat.INPROGRESS);
-                                t.setDate(d);
-                                planning.get(isDate(d)).addSingleTask(t, c);
-                                planning.get(isDate(d)).getPeriod().removeSlot(d, c);
-                                return true;
-                            }
+                return true;// planification is done
+            } else {// un planning contient cette date
+                if (creneauOccupe(c, isDate(d))) {
+                    // 2eme cas : le créneau est occupé, planification impossible
+                    return false;
+                } else {
+                    if (availableSlot(d, c, isDate(d))) {
+                        // 3eme cas : le créneau est libre
+                        /* il faut vérifier si le créneau est divisible ou non puis planifier */
+                        if (c.isDivisible(t.getDuree())) {
+                            LocalTime firstSlotfin = c.getHeureDebut().plusMinutes(t.getDuree());
+                            LocalTime endSLocalTime = c.getHeureDebut().plusMinutes(t.getDuree());
+                            Creneau firstSlot = new Creneau(c.getHeureDebut(), firstSlotfin, this.dureeMin, false);
+                            Creneau creneau2 = new Creneau(endSLocalTime, c.getHeureFin(), this.dureeMin, false);
+                            t.setEtat(Etat.INPROGRESS);
+                            t.setDate(d);
+                            planning.get(isDate(d)).addSingleTask(t, firstSlot);
+                            planning.get(isDate(d)).getPeriod().removeSlot(d, c);
+                            planning.get(isDate(d)).getPeriod().addSlot(d, creneau2);
+                            return true;
+                        } else {
+                            /*
+                             * s'il n'est pas divisible je l'enlève de la liste des créneaux libres et je
+                             * planifie
+                             */
+                            t.setEtat(Etat.INPROGRESS);
+                            t.setDate(d);
+                            planning.get(isDate(d)).addSingleTask(t, c);
+                            planning.get(isDate(d)).getPeriod().removeSlot(d, c);
+                            return true;
                         }
-                        else{
-                            if(creneauNotExist(d, c, isDate(d))){
-                                // 1er cas : le creneau n'est ni occupé ni libre, ajouter la tache
-                                t.setEtat(Etat.INPROGRESS);
-                                t.setDate(d);
-                                planning.get(isDate(d)).addSingleTask(t,c);
-                                return true;
-                            }
+                    } else {
+                        if (creneauNotExist(d, c, isDate(d))) {
+                            // 1er cas : le creneau n'est ni occupé ni libre, ajouter la tache
+                            t.setEtat(Etat.INPROGRESS);
+                            t.setDate(d);
+                            planning.get(isDate(d)).addSingleTask(t, c);
+                            return true;
                         }
                     }
+                }
             }
-        }
-        else{
+        } else {
             return false;
         }
         return false;
     }
 
-    
     public Planning planAuto(ArrayList<Tache> listToPlan, Planning planning2, boolean isExtend) {
         Planning planning = new Planning(planning2.getPeriod());
         ArrayList<Tache> tachSche = new ArrayList<>();
         ArrayList<Tache> listeTachesUnscheduled = new ArrayList<>();
-        planning.getPeriod().sortCreneau();//ordonner les créneaux
-        listToPlan = sortArrayListTaches(listToPlan);//ordonner les tâches
+        planning.getPeriod().sortCreneau();// ordonner les créneaux
+        listToPlan = sortArrayListTaches(listToPlan);// ordonner les tâches
         LocalDate lastLocalDate = planning.getPeriod().getEndDate();
         Iterator iteratorTaches = listToPlan.iterator();
         while (iteratorTaches.hasNext()) {
             Tache tache = (Tache) iteratorTaches.next();
             boolean tacheScheduled = false;
             LocalDate startDayDate = planning.getPeriod().getStartDate().minusDays(1);
-            while ( startDayDate.isBefore(planning.getPeriod().getEndDate()) && tache.getEtat() == Etat.UNSCHEDULED) {
+            while (startDayDate.isBefore(planning.getPeriod().getEndDate()) && tache.getEtat() == Etat.UNSCHEDULED) {
                 startDayDate = startDayDate.plusDays(1);
                 ArrayList<Creneau> listAvailableSlots = planning.getPeriod().returnCreneauOfTheDay(startDayDate);
-                if(listAvailableSlots==null){
-                    tacheScheduled=true;
+                if (listAvailableSlots == null) {
+                    tacheScheduled = true;
                     break;
-                }
-                else{
+                } else {
                     Iterator<Creneau> iteratorlistAvailableSlots = listAvailableSlots.iterator();
                     while (iteratorlistAvailableSlots.hasNext()) {
-                    Creneau availableSlot = iteratorlistAvailableSlots.next();
-                    if ( (tache.getDate_limite().isAfter(startDayDate) ) ||
-                            (tache.getDate_limite().isEqual(startDayDate))  ){
-                                if(tache instanceof Decomposable){
-                                    if (tache.getDuree() > availableSlot.getDuree()) {
-                                        Decomposable taskDecomposable = (Decomposable) tache;
-                                        Simple ssTask = new Simple(tache.getNom() + (taskDecomposable.getSubTaches().size()+1), availableSlot.getDuree() , tache.getDate_limite(), tache.getPriorite(), tache.getCategorie(),0);
+                        Creneau availableSlot = iteratorlistAvailableSlots.next();
+                        if ((tache.getDate_limite().isAfter(startDayDate)) ||
+                                (tache.getDate_limite().isEqual(startDayDate))) {
+                            if (tache instanceof Decomposable) {
+                                if (tache.getDuree() > availableSlot.getDuree()) {
+                                    Decomposable taskDecomposable = (Decomposable) tache;
+                                    Simple ssTask = new Simple(
+                                            tache.getNom() + (taskDecomposable.getSubTaches().size() + 1),
+                                            availableSlot.getDuree(), tache.getDate_limite(), tache.getPriorite(),
+                                            tache.getCategorie(), 0);
+                                    ssTask.setDate(startDayDate);
+                                    ssTask.setEtat(Etat.INPROGRESS);
+                                    taskDecomposable.addTosSubTaches(ssTask);
+                                    planning.addSingleTask(ssTask, availableSlot);
+                                    taskDecomposable.setDuree(taskDecomposable.getDuree() - ssTask.getDuree());
+                                    planning.getPeriod().removeSlot(startDayDate, availableSlot);
+                                    tache = taskDecomposable;
+                                    break;
+                                } else {// pas de décomposition de la tâche
+                                    Decomposable taskDecomposable = (Decomposable) tache;
+                                    if (availableSlot.isDivisible(taskDecomposable.getDuree())) {// si le créneau est
+                                                                                                 // divisible
+                                        LocalTime firstSlotfin = availableSlot.getHeureDebut()
+                                                .plusMinutes(tache.getDuree());
+                                        LocalTime endSLocalTime = availableSlot.getHeureDebut()
+                                                .plusMinutes(tache.getDuree());
+                                        Creneau firstSlot = new Creneau(availableSlot.getHeureDebut(), firstSlotfin,
+                                                this.dureeMin, false);
+                                        Creneau creneau2 = new Creneau(endSLocalTime, availableSlot.getHeureFin(),
+                                                this.dureeMin, false);
+                                        Simple ssTask = new Simple(
+                                                tache.getNom() + (taskDecomposable.getSubTaches().size() + 1),
+                                                tache.getDuree(), tache.getDate_limite(), tache.getPriorite(),
+                                                tache.getCategorie(), 0);
+                                        ssTask.setDate(startDayDate);
+                                        ssTask.setEtat(Etat.INPROGRESS);
+                                        taskDecomposable.addTosSubTaches(ssTask);
+                                        planning.addSingleTask(ssTask, firstSlot);
+                                        planning.getPeriod().removeSlot(startDayDate, availableSlot);
+                                        planning.getPeriod().addSlot(startDayDate, creneau2);
+                                        iteratorTaches.remove();
+                                        tacheScheduled = true;
+                                        break;
+                                    } else {
+                                        Simple ssTask = new Simple(
+                                                tache.getNom() + (taskDecomposable.getSubTaches().size() + 1),
+                                                tache.getDuree(), tache.getDate_limite(), tache.getPriorite(),
+                                                tache.getCategorie(), 0);
                                         ssTask.setDate(startDayDate);
                                         ssTask.setEtat(Etat.INPROGRESS);
                                         taskDecomposable.addTosSubTaches(ssTask);
                                         planning.addSingleTask(ssTask, availableSlot);
-                                        taskDecomposable.setDuree(taskDecomposable.getDuree() - ssTask.getDuree());
                                         planning.getPeriod().removeSlot(startDayDate, availableSlot);
-                                        tache = taskDecomposable;
+                                        iteratorTaches.remove();
+                                        tacheScheduled = true;
                                         break;
-                                    } else {//pas de décomposition de la tâche
-                                        Decomposable taskDecomposable = (Decomposable) tache;
-                                        if(availableSlot.isDivisible(taskDecomposable.getDuree())){//si le créneau est divisible
-                                            LocalTime firstSlotfin = availableSlot.getHeureDebut().plusMinutes(tache.getDuree());
-                                            LocalTime endSLocalTime = availableSlot.getHeureDebut().plusMinutes(tache.getDuree());
-                                            Creneau firstSlot = new Creneau(availableSlot.getHeureDebut(), firstSlotfin,this.dureeMin,false);
-                                            Creneau creneau2 = new Creneau(endSLocalTime, availableSlot.getHeureFin(),this.dureeMin,false);
-                                            Simple ssTask = new Simple(tache.getNom() + (taskDecomposable.getSubTaches().size()+1), tache.getDuree(), tache.getDate_limite(), tache.getPriorite(), tache.getCategorie(),0);
-                                            ssTask.setDate(startDayDate);
-                                            ssTask.setEtat(Etat.INPROGRESS);
-                                            taskDecomposable.addTosSubTaches(ssTask);
-                                            planning.addSingleTask(ssTask, firstSlot);
-                                            planning.getPeriod().removeSlot(startDayDate, availableSlot);
-                                            planning.getPeriod().addSlot(startDayDate, creneau2);
-                                            iteratorTaches.remove();
-                                            tacheScheduled = true; 
-                                            break; 
-                                        }
-                                        else{
-                                            Simple ssTask = new Simple(tache.getNom() + (taskDecomposable.getSubTaches().size()+1), tache.getDuree(), tache.getDate_limite(), tache.getPriorite(), tache.getCategorie(),0);
-                                            ssTask.setDate(startDayDate);
-                                            ssTask.setEtat(Etat.INPROGRESS);
-                                            taskDecomposable.addTosSubTaches(ssTask);
-                                            planning.addSingleTask(ssTask, availableSlot);
-                                            planning.getPeriod().removeSlot(startDayDate, availableSlot);                                       
-                                            iteratorTaches.remove();
-                                            tacheScheduled = true; 
-                                            break;
-                                        }                                        
                                     }
                                 }
-                                else{
-                            if(tache instanceof Simple){
-                                
-                                    if(availableSlot.isDivisible(tache.getDuree())){
+                            } else {
+                                if (tache instanceof Simple) {
+
+                                    if (availableSlot.isDivisible(tache.getDuree())) {
                                         // si le créneau est divisible
-                                        LocalTime firstSlotfin = availableSlot.getHeureDebut().plusMinutes(tache.getDuree());
-                                        LocalTime endSLocalTime = availableSlot.getHeureDebut().plusMinutes(tache.getDuree());
-                                        Creneau firstSlot = new Creneau(availableSlot.getHeureDebut(), firstSlotfin,this.dureeMin,false);
-                                        Creneau creneau2 = new Creneau(endSLocalTime, availableSlot.getHeureFin(),this.dureeMin,false);
+                                        LocalTime firstSlotfin = availableSlot.getHeureDebut()
+                                                .plusMinutes(tache.getDuree());
+                                        LocalTime endSLocalTime = availableSlot.getHeureDebut()
+                                                .plusMinutes(tache.getDuree());
+                                        Creneau firstSlot = new Creneau(availableSlot.getHeureDebut(), firstSlotfin,
+                                                this.dureeMin, false);
+                                        Creneau creneau2 = new Creneau(endSLocalTime, availableSlot.getHeureFin(),
+                                                this.dureeMin, false);
                                         tache.setEtat(Etat.INPROGRESS);
                                         tache.setDate(startDayDate);
                                         planning.addSingleTask(tache, firstSlot);
@@ -343,24 +348,24 @@ public boolean planNewTaskSimple(Tache t,LocalDate d, Creneau c){
                                         planning.getPeriod().addSlot(startDayDate, creneau2);
                                         iteratorTaches.remove();
                                         break;
-                                    }
-                                    else{
+                                    } else {
                                         tache.setEtat(Etat.INPROGRESS);
                                         tache.setDate(startDayDate);
                                         planning.addSingleTask(tache, availableSlot);
                                         planning.getPeriod().removeSlot(startDayDate, availableSlot);
                                         iteratorTaches.remove();
-                                        break;  
-                                    }        
-                                
+                                        break;
+                                    }
+
+                                }
+
                             }
-                            
+                        } else {
+                            System.out.println("Le deadline de cette tache a été dépassé");
+                            break;
                         }
-                    } else {
-                        System.out.println("Le deadline de cette tache a été dépassé");
-                        break;
                     }
-                }}
+                }
                 if (tache.getEtat() == Etat.INPROGRESS) {
                     tachSche.add(tache);
                     lastLocalDate = startDayDate;
@@ -371,7 +376,7 @@ public boolean planNewTaskSimple(Tache t,LocalDate d, Creneau c){
                 }
             }
             if (!tacheScheduled) {
-                continue; 
+                continue;
             }
         }
         for (Tache tache : listToPlan) {
@@ -380,39 +385,41 @@ public boolean planNewTaskSimple(Tache t,LocalDate d, Creneau c){
             }
         }
         if (!listeTachesUnscheduled.isEmpty()) {
-            if (isExtend ) {
+            if (isExtend) {
                 // create the extended planning and plan it
-                LocalTime time1 = LocalTime.of(9, 0); 
+                LocalTime time1 = LocalTime.of(9, 0);
                 LocalTime time2 = LocalTime.of(14, 30);
-                Creneau creneau =new Creneau(time1, time2, dureeMin, false);
-                ArrayList<Creneau> mySlots=new ArrayList<>(); 
+                Creneau creneau = new Creneau(time1, time2, dureeMin, false);
+                ArrayList<Creneau> mySlots = new ArrayList<>();
                 mySlots.add(creneau);
                 PeriodMe period = new PeriodMe(lastLocalDate.plusDays(1), lastLocalDate.plusDays(2));
                 period.setSpecificAvailableSlot(mySlots);
                 Planning newPlanning = new Planning(period);
+
+
                 Planning new_ = planAuto(listeTachesUnscheduled, newPlanning, false);
                 planning.getPeriod().setSpecificAvailableSlot(mySlots);
+
                 planning.addTachesToPlanned(new_.getTachesPlanned());
                 listeTachesUnscheduled.clear();
                 System.out.println("\n\nPlanning proposé 1 " + planning);
                 return planning;
             }
-            
+
         }
         this.tachesNotPlanned.removeAll(tachSche);
         System.out.println("\n\n-----------\nVoici le plannng proposé : \n " + planning);
         return (planning);
     }
 
-
     public ArrayList<Tache> sortArrayListTaches(ArrayList<Tache> listToPlan) {
         // Sort the tasks by deadline date, deadline time, and priority
         listToPlan.sort(Comparator.comparing(Tache::getDate_limite)
                 .thenComparing(Tache::getPriorite));
-      return listToPlan;
+        return listToPlan;
     }
 
-    public void addNewProject(Projet p){
+    public void addNewProject(Projet p) {
         projets.add(p);
     }
 
