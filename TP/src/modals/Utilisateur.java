@@ -118,37 +118,6 @@ public class Utilisateur implements Serializable {
         return nb;
     }
 
-    /*
-     * public void setPlannedTaches(Tache tacheInit, Tache tacheModif) { // on
-     * fournit l'ancienne tâche et sa version
-     * // modifiée
-     * /* dans le cas de modification d'une tâche, on sauvegarde la tâche modifier
-     */
-    /*
-     * for (Planning element : planning) {
-     * Iterator<Tache> iteratorMap = element.getTachesPlanned().keySet().iterator();
-     * while (iteratorMap.hasNext()) {
-     * Tache tacheMap = iteratorMap.next(); // la tâche qui existe dans le map (pour
-     * vérifier si elle est celle
-     * // qu'on cherche à remplacer)
-     * if (tacheMap == tacheInit) {
-     * // Creneau creneau = iteratorMap.getValue();
-     * iteratorMap.remove();
-     * element.getTachesPlanned().remove(tacheMap);
-     * element.getTachesPlanned().put(tacheModif, creneau);
-     * if (tacheModif.getEtat() == Etat.COMPLETED && tacheInit.getEtat() !=
-     * Etat.COMPLETED)
-     * element.setNb_taches_comp(element.getNb_taches_comp() + 1);
-     * // si la tâche et devenue COMPLETED on incrémente le nombre de tâches
-     * complétées
-     * // dans le planning concerné
-     * }
-     * }
-     * 
-     * }
-     * }
-     */
-
     public boolean isPeriodAvailable(PeriodMe period) {
         for (Planning _planning : planning) {
             if (_planning.getPeriod().overlaps(period)) {
