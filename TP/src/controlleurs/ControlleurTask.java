@@ -322,7 +322,7 @@ public class ControlleurTask implements Initializable {
 
     @FXML
     private Button modifConfirm;
-  
+
     @FXML
     private Text autoText;
 
@@ -358,7 +358,6 @@ public class ControlleurTask implements Initializable {
 
     @FXML
     private Button afficherBtn;
-    
 
     private Utilisateur myCurrenUtilisateur;
     private Planify planify = Planify.getInstance();
@@ -369,9 +368,10 @@ public class ControlleurTask implements Initializable {
     private Planning p = new Planning();
     private Planning p_ = new Planning();
     private LocalDate dateDisplay;
+    LocalDate currentDate = LocalDate.now();
 
     @FXML
-    void handleAfficher(ActionEvent event ){
+    void handleAfficher(ActionEvent event) {
         displayList.getItems().clear();
         ArrayList<Tache> unscList = myCurrenUtilisateur.getAllPlannedDay(dateDisplay);
         ObservableList<Tache> myUnscist = FXCollections.observableArrayList(unscList);
@@ -398,18 +398,18 @@ public class ControlleurTask implements Initializable {
         extendBox.getSelectionModel().clearSelection();
 
     }
-    
-    private void populateUnscheduled(){
+
+    private void populateUnscheduled() {
         ArrayList<Tache> unscList = myCurrenUtilisateur.getTachesNotPlanned();
         ObservableList<Tache> myUnscist = FXCollections.observableArrayList(unscList);
         tasktList.setItems(myUnscist);
         tasktList1.setItems(myUnscist);
     }
 
-    private void handleSelectedUnscheduled(){
+    private void handleSelectedUnscheduled() {
         tasktList.setOnAction(e -> {
             Tache tache = tasktList.getSelectionModel().getSelectedItem();
-            if( tache != null){
+            if (tache != null) {
                 listToPlanAuto.add(tache);
                 viewListTask.getItems().clear();
                 viewListTask.getItems().addAll(listToPlanAuto);
@@ -417,10 +417,10 @@ public class ControlleurTask implements Initializable {
         });
     }
 
-    private void handleSelectedUnscheduled2(){
+    private void handleSelectedUnscheduled2() {
         tasktList1.setOnAction(e -> {
             Tache tache = tasktList1.getSelectionModel().getSelectedItem();
-            if( tache != null){
+            if (tache != null) {
                 listProject.add(tache);
                 viewListTask1.getItems().clear();
                 viewListTask1.getItems().addAll(listProject);
@@ -428,11 +428,9 @@ public class ControlleurTask implements Initializable {
         });
     }
 
-    
-
     @FXML
     void handlePeriodDebutPicker(ActionEvent event) {
-        
+
     }
 
     @FXML
@@ -440,49 +438,42 @@ public class ControlleurTask implements Initializable {
 
     }
 
-    
     @FXML
     void handlePlanAuto(ActionEvent event) {
         LocalDate dateDebut = periodDebutPicker.getValue();
         LocalDate dateFin = periodFinPicker.getValue();
-        if(dateDebut.isAfter(dateFin)){
+        if (dateDebut.isAfter(dateFin)) {
             Alerts.errorDate();
-        }
-        else {
-            LocalDate currentDate = LocalDate.now();
-                if (dateDebut.isBefore(currentDate)) {
-                    Alerts.errorDateCurrent();
+        } else {
+            if (dateDebut.isBefore(currentDate)) {
+                Alerts.errorDateCurrent();
+            } else {
+                PeriodMe period = new PeriodMe(dateDebut, dateFin);
+                if (myCurrenUtilisateur.isPeriodAvailable2(period) == null) {
+                    Alerts.errorPlanning();
+                    handleGoingBack(event);
+                    tasktList.getSelectionModel().clearSelection();
+                    viewListTask.getItems().clear();
+                    listToPlanAuto.clear();
+                    extendBox.getSelectionModel().clearSelection();
+                } else {// ici je planifie
+                    boolean extend = false;
+                    if (extendBox.getSelectionModel().getSelectedItem() == "Oui") {
+                        extend = true;
+                    } else {
+                        extend = false;
+                    }
+                    p_ = myCurrenUtilisateur.isPeriodAvailable2(period);
+                    p = myCurrenUtilisateur.planAuto(listToPlanAuto, myCurrenUtilisateur.isPeriodAvailable2(period),
+                            extend);
+                    Alerts.displayPlanning(p);
+                    confirmAutoBtn.setVisible(true);
+                    refuseAutoBtn.setVisible(true);
+                    planAutoBtn.setVisible(false);
                 }
-                else {
-                    PeriodMe period = new PeriodMe(dateDebut, dateFin);
-                    if(myCurrenUtilisateur.isPeriodAvailable2(period) == null){
-                        Alerts.errorPlanning();
-                        handleGoingBack(event);
-                        tasktList.getSelectionModel().clearSelection();
-                        viewListTask.getItems().clear();
-                        listToPlanAuto.clear();
-                        extendBox.getSelectionModel().clearSelection();
-                    }
-                    else{//ici je planifie
-                            System.out.println("hnaaa");
-                            boolean extend=false;
-                            if(extendBox.getSelectionModel().getSelectedItem() == "Oui"){
-                                extend=true;
-                            }
-                            else{
-                                extend=false;
-                            }
-                            p_ = myCurrenUtilisateur.isPeriodAvailable2(period);
-                            p = myCurrenUtilisateur.planAuto(listToPlanAuto, myCurrenUtilisateur.isPeriodAvailable2(period), extend);
-                            Alerts.displayPlanning(p);
-                            confirmAutoBtn.setVisible(true);
-                            refuseAutoBtn.setVisible(true);
-                            planAutoBtn.setVisible(false);                 
-                    }
-                }    
+            }
         }
     }
-
 
     @FXML
     void handlePlanManual(ActionEvent event) {
@@ -610,7 +601,6 @@ public class ControlleurTask implements Initializable {
     void handleConfirmUpdate(ActionEvent event) {
         /* Pour évaluer l'état de réalisation d'une tâche */
         Etat etat = etatBox.getSelectionModel().getSelectedItem();
-        LocalDate currentDate = LocalDate.now();
         Tache tache = taskPlannedList.getSelectionModel().getSelectedItem();
         Tache tacheSauv = tache; // pour garder l'ancienne version de la tâche (pour la recherche dans le map)
         if (tache == null) {
@@ -619,18 +609,14 @@ public class ControlleurTask implements Initializable {
             if (etat == null)
                 Alerts.etatEmpty();
             else {
-                tache.setEtat(etat);
-                myCurrenUtilisateur.setPlannedTaches(tacheSauv, tache);
-                if (etat == Etat.COMPLETED) {
+                myCurrenUtilisateur.getTachePlanning(tacheSauv).modifEtat(tache, etat);
+
+                if (etat == Etat.COMPLETED) { // on distribue les badges et les messages de félicitation
                     Map<LocalDate, Integer> tacheCompletedMap = myCurrenUtilisateur.getTachesCompleted();
                     if (tacheCompletedMap.get(currentDate) == null)
                         tacheCompletedMap.put(currentDate, 0);
                     tacheCompletedMap.put(currentDate, tacheCompletedMap.get(currentDate) + 1);
                     myCurrenUtilisateur.setTachesCompleted(tacheCompletedMap);
-                    /*
-                     * testMap.put(currentDate, testMap.get(currentDate) + 1);
-                     * myCurrenUtilisateur.setTachesCompleted(testMap);
-                     */
                     myCurrenUtilisateur.attribuerBadge(tacheCompletedMap.get(currentDate));
                 }
                 Alerts.setEtat();
@@ -640,11 +626,11 @@ public class ControlleurTask implements Initializable {
             }
         }
 
-        // System.out.println("HELLOOOOOO");
     }
 
     @FXML
     void handlemodifConfirm(ActionEvent event) {
+        /* pour modifier une ou plusieurs informations liées à une tâche */
         String nom = modifNomTache.getText();
         LocalDate deadline = modifDeadline.getValue();
         String duree = modifDuree.getText();
@@ -659,7 +645,7 @@ public class ControlleurTask implements Initializable {
                 tache.setNom(nom);
             }
             if (deadline != null) {
-                if (deadline.isBefore(LocalDate.now())) {
+                if (deadline.isBefore(currentDate)) {
                     Alerts.errorDateCurrent();
                 } else {
                     tache.setDate_limite(deadline);
@@ -678,7 +664,7 @@ public class ControlleurTask implements Initializable {
                 Alerts.modifEmpty();
             else {
                 Alerts.modifier();
-                myCurrenUtilisateur.setPlannedTaches(tacheSauv, tache);
+                myCurrenUtilisateur.getTachePlanning(tacheSauv).modifTache(tacheSauv, tache);
             }
             planify.updateUser(myCurrenUtilisateur);
             handleGoingBack(event);
@@ -704,8 +690,8 @@ public class ControlleurTask implements Initializable {
         periodiciteTextField.setText("");
         deadlineDatePicker.setValue(null);
         deleteCategoryBox2.getSelectionModel().clearSelection();
-        PriorityBox.getSelectionModel().clearSelection();        
-        typeBox.getSelectionModel().clearSelection();    
+        PriorityBox.getSelectionModel().clearSelection();
+        typeBox.getSelectionModel().clearSelection();
     }
 
     private void clearFields2() {
@@ -803,9 +789,9 @@ public class ControlleurTask implements Initializable {
 
     @FXML
     void handleAddProjet(ActionEvent event) {
-        if(nomProjetField.getText().isEmpty()|| descriptionField.getText().isEmpty() || listProject.isEmpty()){
+        if (nomProjetField.getText().isEmpty() || descriptionField.getText().isEmpty() || listProject.isEmpty()) {
             Alerts.emptyFields();
-        }else{
+        } else {
             Projet projet = new Projet(nomProjetField.getText(), descriptionField.getText(), listProject);
             myCurrenUtilisateur.addNewProject(projet);
             planify.updateUser(myCurrenUtilisateur);
@@ -820,7 +806,7 @@ public class ControlleurTask implements Initializable {
 
     @FXML
     void handleEnterDatePicker(ActionEvent event) {
-        dateDisplay=enterDatePicker.getValue();
+        dateDisplay = enterDatePicker.getValue();
     }
 
     @FXML
@@ -850,7 +836,7 @@ public class ControlleurTask implements Initializable {
         ObservableList<String> aList = FXCollections.observableArrayList(a);
         bloqueBox.setItems(aList);
         extendBox.setItems(aList);
-    } 
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

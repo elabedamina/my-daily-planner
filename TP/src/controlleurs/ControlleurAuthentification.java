@@ -15,9 +15,16 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import modals.Utilisateur;
+import modals.Badge;
+import modals.PeriodMe;
 import modals.Planify;
+import modals.Planning;
+
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.scene.Node;
 
@@ -62,7 +69,7 @@ public class ControlleurAuthentification implements Initializable {
     private Planify planify = Planify.getInstance();
 
     @FXML
-    void handleConnexion(ActionEvent event) { 
+    void handleConnexion(ActionEvent event) {
         String pseudo = pseudoField.getText();
         if (!pseudo.isEmpty()) {
             if (planify.signedUp(pseudo) == -1) {
@@ -119,6 +126,8 @@ public class ControlleurAuthentification implements Initializable {
     public void switchToScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Planning.fxml"));
         Parent root = loader.load();
+        Planning planning = new Planning(new PeriodMe(LocalDate.of(2023, 5, 1), LocalDate.of(2023, 5, 6)));
+        myCurrenUtilisateur.addPlanning(planning);
         ControlleurPlanning controlleurPlanning = loader.getController();
         controlleurPlanning.setUser(myCurrenUtilisateur);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -135,8 +144,6 @@ public class ControlleurAuthentification implements Initializable {
         ObservableList<String> minDureeList = FXCollections.observableArrayList(minDurees);
         minDuree.setItems(minDureeList);
     }
-
-    
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {

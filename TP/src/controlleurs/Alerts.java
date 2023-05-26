@@ -79,20 +79,23 @@ public class Alerts {
         alert.setContentText("Votre catégorie de tâches a été supprimée avec succés.\n");
         alert.showAndWait();
     }
+
     public static void displayPlanning(Planning p) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Votre planning suggèré!");
         alert.setHeaderText("Voici le planning que je vous suggère.");
-        alert.setContentText( p.toString());
+        alert.setContentText(p.toString());
         alert.showAndWait();
     }
+
     public static void top() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Projet ajouté!");
         alert.setHeaderText(null);
-        alert.setContentText( null);
+        alert.setContentText(null);
         alert.showAndWait();
     }
+
     public static void sauvegarder() {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Tâche sauvegardée!");
@@ -157,11 +160,13 @@ public class Alerts {
         alert.setContentText("La date de fin de période doit être strictement\nsupérieur à la date de fin de période");
         alert.showAndWait();
     }
+
     public static void errorPlanning() {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(ERROR);
         alert.setHeaderText("Planning non trouvé! ");
-        alert.setContentText("La période que vous avez spécifiée n'est dans aucun planning.\nVeuillez introduire un nouveau planning avec ces dates\ndans la section <<Ajouter Planning>> du Menu");
+        alert.setContentText(
+                "La période que vous avez spécifiée n'est dans aucun planning.\nVeuillez introduire un nouveau planning avec ces dates\ndans la section <<Ajouter Planning>> du Menu");
         alert.showAndWait();
     }
 

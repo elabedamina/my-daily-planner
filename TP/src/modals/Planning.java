@@ -19,7 +19,6 @@ public class Planning implements Serializable /* implements Planification */ {
     private Map<Tache, Creneau> tachesPlanned = new HashMap<>();// contains the tasks of the planning and their slot
                                                                 // after planification
 
-
     public Planning() {
     }
 
@@ -30,10 +29,10 @@ public class Planning implements Serializable /* implements Planification */ {
     }
 
     public ArrayList<Tache> getTachesForDay(LocalDate date) {
-        //returns the list of taches scheduled in a given date
+        // returns the list of taches scheduled in a given date
         ArrayList<Tache> tachesForDay = new ArrayList<>();
         for (Tache tache : tachesPlanned.keySet()) {
-            LocalDate tacheDate = tache.getDate(); 
+            LocalDate tacheDate = tache.getDate();
             if (tacheDate.equals(date)) {
                 tachesForDay.add(tache);
             }
@@ -41,39 +40,67 @@ public class Planning implements Serializable /* implements Planification */ {
         return tachesForDay;
     }
 
+    public boolean modifEtat(Tache tache, Etat etat) {
+        // modifier l'état de la tâche dans le map adéquat
+        for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
+            Tache t = entry.getKey();
+            if (t.equals(tache)) {
+                tache.setEtat(etat);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean modifTache(Tache tacheExist, Tache tacheModif) {
+        // mettre à jour les informations de tacheExist en la remplaçant par tacheModif
+        for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
+            Tache t = entry.getKey();
+            if (t.equals(tacheExist)) {
+                tacheExist.setNom(tacheModif.getNom());
+                tacheExist.setDate_limite(tacheModif.getDate_limite());
+                tacheExist.setDuree(tacheModif.getDuree());
+                tacheExist.setPriorite(tacheModif.getPriorite());
+                tacheExist.setCategorie(tacheModif.getCategorie());
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void addTachesToPlanned(Map<Tache, Creneau> tachesToAdd) {
         tachesPlanned.putAll(tachesToAdd);
     }
 
-    public void addSingleTask(Tache t, Creneau c){
-        tachesPlanned.put(t,c);
+    public void addSingleTask(Tache t, Creneau c) {
+        tachesPlanned.put(t, c);
     }
 
     public boolean containsCreneauValue(Creneau creneau) {
-        boolean b=false;
+        boolean b = false;
         for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
             Creneau currentCreneau = entry.getValue();
-                if(currentCreneau.overlaps(creneau,currentCreneau)){
-                    b=true;
-                } 
-            
+            if (currentCreneau.overlaps(creneau, currentCreneau)) {
+                b = true;
+            }
+
         }
         return b;
     }
 
     @Override
     public String toString() {
-        return "\n-------->Planning [period=" + period + ", tachesPlanned = " + printtacheplanned()  + "]";
+        return "\n-------->Planning [period=" + period + ", tachesPlanned = " + printtacheplanned() + "]";
     }
 
-    public String printtacheplanned(){
-        String text="";
+    public String printtacheplanned() {
+        String text = "";
         for (Map.Entry<Tache, Creneau> entry : tachesPlanned.entrySet()) {
             Tache tache = entry.getKey();
             Creneau creneau = entry.getValue();
-           text=text+ "------\nTache: " + tache + ", Creneau: " + creneau;
-        }   
-        return text;        
+            text = text + "------\nTache: " + tache + ", Creneau: " + creneau;
+        }
+        return text;
     }
 
     public int getNb_taches_comp() {
