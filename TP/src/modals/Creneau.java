@@ -41,7 +41,8 @@ public class Creneau implements Serializable {
 
     public void modifCreneau(Creneau other) {
         /*
-         * pour modifier les heures en cas de chevauchement et prendre l'intervalle le
+         * pour modifier les heures en cas de chevauchement et prendre l'union i.e.
+         * l'intervalle le
          * plus large
          */
         if (other.getHeureDebut().compareTo(heureDebut) > 0)
