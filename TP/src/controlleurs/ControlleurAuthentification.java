@@ -129,6 +129,7 @@ public class ControlleurAuthentification implements Initializable {
         Planning planning = new Planning(new PeriodMe(LocalDate.of(2023, 5, 1), LocalDate.of(2023, 5, 6)));
         myCurrenUtilisateur.addPlanning(planning);
         ControlleurPlanning controlleurPlanning = loader.getController();
+       
         controlleurPlanning.setUser(myCurrenUtilisateur);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);

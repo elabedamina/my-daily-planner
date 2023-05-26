@@ -26,7 +26,7 @@ public class Planify {
 
     public void addUser(Utilisateur user) {
         users.add(user);    
-        saveUsersToFile(); // Save the updated users list to the file
+        saveUsersToFile(); 
     }
 
     public int signedUp(String pseudo) {
@@ -51,7 +51,7 @@ public class Planify {
         int index = signedUp(updatedUser.getPseudo());
         if (index != -1) {
             users.set(index, updatedUser);
-            saveUsersToFile(); // Save the updated users list to the file
+            saveUsersToFile(); 
         } else {
             System.err.println("Invalid index for user update.");
         }
