@@ -126,10 +126,8 @@ public class ControlleurAuthentification implements Initializable {
     public void switchToScene(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Planning.fxml"));
         Parent root = loader.load();
-        Planning planning = new Planning(new PeriodMe(LocalDate.of(2023, 5, 1), LocalDate.of(2023, 5, 6)));
-        myCurrenUtilisateur.addPlanning(planning);
         ControlleurPlanning controlleurPlanning = loader.getController();
-       
+
         controlleurPlanning.setUser(myCurrenUtilisateur);
         stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         scene = new Scene(root);

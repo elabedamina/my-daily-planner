@@ -396,7 +396,6 @@ public class Utilisateur implements Serializable {
                 period.setSpecificAvailableSlot(mySlots);
                 Planning newPlanning = new Planning(period);
 
-
                 Planning new_ = planAuto(listeTachesUnscheduled, newPlanning, false);
                 planning.getPeriod().setSpecificAvailableSlot(mySlots);
 
